@@ -17,10 +17,10 @@ bool icclient_init(const char *url)
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
 		size_t length = strlen(url);
-		bool prepend = !(bool)(url[length - 1] == '/');
-		server_url = malloc(length + (size_t)prepend + 1);
+		bool append = !(bool)(url[length - 1] == '/');
+		server_url = malloc(length + (size_t)append + 1);
 		strcpy(server_url, url);
-		if (prepend)
+		if (append)
 			strcat(server_url, "/");
 	}
 
