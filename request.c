@@ -1,4 +1,4 @@
-#include "icclient/request.h"
+#include "request.h"
 
-extern inline void request(const char *, size_t (*)(void *, size_t, size_t, void *)
-		, void *, struct curl_httppost *);
+extern inline void request(size_t (*writefunction)(void *, size_t, size_t, void *)
+		, void *writedata, struct curl_httppost *post, char *fmt, ...);

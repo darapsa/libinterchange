@@ -16,6 +16,7 @@ config.log
 config.status
 configure
 depcomp
+icclienttest
 install-sh
 missing
 stamp-h1

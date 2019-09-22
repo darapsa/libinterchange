@@ -1,7 +1,6 @@
 #include <stdbool.h>
-#include <string.h>
 #include <stdlib.h>
-#include <curl/curl.h>
+#include "login.h"
 #include "icclient/client.h"
 
 CURL *curl = NULL;
@@ -17,11 +16,27 @@ bool icclient_init(const char *url)
 #ifdef DEBUG
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
-		server_url = malloc(strlen(url) + 1);
+		size_t length = strlen(url);
+		bool prepend = !(bool)(url[length - 1] == '/');
+		server_url = malloc(length + (size_t)prepend + 1);
 		strcpy(server_url, url);
+		if (prepend)
+			strcat(server_url, "/");
 	}
 
 	return (bool)curl;
+}
+
+void icclient_login(const char *username, const char *password
+		, const char *successpage, const char *nextpage
+		, const char *failpage)
+{
+	login(username, password, NULL, "Login", successpage, nextpage, failpage);
+}
+
+void icclient_logout()
+{
+	request(NULL, NULL, NULL, "%s", "logout");
 }
 
 void icclient_cleanup()
