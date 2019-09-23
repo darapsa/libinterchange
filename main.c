@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <icclient/admin.h>
 #include <icclient/client.h>
 
 int main(void)
@@ -26,10 +27,10 @@ int main(void)
 	icclient_init(url);
 	free(url);
 
-	icclient_login(name, pass, NULL, NULL, NULL);
+	icclient_admin_login(name, pass, NULL, NULL, NULL);
 	free(name);
 	free(pass);
 
-	icclient_logout();
+	icclient_admin_logout();
 	icclient_cleanup();
 }
