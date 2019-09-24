@@ -24,7 +24,7 @@ int main(void)
 	strncpy(pass, pass_line, pass_nread);
 	free(pass_line);
 
-	icclient_init(url);
+	icclient_init(url, NULL);
 	free(url);
 
 	icclient_admin_login(name, pass, NULL, NULL, NULL);

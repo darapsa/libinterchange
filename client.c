@@ -6,13 +6,15 @@
 CURL *curl = NULL;
 char *server_url = NULL;
 
-bool icclient_init(const char *url)
+bool icclient_init(const char *url, const char *certificate)
 {
 	curl_global_init(CURL_GLOBAL_SSL);
 	curl = curl_easy_init();
 	if (curl) {
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
+		if (certificate)
+			curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
 #ifdef DEBUG
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-	bool icclient_init(const char *url);
+	bool icclient_init(const char *url, const char *certificate);
 	void icclient_login(const char *username, const char *password
 			, const char *successpage, const char *nextpage
 			, const char *failpage);
