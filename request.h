@@ -33,7 +33,7 @@ inline void request(size_t (*writefunction)(void *, size_t, size_t, void *)
 				ival = va_arg(ap, unsigned int);
 				do {
 					length++;
-				} while (ival / 10);
+				} while ((ival /= 10));
 				length -= 2;
 				break;
 			default:
