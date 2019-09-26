@@ -7,7 +7,7 @@ struct ic_product {
 };
 
 struct ic_catalog {
-	unsigned int length;
+	size_t length;
 	struct ic_product *products[];
 };
 
