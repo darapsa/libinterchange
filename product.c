@@ -20,8 +20,7 @@ void icclient_product_freecatalog(icclient_catalog *catalog)
 			free(product->comment);
 		if (product->description)
 			free(product->description);
-		if (product->sku)
-			free(product->sku);
+		free(product->sku);
 		free(product);
 	}
 	free(catalog);
