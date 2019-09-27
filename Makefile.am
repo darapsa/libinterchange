@@ -13,6 +13,7 @@ libicclient_a_SOURCES = \
 			member.c \
 			admin.c \
 			client.c
+libicclient_a_CFLAGS = -fPIC
 
 bin_PROGRAMS = icclienttest
 icclienttest_SOURCES = main.c
