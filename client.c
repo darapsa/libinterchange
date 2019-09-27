@@ -29,6 +29,14 @@ bool icclient_init(const char *url, const char *certificate)
 	return (bool)curl;
 }
 
+void icclient_newaccount(const char *username, const char *password
+		, const char *verify, const char *successpage, const char *nextpage
+		, const char *failpage)
+{
+	login(username, password, verify, "NewAccount", successpage, nextpage
+			, failpage);
+}
+
 void icclient_login(const char *username, const char *password
 		, const char *successpage, const char *nextpage
 		, const char *failpage)
