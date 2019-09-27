@@ -35,7 +35,7 @@ bool icclient_init(const char *url, const char *certificate)
 void icclient_allproducts(icclient_catalog **catalogptr
 		, size_t (*callback)(void *, size_t, size_t, void *))
 {
-	request(NULL, NULL, NULL, "%s", "All-Products");
+	request((void *)catalogptr, callback, NULL, "%s", "All-Products");
 }
 
 void icclient_newaccount(const char *username, const char *password
