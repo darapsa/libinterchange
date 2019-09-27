@@ -1,7 +1,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "login.h"
+#include "icclient/product.h"
 #include "icclient/client.h"
+
+typedef struct icclient_catalog icclient_catalog;
 
 CURL *curl = NULL;
 char *server_url = NULL;
@@ -27,6 +30,12 @@ bool icclient_init(const char *url, const char *certificate)
 	}
 
 	return (bool)curl;
+}
+
+void icclient_allproducts(icclient_catalog **catalogptr
+		, size_t (*callback)(void *, size_t, size_t, void *))
+{
+	request(NULL, NULL, NULL, "%s", "All-Products");
 }
 
 void icclient_newaccount(const char *username, const char *password

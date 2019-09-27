@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <icclient/product.h>
 #include <icclient/client.h>
 
 int main(void)
@@ -33,7 +32,7 @@ int main(void)
 
 	icclient_logout();
 
-	icclient_product_all(NULL, NULL);
+	icclient_allproducts(NULL, NULL);
 
 	icclient_cleanup();
 }

@@ -4,12 +4,6 @@
 
 typedef struct icclient_catalog icclient_catalog;
 
-void icclient_product_all(icclient_catalog **catalogptr
-		, size_t (*callback)(void *, size_t, size_t, void *))
-{
-	request(NULL, NULL, NULL, "%s", "All-Products");
-}
-
 void icclient_product_freecatalog(icclient_catalog *catalog)
 {
 	for (size_t i = 0; i < catalog->length; i++) {
