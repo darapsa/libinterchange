@@ -32,8 +32,8 @@ bool icclient_init(const char *url, const char *certificate)
 	return (bool)curl;
 }
 
-void icclient_allproducts(icclient_catalog **catalogptr
-		, size_t (*callback)(void *, size_t, size_t, void *))
+void icclient_allproducts(size_t (*callback)(void *, size_t, size_t, void *)
+		, icclient_catalog **catalogptr)
 {
 	(*catalogptr) = malloc(sizeof(icclient_catalog));
 	request(callback, (void *)catalogptr, NULL, "%s", "All-Products");
