@@ -15,7 +15,7 @@ struct icclient_catalog {
 extern "C" {
 #endif
 
-	void icclient_product_freecatalog(struct icclient_catalog *catalog);
+	void icclient_catalog_free(struct icclient_catalog *catalog);
 
 #ifdef __cplusplus
 }
