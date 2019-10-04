@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 	bool icclient_init(const char *url, const char *certificate);
-	void icclient_allproducts(size_t (*callback)(void *contents, size_t size
+	void icclient_allproducts(size_t (*handler)(void *contents, size_t size
 				, size_t nmemb, void *userdata)
 			, struct icclient_catalog **catalogptr);
 	void icclient_newaccount(const char *username, const char *password

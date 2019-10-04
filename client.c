@@ -32,11 +32,11 @@ bool icclient_init(const char *url, const char *certificate)
 	return (bool)curl;
 }
 
-void icclient_allproducts(size_t (*callback)(void *, size_t, size_t, void *)
+void icclient_allproducts(size_t (*handler)(void *, size_t, size_t, void *)
 		, icclient_catalog **catalogptr)
 {
 	(*catalogptr) = malloc(sizeof(icclient_catalog));
-	request(callback, (void *)catalogptr, NULL, "%s", "All-Products");
+	request(handler, (void *)catalogptr, NULL, "%s", "All-Products");
 }
 
 void icclient_newaccount(const char *username, const char *password
