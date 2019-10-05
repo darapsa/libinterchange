@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "login.h"
 #include "icclient/product.h"
+#include "icclient/catalog.h"
 #include "icclient/client.h"
 
 typedef struct icclient_catalog icclient_catalog;
@@ -63,6 +64,27 @@ void icclient_page(const char *path, size_t (*handler)(void *, size_t, size_t
 			, void *), void **dataptr)
 {
 	request(handler, (void *)dataptr, NULL, "%s", path);
+}
+
+void icclient_freeproduct(struct icclient_product *product)
+{
+	if (product->image)
+		free(product->image);
+	if (product->comment)
+		free(product->comment);
+	if (product->description)
+		free(product->description);
+	free(product->sku);
+	free(product);
+	product = NULL;
+}
+
+void icclient_freecatalog(icclient_catalog *catalog)
+{
+	for (size_t i = 0; i < catalog->length; i++)
+		icclient_freeproduct(catalog->products[i]);
+	free(catalog);
+	catalog = NULL;
 }
 
 void icclient_cleanup()

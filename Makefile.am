@@ -1,15 +1,15 @@
 noinst_LIBRARIES = libicclient.a
 libicclient_a_SOURCES = \
-			icclient/request.h \
-			icclient/login.h \
 			icclient/product.h \
+			icclient/catalog.h \
 			icclient/ord.h \
 			icclient/member.h \
 			icclient/admin.h \
 			icclient/client.h \
+			request.h \
 			request.c \
+			login.h \
 			login.c \
-			product.c \
 			member.c \
 			admin.c \
 			client.c
