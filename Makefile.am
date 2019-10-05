@@ -10,6 +10,7 @@ libicclient_a_SOURCES = \
 			request.c \
 			login.h \
 			login.c \
+			ord.c \
 			member.c \
 			admin.c \
 			client.c
