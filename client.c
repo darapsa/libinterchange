@@ -59,6 +59,12 @@ void icclient_logout()
 	request(NULL, NULL, NULL, "%s", "logout");
 }
 
+void icclient_page(const char *path, size_t (*handler)(void *, size_t, size_t
+			, void *), void **dataptr)
+{
+	request(handler, (void *)dataptr, NULL, "%s", path);
+}
+
 void icclient_cleanup()
 {
 	if (curl) {
