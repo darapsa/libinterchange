@@ -7,7 +7,9 @@ struct icclient_ord_item {
 };
 
 struct icclient_ord_order {
-	double subtotal, shipping, total_cost;
+	double subtotal;
+	double shipping;
+	double total_cost;
 	size_t nitems;
 	struct icclient_ord_item *items[];
 };
