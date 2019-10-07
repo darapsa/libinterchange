@@ -56,34 +56,39 @@ static int itemcmp(const void *item1, const void *item2)
 void icclient_order(icclient_ord_order **orderptr, const char *sku
 		, icclient_catalog *catalog)
 {
-	if (!*orderptr) {
-		(*orderptr) = malloc(sizeof(icclient_ord_order));
-		(*orderptr)->subtotal = .0;
-		(*orderptr)->shipping = .0;
-		(*orderptr)->subtotal = .0;
-		(*orderptr)->nitems = 0;
-	}
+	icclient_product **products = catalog->products;
+	qsort(products, catalog->length, sizeof(icclient_product), prodcmp);
+	icclient_product *product = bsearch(sku, products, catalog->length
+			, sizeof(icclient_product), prodcmp);
+
 	icclient_ord_order *order = *orderptr;
+	icclient_ord_item *item = NULL;
 
-	qsort(catalog->products, catalog->length, sizeof(icclient_product)
-			, prodcmp);
-	icclient_product *product = bsearch(sku, catalog->products
-		, catalog->length, sizeof(icclient_product), prodcmp);
-
-	qsort(order->items, order->nitems, sizeof(icclient_ord_item), itemcmp);
-	icclient_ord_item *item = bsearch(sku, order->items, order->nitems
-			, sizeof(icclient_ord_item), itemcmp);
+	if (order && order->nitems) {
+		icclient_ord_item **items = order->items;
+		qsort(items, order->nitems, sizeof(icclient_ord_item), itemcmp);
+		item = bsearch(sku, items, order->nitems, sizeof(icclient_ord_item)
+				, itemcmp);
+	} else {
+		*orderptr = malloc(sizeof(icclient_ord_order));
+		order = *orderptr;
+		order->subtotal = .0;
+		order->shipping = .0;
+		order->subtotal = .0;
+		order->nitems = 0;
+	}
 
 	if (item)
 		item->quantity++;
 	else {
-		item = malloc(sizeof(icclient_ord_item));
+		size_t i = order->nitems;
+		*orderptr = realloc(order, sizeof(icclient_ord_order)
+				+ (i + 1) * sizeof(icclient_ord_item));
+		order = *orderptr;
+		order->items[i] = malloc(sizeof(icclient_ord_item));
+		item = order->items[i];
 		item->product = product;
 		item->quantity = 1;
-		*orderptr = realloc(*orderptr, sizeof(*orderptr)
-				+ sizeof(icclient_ord_item));
-		(*orderptr)->items[(*orderptr)->nitems++] = item;
-		order = *orderptr;
 	}
 
 	order->subtotal += item->product->price;
