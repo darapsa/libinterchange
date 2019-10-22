@@ -61,12 +61,13 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 {
 	icclient_product **products = catalog->products;
 	qsort(products, catalog->length, sizeof(icclient_product *), prodcmp);
-	icclient_product *key = malloc(sizeof(icclient_product));
-	key->sku = malloc(strlen(sku) + 1);
-	strcpy(key->sku, sku);
-	icclient_product *product = bsearch(&key, products, catalog->length
-			, sizeof(icclient_product *), prodcmp);
-	icclient_freeproduct(key);
+	icclient_product *key_product = malloc(sizeof(icclient_product));
+	key_product->sku = malloc(strlen(sku) + 1);
+	strcpy(key_product->sku, sku);
+	icclient_product *product = *(icclient_product **)bsearch(&key_product
+			, products, catalog->length, sizeof(icclient_product *)
+			, prodcmp);
+	icclient_freeproduct(key_product);
 
 	icclient_ord_order *order = *orderptr;
 	icclient_ord_item *item = NULL;
@@ -74,8 +75,12 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 	if (order && order->nitems) {
 		icclient_ord_item **items = order->items;
 		qsort(items, order->nitems, sizeof(icclient_ord_item *), itemcmp);
-		item = bsearch(sku, items, order->nitems
-				, sizeof(icclient_ord_item *), itemcmp);
+		icclient_ord_item *key_item = malloc(sizeof(icclient_ord_item));
+		key_item->product = product;
+		item = *(icclient_ord_item **)bsearch(&key_item, items
+				, order->nitems, sizeof(icclient_ord_item *)
+				, itemcmp);
+		free(key_item);
 	} else {
 		*orderptr = malloc(sizeof(icclient_ord_order));
 		order = *orderptr;
