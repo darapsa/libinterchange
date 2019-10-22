@@ -63,8 +63,7 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 	strcpy(key->sku, sku);
 	icclient_product *product = bsearch(&key, products, catalog->length
 			, sizeof(icclient_product *), prodcmp);
-	free(key->sku);
-	free(key);
+	icclient_freeproduct(key);
 
 	icclient_ord_order *order = *orderptr;
 	icclient_ord_item *item = NULL;
