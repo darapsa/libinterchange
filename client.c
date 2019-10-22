@@ -24,6 +24,9 @@ bool icclient_init(const char *url, const char *certificate)
 		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
 		if (certificate)
 			curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
+#ifdef DEBUG
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+#endif
 		size_t length = strlen(url);
 		bool append = !(bool)(url[length - 1] == '/');
 		server_url = malloc(length + (size_t)append + 1);
