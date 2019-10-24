@@ -108,6 +108,7 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 
 	order->subtotal += item->product->price;
 	order->total_cost += item->product->price;
+	order->nitems++;
 
 	request(NULL, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
