@@ -64,6 +64,9 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 	icclient_product *key_product = malloc(sizeof(icclient_product));
 	key_product->sku = malloc(strlen(sku) + 1);
 	strcpy(key_product->sku, sku);
+	key_product->description = NULL;
+	key_product->comment = NULL;
+	key_product->image = NULL;
 	icclient_product *product = *(icclient_product **)bsearch(&key_product
 			, products, catalog->length, sizeof(icclient_product *)
 			, prodcmp);
