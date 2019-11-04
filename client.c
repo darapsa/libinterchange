@@ -75,7 +75,7 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 	icclient_ord_order *order = *orderptr;
 	icclient_ord_item *item = NULL;
 
-	if (order && order->nitems) {
+	if (order) {
 		icclient_ord_item **items = order->items;
 		qsort(items, order->nitems, sizeof(icclient_ord_item *), itemcmp);
 		icclient_ord_item *key_item = malloc(sizeof(icclient_ord_item));
