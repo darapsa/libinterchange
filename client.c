@@ -80,9 +80,11 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 		qsort(items, order->nitems, sizeof(icclient_ord_item *), itemcmp);
 		icclient_ord_item *key_item = malloc(sizeof(icclient_ord_item));
 		key_item->product = product;
-		item = *(icclient_ord_item **)bsearch(&key_item, items
+		icclient_ord_item **itemptr = bsearch(&key_item, items
 				, order->nitems, sizeof(icclient_ord_item *)
 				, itemcmp);
+		if (itemptr)
+			item = *itemptr;
 		free(key_item);
 	} else {
 		*orderptr = malloc(sizeof(icclient_ord_order));
