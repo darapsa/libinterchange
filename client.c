@@ -101,6 +101,7 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 				+ (i + 1) * sizeof(icclient_ord_item));
 		order = *orderptr;
 		order->items[i] = malloc(sizeof(icclient_ord_item));
+		order->nitems++;
 		item = order->items[i];
 		item->product = product;
 		item->quantity = 1;
@@ -108,7 +109,6 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 
 	order->subtotal += item->product->price;
 	order->total_cost += item->product->price;
-	order->nitems++;
 
 	request(NULL, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
