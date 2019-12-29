@@ -1,9 +1,13 @@
 #ifndef ICCLIENT_LOGIN_H
 #define ICCLIENT_LOGIN_H
 
+#include <stdbool.h>
+#include "icclient/member.h"
 #include "request.h"
 
-inline void login(const char *username, const char *password, const char *verify
+inline void login(size_t (*handler)(void *contents, size_t size
+			, size_t nmemb, void *userdata), struct icclient_user *user
+		, const char *username, const char *password, const char *verify
 		, const char *click, const char *successpage, const char *nextpage
 		, const char *failpage)
 {
@@ -41,7 +45,7 @@ inline void login(const char *username, const char *password, const char *verify
 				, CURLFORM_PTRCONTENTS, failpage
 				, CURLFORM_END);
 	last = NULL;
-	request(NULL, NULL, post, "%s", "process");
+	request(handler, user, post, "%s", "process");
 	curl_formfree(post);
 	post = NULL;
 }

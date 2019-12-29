@@ -26,7 +26,7 @@ int main(void)
 	icclient_init(url, NULL);
 	free(url);
 
-	icclient_login(name, pass, NULL, NULL, NULL);
+	icclient_login(NULL, NULL, name, pass, NULL, NULL, NULL);
 	free(name);
 	free(pass);
 

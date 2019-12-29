@@ -5,6 +5,7 @@
 #include "icclient/product.h"
 #include "icclient/catalog.h"
 #include "icclient/ord.h"
+#include "icclient/member.h"
 #include "icclient/client.h"
 
 typedef struct icclient_product icclient_product;
@@ -115,19 +116,26 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 	request(NULL, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
 
-void icclient_newaccount(const char *username, const char *password
+void icclient_newaccount(size_t (*handler)(void *contents, size_t size
+				, size_t nmemb, void *userdata)
+		, struct icclient_user *user
+		, const char *username, const char *password
 		, const char *verify, const char *successpage, const char *nextpage
 		, const char *failpage)
 {
-	login(username, password, verify, "NewAccount", successpage, nextpage
-			, failpage);
+	login(handler, user, username, password, verify, "NewAccount", successpage
+			, nextpage, failpage);
 }
 
-void icclient_login(const char *username, const char *password
+void icclient_login(size_t (*handler)(void *contents, size_t size
+			, size_t nmemb, void *userdata)
+		, struct icclient_user *user
+		, const char *username, const char *password
 		, const char *successpage, const char *nextpage
 		, const char *failpage)
 {
-	login(username, password, NULL, "Login", successpage, nextpage, failpage);
+	login(handler, user, username, password, NULL, "Login", successpage
+			, nextpage, failpage);
 }
 
 void icclient_logout()
