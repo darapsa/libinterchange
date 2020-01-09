@@ -10,7 +10,14 @@ struct icclient_ord_order;
 extern "C" {
 #endif
 
+	/*!
+	 * \brief A function that needs to be run first.
+	 * \param url Server root URL.
+	 * \param certificate Path to the CA certificate file.
+	 * \return True if the initialisation works, false otherwise.
+	 */
 	bool icclient_init(const char *url, const char *certificate);
+
 	void icclient_allproducts(size_t (*handler)(void *contents, size_t size
 				, size_t nmemb, void *userdata)
 			, struct icclient_catalog **catalogptr);
