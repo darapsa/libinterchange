@@ -21,7 +21,7 @@ extern "C" {
 	/*!
 	 * \brief For fetching data about all active products.
 	 * \param handler A pointer to a cURL write function callback.
-	 * \param catalogptr A pointer to the catalog to store the data.
+	 * \param catalogptr A pointer to pointer to the catalog to store the data.
 	 */
 	void icclient_allproducts(size_t (*handler)(void *contents, size_t size
 				, size_t nmemb, void *userdata)
