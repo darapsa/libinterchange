@@ -26,6 +26,13 @@ extern "C" {
 	void icclient_allproducts(size_t (*handler)(void *contents, size_t size
 				, size_t nmemb, void *userdata)
 			, struct icclient_catalog **catalogptr);
+
+	/*!
+	 * \brief For fetching data about all active products.
+	 * \param orderptr A pointer to pointer to the order.
+	 * \param sku The SKU of the item to order.
+	 * \param catalog A pointer to the catalog from which the item is.
+	 */
 	void icclient_order(struct icclient_ord_order **orderptr, const char *sku
 			, struct icclient_catalog *catalog);
 	void icclient_newaccount(size_t (*handler)(void *contents, size_t size
