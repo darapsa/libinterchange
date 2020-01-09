@@ -10,8 +10,8 @@ struct icclient_user {
 	char *mod_time;
 	char *s_nickname;
 	char *company;
-	char *fname;
-	char *lname;
+	char *fname; /*!< Shipping first name */
+	char *lname; /*!< Shipping last name */
 	char *address1;
 	char *address2;
 	char *address3;
@@ -22,8 +22,8 @@ struct icclient_user {
 	char *phone_day;
 	char *mv_shipmode;
 	char *b_nickname;
-	char *b_fname;
-	char *b_lname;
+	char *b_fname; /*!< Billing first name */
+	char *b_lname; /*!< Billing last name */
 	char *b_company;
 	char *b_address1;
 	char *b_address2;
