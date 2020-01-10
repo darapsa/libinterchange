@@ -28,7 +28,7 @@ extern "C" {
 			, struct icclient_catalog **catalogptr);
 
 	/*!
-	 * \brief For fetching data about all active products.
+	 * \brief For putting an item to a cart.
 	 * \param orderptr A pointer to pointer to the order.
 	 * \param sku The SKU of the item to order.
 	 * \param catalog A pointer to the catalog from which the item is.
