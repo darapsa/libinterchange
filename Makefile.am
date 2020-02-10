@@ -15,7 +15,7 @@ libicclient_a_SOURCES = \
 			admin.c \
 			client.c
 
-bin_PROGRAMS = icclienttest
-icclienttest_SOURCES = main.c
-icclienttest_LDADD = libicclient.a
-icclienttest_LDFLAGS = -lcurl
+#bin_PROGRAMS = icclienttest
+#icclienttest_SOURCES = main.c
+#icclienttest_LDADD = libicclient.a
+#icclienttest_LDFLAGS = -lcurl
