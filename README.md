@@ -12,9 +12,21 @@ $ autoreconf --install
 
 ## Optionally setting environment values
 
+If, for example, on FreeBSD and using a previously set up arm64 Android standalone toolchain:
 ```sh
-$ export CFLAGS="${CFLAGS} -g -DDEBUG -DANDROID -fPIC" # PIC might be needed later on android_armv7
-$ export LDFLAGS="${LDFLAGS} -llog" # Android liblog
+$ setenv CFLAGS "-target aarch64-linux-android --sysroot=/usr/local/aarch64-linux-android/sysroot -I/usr/local/aarch64-linux-android/lib64/clang/7.0.2/include -L/usr/local/aarch64-linux-android/lib/gcc/aarch64-linux-android/4.9.x"
+```
+
+If debugging for Android:
+```sh
+$ export CFLAGS="${CFLAGS} -g -DDEBUG -DANDROID"
+$ export LDFLAGS="${LDFLAGS} -llog"
+```
+
+and if for android_armv7:
+
+```sh
+$ export CFLAGS="${CFLAGS} -fPIC"
 ```
 
 ## Configuring for various target hosts
