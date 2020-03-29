@@ -1,4 +1,4 @@
-AC_INIT([libicclient], [0.0], [rt@darapsa.co.id])
+AC_INIT([libicclient], [0.0], [pt@darapsa.co.id])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AC_PROG_RANLIB
