@@ -1,21 +1,23 @@
-noinst_LIBRARIES = libicclient.a
-libicclient_a_SOURCES = \
-			icclient/product.h \
-			icclient/catalog.h \
-			icclient/ord.h \
-			icclient/member.h \
-			icclient/admin.h \
-			icclient/client.h \
-			request.h \
-			request.c \
-			login.h \
-			login.c \
-			ord.c \
-			member.c \
-			admin.c \
-			client.c
+ACLOCAL_AMFLAGS = -I m4
+lib_LTLIBRARIES = libicclient.la
+libicclient_la_SOURCES = \
+			 request.h \
+			 request.c \
+			 login.h \
+			 login.c \
+			 ord.c \
+			 member.c \
+			 admin.c \
+			 client.c
+pkginclude_HEADERS = \
+		  icclient/product.h \
+		  icclient/catalog.h \
+		  icclient/ord.h \
+		  icclient/member.h \
+		  icclient/admin.h \
+		  icclient/client.h
 
 #bin_PROGRAMS = icclienttest
 #icclienttest_SOURCES = main.c
-#icclienttest_LDADD = libicclient.a
+#icclienttest_LDADD = libicclient.la
 #icclienttest_LDFLAGS = -lcurl
