@@ -6,7 +6,7 @@
 .deps
 .libs
 Makefile
-Makefile.am.user
+Makefile.am.user*
 Makefile.in
 aclocal.m4
 ar-lib
