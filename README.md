@@ -7,26 +7,74 @@
 ```sh
 $ git clone git://darapsa.org/libicclient.git
 $ cd libicclient
+$ libtoolize
 $ autoreconf --install
 ```
 
 ## Optionally setting environment values
 
-If, for example, on FreeBSD and using a previously set up arm64 Android standalone toolchain:
 ```sh
-$ setenv CFLAGS "-target aarch64-linux-android --sysroot=/usr/local/aarch64-linux-android/sysroot -I/usr/local/aarch64-linux-android/lib64/clang/7.0.2/include -L/usr/local/aarch64-linux-android/lib/gcc/aarch64-linux-android/4.9.x"
+$ export NDK=/opt/android-ndk-r19
+$ export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
+```
+
+and then
+
+```sh
+$ export TARGET=aarch64-linux-android
+```
+
+or
+
+```sh
+$ export TARGET=armv7a-linux-androideabi
+```
+
+or
+
+```sh
+$ export TARGET=i686-linux-android
+```
+
+or
+
+```sh
+$ export TARGET=x86_64-linux-android
+```
+
+and then
+
+```sh
+$ export API=21
+$ export CC=$TOOLCHAIN/bin/$TARGET$API-clang
+```
+
+and only for Android 32-bit ARM, reset TARGET
+
+```sh
+$ export TARGET=arm-linux-androideabi
+```
+
+and then
+
+```sh
+$ export AR=$TOOLCHAIN/bin/$TARGET-ar
+$ export AS=$TOOLCHAIN/bin/$TARGET-as
+$ export LD=$TOOLCHAIN/bin/$TARGET-ld
+$ export RANLIB=$TOOLCHAIN/bin/$TARGET-ranlib
+$ export STRIP=$TOOLCHAIN/bin/$TARGET-strip
+$ export PREFIX=$TOOLCHAIN/sysroot/usr
 ```
 
 If debugging for Android:
 ```sh
-$ export CFLAGS="${CFLAGS} -g -DDEBUG -DANDROID"
-$ export LDFLAGS="${LDFLAGS} -llog"
+$ export CPPFLAGS="$CPPFLAGS -DDEBUG -DANDROID"
+$ export CFLAGS="$CFLAGS -g"
 ```
 
-and if for android_armv7:
-
+If, for example, on FreeBSD and cross-compiling for arm64 Android relying on Linux binary compatibility:
 ```sh
-$ export CFLAGS="${CFLAGS} -fPIC"
+$ setenv LDFLAGS "$LDFLAGS -L$PREFIX/lib/$TARGET/$API"
 ```
 
 ## Configuring for various target hosts
@@ -38,19 +86,14 @@ $ ./configure
 or
 
 ```sh
-$ CC=/usr/local/aarch64-linux-android/bin/aarch64-linux-android-clang ./configure --host=aarch64-linux-android
-```
-
-or
-
-```sh
-$ CC=/usr/local/arm-linux-androideabi/bin/arm-linux-androideabi-clang ./configure --host=arm-linux-androideabi
+$ ./configure --host=$TARGET --prefix=$PREFIX --libdir=$PREFIX/lib/$TARGET/$API --disable-static
 ```
 
 or so on.
 
-## Compiling and linking
+## Compiling, linking, and installing
 
 ```sh
 $ make # -jN (with N an integer number of parallel tasks you allow your computer to run for compiling this)
+$ sudo make install
 ```
