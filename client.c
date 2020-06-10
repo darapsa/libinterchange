@@ -151,6 +151,8 @@ void icclient_page(const char *path, size_t (*handler)(void *, size_t, size_t
 
 void icclient_freeproduct(icclient_product *product)
 {
+	if (product->author)
+		free(product->author);
 	if (product->image)
 		free(product->image);
 	if (product->comment)
