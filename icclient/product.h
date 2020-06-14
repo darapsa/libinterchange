@@ -7,6 +7,7 @@ struct icclient_product {
 	char *comment;
 	char *image;
 	double price;
+	double weight;
 	char *author;
 };
 
