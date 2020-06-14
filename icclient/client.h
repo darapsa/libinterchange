@@ -28,6 +28,16 @@ extern "C" {
 			, struct icclient_catalog **catalogptr);
 
 	/*!
+	 * \brief For fetching data about a specific product.
+	 * \param handler A pointer to a cURL write function callback.
+	 * \param productptr A pointer to pointer to the product to store the data.
+	 * \param sku The SKU of the item to order.
+	 */
+	void icclient_flypage(size_t (*handler)(void *contents, size_t size,
+				size_t nmemb, void *userdata),
+			struct icclient_product **productptr, const char *sku);
+
+	/*!
 	 * \brief For putting an item to a cart.
 	 * \param orderptr A pointer to pointer to the order.
 	 * \param sku The SKU of the item to order.

@@ -45,6 +45,12 @@ void icclient_allproducts(size_t (*handler)(void *, size_t, size_t, void *)
 	request(handler, (void *)catalogptr, NULL, "%s", "All-Products");
 }
 
+void icclient_flypage(size_t (*handler)(void *, size_t, size_t, void *),
+		icclient_product **productptr, const char *sku)
+{
+	request(handler, (void *)productptr, NULL, "%s", sku);
+}
+
 static int prodcmp(const void *product1, const void *product2)
 {
 	return strcmp((*(icclient_product * const *)product1)->sku
