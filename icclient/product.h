@@ -10,6 +10,7 @@ struct icclient_product {
 	char *sku;
 	char *description;
 	char *comment;
+	char *thumb;
 	char *image;
 	double price;
 	char *prod_group;
