@@ -39,6 +39,18 @@ bool icclient_init(const char *url, const char *certificate)
 	return (bool)curl;
 }
 
+void icclient_results(size_t (*handler)(void *contents, size_t size,
+			size_t nmemb, void *userdata),
+		struct icclient_catalog **catalogptr, const char *prodgroup)
+{
+	char nonspaced[strlen(prodgroup) + 1];
+	strcpy(nonspaced, prodgroup);
+	char *space = NULL;
+	while (space = strchr(nonspaced, ' '))
+		*space = '-';
+	request(handler, (void *)catalogptr, NULL, "%s", nonspaced);
+}
+
 void icclient_allproducts(size_t (*handler)(void *, size_t, size_t, void *)
 		, icclient_catalog **catalogptr)
 {
