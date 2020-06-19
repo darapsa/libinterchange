@@ -1,7 +1,7 @@
 #ifndef ICCLIENT_PRODUCT_H
 #define ICCLIENT_PRODUCT_H
 
-struct icclient_product_cross_sell {
+struct icclient_product_crosssell {
 	size_t length;
 	char *skus[];
 };
@@ -16,7 +16,7 @@ struct icclient_product {
 	char *prod_group;
 	double weight;
 	char *author;
-	struct icclient_product_cross_sell *cross_sell;
+	struct icclient_product_crosssell *crosssell;
 };
 
 #endif // ICCLIENT_PRODUCT_H
