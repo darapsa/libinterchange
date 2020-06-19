@@ -46,7 +46,7 @@ void icclient_results(size_t (*handler)(void *contents, size_t size,
 	char nonspaced[strlen(prodgroup) + 1];
 	strcpy(nonspaced, prodgroup);
 	char *space = NULL;
-	while (space = strchr(nonspaced, ' '))
+	while ((space = strchr(nonspaced, ' ')))
 		*space = '-';
 	request(handler, (void *)catalogptr, NULL, "%s", nonspaced);
 }
