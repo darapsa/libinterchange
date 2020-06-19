@@ -34,9 +34,9 @@ extern "C" {
 	 * \param handler A pointer to a cURL write function callback.
 	 * \param catalogptr A pointer to pointer to the catalog to store the data.
 	 */
-	void icclient_allproducts(size_t (*handler)(void *contents, size_t size
-				, size_t nmemb, void *userdata)
-			, struct icclient_catalog **catalogptr);
+	void icclient_allproducts(size_t (*handler)(void *contents, size_t size,
+				size_t nmemb, void *userdata),
+			struct icclient_catalog **catalogptr);
 
 	/*!
 	 * \brief For fetching data about a specific product.
