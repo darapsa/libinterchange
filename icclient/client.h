@@ -69,10 +69,10 @@ extern "C" {
 			const char *successpage, const char *nextpage,
 			const char *failpage);
 	void icclient_logout();
-	void icclient_page(const char *path
-			, size_t (*handler)(void *contents, size_t size
-				, size_t nmemb, void *userdata)
-			, void **dataptr);
+	void icclient_page(const char *path,
+			size_t (*handler)(void *contents, size_t size,
+				size_t nmemb, void *userdata),
+			void **dataptr);
 	void icclient_freeproduct(struct icclient_product *product);
 	void icclient_freecatalog(struct icclient_catalog *catalog);
 	void icclient_cleanup();
