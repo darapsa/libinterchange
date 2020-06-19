@@ -56,12 +56,12 @@ extern "C" {
 	 */
 	void icclient_order(struct icclient_ord_order **orderptr, const char *sku,
 			struct icclient_catalog *catalog);
-	void icclient_newaccount(size_t (*handler)(void *contents, size_t size
-				, size_t nmemb, void *userdata)
-			, struct icclient_user *user
-			, const char *username, const char *password
-			, const char *verify, const char *successpage
-			, const char *nextpage, const char *failpage);
+	void icclient_newaccount(size_t (*handler)(void *contents, size_t size,
+				size_t nmemb, void *userdata),
+			struct icclient_user *user,
+			const char *username, const char *password,
+			const char *verify, const char *successpage,
+			const char *nextpage, const char *failpage);
 	void icclient_login(size_t (*handler)(void *contents, size_t size
 				, size_t nmemb, void *userdata)
 			, struct icclient_user *user
