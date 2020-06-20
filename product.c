@@ -3,6 +3,9 @@
 
 void icclient_product_free(struct icclient_product *product)
 {
+	if (product->crosssell)
+		for (size_t i = 0; i < product->crosssell->length; i++)
+			free(product->crosssell->skus[i]);
 	if (product->author)
 		free(product->author);
 	if (product->prodgroup)
