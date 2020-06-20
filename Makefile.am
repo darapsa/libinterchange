@@ -3,9 +3,10 @@ lib_LTLIBRARIES = libicclient.la
 libicclient_la_SOURCES = \
 			 request.h \
 			 request.c \
+			 product.c \
+			 ord.c \
 			 login.h \
 			 login.c \
-			 ord.c \
 			 member.c \
 			 admin.c \
 			 client.c

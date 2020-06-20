@@ -19,4 +19,14 @@ struct icclient_product {
 	struct icclient_product_crosssell *crosssell;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	void icclient_product_free(struct icclient_product *product);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif // ICCLIENT_PRODUCT_H

@@ -73,7 +73,6 @@ extern "C" {
 			size_t (*handler)(void *contents, size_t size,
 				size_t nmemb, void *userdata),
 			void **dataptr);
-	void icclient_freeproduct(struct icclient_product *product);
 	void icclient_freecatalog(struct icclient_catalog *catalog);
 	void icclient_cleanup();
 

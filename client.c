@@ -89,7 +89,7 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 	icclient_product *product = *(icclient_product **)bsearch(&key_product
 			, products, catalog->length, sizeof(icclient_product *)
 			, prodcmp);
-	icclient_freeproduct(key_product);
+	icclient_product_free(key_product);
 
 	icclient_ord_order *order = *orderptr;
 	icclient_ord_item *item = NULL;
@@ -167,29 +167,10 @@ void icclient_page(const char *path, size_t (*handler)(void *, size_t, size_t
 	request(handler, (void *)dataptr, NULL, "%s", path);
 }
 
-void icclient_freeproduct(icclient_product *product)
-{
-	if (product->author)
-		free(product->author);
-	if (product->prodgroup)
-		free(product->prodgroup);
-	if (product->image)
-		free(product->image);
-	if (product->thumb)
-		free(product->thumb);
-	if (product->comment)
-		free(product->comment);
-	if (product->description)
-		free(product->description);
-	free(product->sku);
-	free(product);
-	product = NULL;
-}
-
 void icclient_freecatalog(icclient_catalog *catalog)
 {
 	for (size_t i = 0; i < catalog->length; i++)
-		icclient_freeproduct(catalog->products[i]);
+		icclient_product_free(catalog->products[i]);
 	free(catalog);
 	catalog = NULL;
 }
