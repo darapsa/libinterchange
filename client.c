@@ -171,6 +171,8 @@ void icclient_freeproduct(icclient_product *product)
 {
 	if (product->author)
 		free(product->author);
+	if (product->prodgroup)
+		free(product->prodgroup);
 	if (product->image)
 		free(product->image);
 	if (product->thumb)
