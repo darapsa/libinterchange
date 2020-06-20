@@ -4,6 +4,7 @@ libicclient_la_SOURCES = \
 			 request.h \
 			 request.c \
 			 product.c \
+			 catalog.c \
 			 ord.c \
 			 login.h \
 			 login.c \

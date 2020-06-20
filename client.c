@@ -167,14 +167,6 @@ void icclient_page(const char *path, size_t (*handler)(void *, size_t, size_t
 	request(handler, (void *)dataptr, NULL, "%s", path);
 }
 
-void icclient_freecatalog(icclient_catalog *catalog)
-{
-	for (size_t i = 0; i < catalog->length; i++)
-		icclient_product_free(catalog->products[i]);
-	free(catalog);
-	catalog = NULL;
-}
-
 void icclient_cleanup()
 {
 	if (curl) {
