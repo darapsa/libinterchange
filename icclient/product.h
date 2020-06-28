@@ -23,6 +23,7 @@ struct icclient_product {
 extern "C" {
 #endif
 
+	void icclient_product_init(struct icclient_product *product);
 	void icclient_product_free(struct icclient_product *product);
 
 #ifdef __cplusplus
