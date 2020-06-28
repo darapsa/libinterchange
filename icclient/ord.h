@@ -18,6 +18,7 @@ struct icclient_ord_order {
 extern "C" {
 #endif
 
+	void icclient_ord_init(struct icclient_ord_order *order);
 	void icclient_ord_free(struct icclient_ord_order *order);
 
 #ifdef __cplusplus

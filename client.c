@@ -106,10 +106,7 @@ void icclient_order(icclient_ord_order **orderptr, const char *sku
 	} else {
 		*orderptr = malloc(sizeof(icclient_ord_order));
 		order = *orderptr;
-		order->subtotal = .0;
-		order->shipping = .0;
-		order->subtotal = .0;
-		order->nitems = 0;
+		icclient_ord_init(order);
 	}
 
 	if (item)
