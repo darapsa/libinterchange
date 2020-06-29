@@ -40,13 +40,13 @@ extern "C" {
 
 	/*!
 	 * \brief For fetching data about a specific product.
+	 * \param sku The SKU of the item to order.
 	 * \param handler A pointer to a cURL write function callback.
 	 * \param productptr A pointer to pointer to the product to store the data.
-	 * \param sku The SKU of the item to order.
 	 */
-	void icclient_flypage(size_t (*handler)(void *contents, size_t size,
-				size_t nmemb, void *userdata),
-			struct icclient_product **productptr, const char *sku);
+	void icclient_flypage(const char *sku,
+			size_t (*handler)(void *, size_t, size_t, void *),
+			struct icclient_product **productptr);
 
 	/*!
 	 * \brief For putting an item to a cart.
