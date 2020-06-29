@@ -50,12 +50,12 @@ extern "C" {
 
 	/*!
 	 * \brief For putting an item to a cart.
-	 * \param orderptr A pointer to pointer to the order.
 	 * \param sku The SKU of the item to order.
 	 * \param catalog A pointer to the catalog from which the item is.
+	 * \param orderptr A pointer to pointer to the order.
 	 */
-	void icclient_order(struct icclient_ord_order **orderptr, const char *sku,
-			struct icclient_catalog *catalog);
+	void icclient_order(const char *sku, const struct icclient_catalog *catalog,
+			struct icclient_ord_order **orderptr);
 	void icclient_newaccount(size_t (*handler)(void *contents, size_t size,
 				size_t nmemb, void *userdata),
 			struct icclient_user *user,

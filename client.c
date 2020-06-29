@@ -75,10 +75,10 @@ static int itemcmp(const void *item1, const void *item2)
 			, (*(icclient_ord_item * const *)item2)->product->sku);
 }
 
-void icclient_order(icclient_ord_order **orderptr, const char *sku
-		, icclient_catalog *catalog)
+void icclient_order(const char *sku, const icclient_catalog *catalog,
+		icclient_ord_order **orderptr)
 {
-	icclient_product **products = catalog->products;
+	icclient_product **products = ((icclient_catalog *)catalog)->products;
 	qsort(products, catalog->length, sizeof(icclient_product *), prodcmp);
 	icclient_product *key_product = malloc(sizeof(icclient_product));
 	icclient_product_init(key_product);
