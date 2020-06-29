@@ -25,8 +25,7 @@ extern "C" {
 	 * \param catalogptr A pointer to pointer to the catalog to store the data.
 	 */
 	void icclient_results(const char *prodgroup,
-			size_t (*handler)(void *contents, size_t size,
-				size_t nmemb, void *userdata),
+			size_t (*handler)(void *, size_t, size_t, void *),
 			struct icclient_catalog **catalogptr);
 
 	/*!
@@ -34,8 +33,7 @@ extern "C" {
 	 * \param handler A pointer to a cURL write function callback.
 	 * \param catalogptr A pointer to pointer to the catalog to store the data.
 	 */
-	void icclient_allproducts(size_t (*handler)(void *contents, size_t size,
-				size_t nmemb, void *userdata),
+	void icclient_allproducts(size_t (*handler)(void *, size_t, size_t, void *),
 			struct icclient_catalog **catalogptr);
 
 	/*!
@@ -56,22 +54,19 @@ extern "C" {
 	 */
 	void icclient_order(const char *sku, const struct icclient_catalog *catalog,
 			struct icclient_ord_order **orderptr);
-	void icclient_newaccount(size_t (*handler)(void *contents, size_t size,
-				size_t nmemb, void *userdata),
+	void icclient_newaccount(size_t (*handler)(void *, size_t, size_t, void *),
 			struct icclient_user *user,
 			const char *username, const char *password,
 			const char *verify, const char *successpage,
 			const char *nextpage, const char *failpage);
-	void icclient_login(size_t (*handler)(void *contents, size_t size
-				, size_t nmemb, void *userdata),
+	void icclient_login(size_t (*handler)(void *, size_t, size_t, void *),
 			struct icclient_user *user,
 			const char *username, const char *password,
 			const char *successpage, const char *nextpage,
 			const char *failpage);
 	void icclient_logout();
 	void icclient_page(const char *path,
-			size_t (*handler)(void *contents, size_t size,
-				size_t nmemb, void *userdata),
+			size_t (*handler)(void *, size_t, size_t, void *),
 			void **dataptr);
 	void icclient_cleanup();
 

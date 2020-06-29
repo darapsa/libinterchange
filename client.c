@@ -40,8 +40,7 @@ bool icclient_init(const char *url, const char *certificate)
 }
 
 void icclient_results(const char *prodgroup,
-		size_t (*handler)(void *contents, size_t size,
-			size_t nmemb, void *userdata),
+		size_t (*handler)(void *, size_t, size_t, void *),
 		struct icclient_catalog **catalogptr)
 {
 	char nonspaced[strlen(prodgroup) + 1];
@@ -52,8 +51,8 @@ void icclient_results(const char *prodgroup,
 	request(handler, (void *)catalogptr, NULL, "%s", nonspaced);
 }
 
-void icclient_allproducts(size_t (*handler)(void *, size_t, size_t, void *)
-		, icclient_catalog **catalogptr)
+void icclient_allproducts(size_t (*handler)(void *, size_t, size_t, void *),
+		icclient_catalog **catalogptr)
 {
 	request(handler, (void *)catalogptr, NULL, "%s", "All-Products");
 }
@@ -131,26 +130,22 @@ void icclient_order(const char *sku, const icclient_catalog *catalog,
 	request(NULL, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
 
-void icclient_newaccount(size_t (*handler)(void *contents, size_t size
-				, size_t nmemb, void *userdata)
-		, struct icclient_user *user
-		, const char *username, const char *password
-		, const char *verify, const char *successpage, const char *nextpage
-		, const char *failpage)
+void icclient_newaccount(size_t (*handler)(void *, size_t, size_t, void *),
+		struct icclient_user *user,
+		const char *username, const char *password, const char *verify,
+		const char *successpage, const char *nextpage, const char *failpage)
 {
-	login(handler, user, username, password, verify, "NewAccount", successpage
-			, nextpage, failpage);
+	login(handler, user, username, password, verify,
+			"NewAccount", successpage, nextpage, failpage);
 }
 
-void icclient_login(size_t (*handler)(void *contents, size_t size
-			, size_t nmemb, void *userdata)
-		, struct icclient_user *user
-		, const char *username, const char *password
-		, const char *successpage, const char *nextpage
-		, const char *failpage)
+void icclient_login(size_t (*handler)(void *, size_t, size_t, void *),
+		struct icclient_user *user,
+		const char *username, const char *password,
+		const char *successpage, const char *nextpage, const char *failpage)
 {
-	login(handler, user, username, password, NULL, "Login", successpage
-			, nextpage, failpage);
+	login(handler, user, username, password, NULL, "Login",
+			successpage, nextpage, failpage);
 }
 
 void icclient_logout()
@@ -158,8 +153,9 @@ void icclient_logout()
 	request(NULL, NULL, NULL, "%s", "logout");
 }
 
-void icclient_page(const char *path, size_t (*handler)(void *, size_t, size_t
-			, void *), void **dataptr)
+void icclient_page(const char *path,
+		size_t (*handler)(void *, size_t, size_t, void *),
+		void **dataptr)
 {
 	request(handler, (void *)dataptr, NULL, "%s", path);
 }
