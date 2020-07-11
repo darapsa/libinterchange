@@ -131,21 +131,21 @@ void icclient_order(const char *sku, const icclient_catalog *catalog,
 }
 
 void icclient_newaccount(size_t (*handler)(void *, size_t, size_t, void *),
-		struct icclient_user *user,
+		struct icclient_member *member,
 		const char *username, const char *password, const char *verify,
 		const char *successpage, const char *nextpage, const char *failpage)
 {
-	login(handler, user, username, password, verify,
-			"NewAccount", successpage, nextpage, failpage);
+	login(handler, member, username, password, verify, "NewAccount", successpage,
+			nextpage, failpage);
 }
 
 void icclient_login(size_t (*handler)(void *, size_t, size_t, void *),
-		struct icclient_user *user,
+		struct icclient_member *member,
 		const char *username, const char *password,
 		const char *successpage, const char *nextpage, const char *failpage)
 {
-	login(handler, user, username, password, NULL, "Login",
-			successpage, nextpage, failpage);
+	login(handler, member, username, password, NULL, "Login", successpage, nextpage,
+			failpage);
 }
 
 void icclient_logout()

@@ -5,11 +5,10 @@
 #include "icclient/member.h"
 #include "request.h"
 
-inline void login(size_t (*handler)(void *contents, size_t size
-			, size_t nmemb, void *userdata), struct icclient_user *user
-		, const char *username, const char *password, const char *verify
-		, const char *click, const char *successpage, const char *nextpage
-		, const char *failpage)
+inline void login(size_t (*handler)(void *, size_t, size_t, void *),
+		struct icclient_member *member, const char *username, const char *password,
+		const char *verify, const char *click, const char *successpage,
+		const char *nextpage, const char *failpage)
 {
 	struct curl_httppost *post, *last = NULL;
 	curl_formadd(&post, &last
@@ -45,7 +44,7 @@ inline void login(size_t (*handler)(void *contents, size_t size
 				, CURLFORM_PTRCONTENTS, failpage
 				, CURLFORM_END);
 	last = NULL;
-	request(handler, user, post, "%s", "process");
+	request(handler, member, post, "%s", "process");
 	curl_formfree(post);
 	post = NULL;
 }

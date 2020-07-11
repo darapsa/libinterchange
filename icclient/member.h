@@ -1,7 +1,7 @@
 #ifndef ICCLIENT_MEMBER_H
 #define ICCLIENT_MEMBER_H
 
-struct icclient_user {
+struct icclient_member {
 	char *username;
 	char *usernick;
 	char *password;
@@ -55,12 +55,12 @@ struct icclient_user {
 extern "C" {
 #endif
 
-	void icclient_user_account(const char *fname, const char *lname
-			, const char *address1, const char *address2
-			, const char *city, const char *state, const char *zip
-			, const char *email, const char *phone_day);
-	void icclient_user_changepassword(const char *password_old, const char *password
-			, const char *verify);
+	void icclient_member_account(const char *fname, const char *lname,
+			const char *address1, const char *address2, const char *city,
+			const char *state, const char *zip, const char *email,
+			const char *phone_day);
+	void icclient_member_changepassword(const char *password_old, const char *password,
+			const char *verify);
 
 #ifdef __cplusplus
 }

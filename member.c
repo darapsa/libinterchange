@@ -2,7 +2,7 @@
 #include "request.h"
 #include "icclient/member.h"
 
-void icclient_account(const char *fname, const char *lname, const char *address1,
+void icclient_member_account(const char *fname, const char *lname, const char *address1,
 		const char *address2, const char *city, const char *state,
 		const char *zip, const char *email, const char *phone_day)
 {
@@ -65,8 +65,8 @@ void icclient_account(const char *fname, const char *lname, const char *address1
 	post = NULL;
 }
 
-void icclient_changepassword(const char *password_old, const char *password
-		, const char *verify)
+void icclient_member_changepassword(const char *password_old, const char *password,
+		const char *verify)
 {
 	struct curl_httppost *post, *last = NULL;
 	curl_formadd(&post, &last,
