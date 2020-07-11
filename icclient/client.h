@@ -18,11 +18,11 @@ extern "C" {
 
 	/*!
 	 * \brief For fetching data about products that belong a specific group.
-	 * \param prodgroup The name of the product group.
+	 * \param prod_group The name of the product group.
 	 * \param handler A pointer to a cURL write function callback.
 	 * \param catalogptr A pointer to pointer to the catalog to store the data.
 	 */
-	void icclient_results(const char *prodgroup,
+	void icclient_results(const char *prod_group,
 			size_t (*handler)(void *, size_t, size_t, void *),
 			struct icclient_catalog **catalogptr);
 

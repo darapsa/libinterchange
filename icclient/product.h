@@ -13,7 +13,7 @@ struct icclient_product {
 	char *thumb;
 	char *image;
 	double price;
-	char *prodgroup;
+	char *prod_group;
 	double weight;
 	char *author;
 	struct icclient_product_crosssell *crosssell;

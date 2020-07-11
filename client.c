@@ -32,12 +32,12 @@ bool icclient_init(const char *url, const char *certificate)
 	return (bool)curl;
 }
 
-void icclient_results(const char *prodgroup,
+void icclient_results(const char *prod_group,
 		size_t (*handler)(void *, size_t, size_t, void *),
 		struct icclient_catalog **catalogptr)
 {
-	char nonspaced[strlen(prodgroup) + 1];
-	strcpy(nonspaced, prodgroup);
+	char nonspaced[strlen(prod_group) + 1];
+	strcpy(nonspaced, prod_group);
 	char *space = NULL;
 	while ((space = strchr(nonspaced, ' ')))
 		*space = '-';

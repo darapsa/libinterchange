@@ -9,7 +9,7 @@ void icclient_product_init(struct icclient_product *product)
 	product->thumb = NULL;
 	product->image = NULL;
 	product->price = .0;
-	product->prodgroup = NULL;
+	product->prod_group = NULL;
 	product->weight = .0;
 	product->author = NULL;
 	product->crosssell = NULL;
@@ -22,8 +22,8 @@ void icclient_product_free(struct icclient_product *product)
 			free(product->crosssell->skus[i]);
 	if (product->author)
 		free(product->author);
-	if (product->prodgroup)
-		free(product->prodgroup);
+	if (product->prod_group)
+		free(product->prod_group);
 	if (product->image)
 		free(product->image);
 	if (product->thumb)
