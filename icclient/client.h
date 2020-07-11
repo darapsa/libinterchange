@@ -3,7 +3,6 @@
 
 struct icclient_product;
 struct icclient_catalog;
-struct icclient_ord_order;
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,7 +36,7 @@ extern "C" {
 
 	/*!
 	 * \brief For fetching data about a specific product.
-	 * \param sku The SKU of the item to order.
+	 * \param sku The SKU of the product.
 	 * \param handler A pointer to a cURL write function callback.
 	 * \param productptr A pointer to pointer to the product to store the data.
 	 */
@@ -45,14 +44,6 @@ extern "C" {
 			size_t (*handler)(void *, size_t, size_t, void *),
 			struct icclient_product **productptr);
 
-	/*!
-	 * \brief For putting an item to a cart.
-	 * \param sku The SKU of the item to order.
-	 * \param catalog A pointer to the catalog from which the item is.
-	 * \param orderptr A pointer to pointer to the order.
-	 */
-	void icclient_order(const char *sku, const struct icclient_catalog *catalog,
-			struct icclient_ord_order **orderptr);
 	void icclient_page(const char *path,
 			size_t (*handler)(void *, size_t, size_t, void *),
 			void **dataptr);
