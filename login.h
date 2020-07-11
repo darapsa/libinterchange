@@ -1,9 +1,9 @@
 #ifndef ICCLIENT_LOGIN_H
 #define ICCLIENT_LOGIN_H
 
-#include <stdbool.h>
-#include "icclient/member.h"
 #include "request.h"
+
+struct icclient_member;
 
 inline void login(size_t (*handler)(void *, size_t, size_t, void *),
 		struct icclient_member *member, const char *username, const char *password,
@@ -11,38 +11,38 @@ inline void login(size_t (*handler)(void *, size_t, size_t, void *),
 		const char *nextpage, const char *failpage)
 {
 	struct curl_httppost *post, *last = NULL;
-	curl_formadd(&post, &last
-			, CURLFORM_COPYNAME, "mv_username"
-			, CURLFORM_PTRCONTENTS, username
-			, CURLFORM_END);
-	curl_formadd(&post, &last
-			, CURLFORM_COPYNAME, "mv_password"
-			, CURLFORM_PTRCONTENTS, password
-			, CURLFORM_END);
+	curl_formadd(&post, &last,
+			CURLFORM_COPYNAME, "mv_username",
+			CURLFORM_PTRCONTENTS, username,
+			CURLFORM_END);
+	curl_formadd(&post, &last,
+			CURLFORM_COPYNAME, "mv_password",
+			CURLFORM_PTRCONTENTS, password,
+			CURLFORM_END);
 	if (verify)
-		curl_formadd(&post, &last
-				, CURLFORM_COPYNAME, "mv_verify"
-				, CURLFORM_PTRCONTENTS, verify
-				, CURLFORM_END);
-	curl_formadd(&post, &last
-			, CURLFORM_COPYNAME, "mv_click"
-			, CURLFORM_PTRCONTENTS, click
-			, CURLFORM_END);
+		curl_formadd(&post, &last,
+				CURLFORM_COPYNAME, "mv_verify",
+				CURLFORM_PTRCONTENTS, verify,
+				CURLFORM_END);
+	curl_formadd(&post, &last,
+			CURLFORM_COPYNAME, "mv_click",
+			CURLFORM_PTRCONTENTS, click,
+			CURLFORM_END);
 	if (successpage)
-		curl_formadd(&post, &last
-				, CURLFORM_COPYNAME, "mv_successpage"
-				, CURLFORM_PTRCONTENTS, successpage
-				, CURLFORM_END);
+		curl_formadd(&post, &last,
+				CURLFORM_COPYNAME, "mv_successpage",
+				CURLFORM_PTRCONTENTS, successpage,
+				CURLFORM_END);
 	if (nextpage)
-		curl_formadd(&post, &last
-				, CURLFORM_COPYNAME, "mv_nextpage"
-				, CURLFORM_PTRCONTENTS, nextpage
-				, CURLFORM_END);
+		curl_formadd(&post, &last,
+				CURLFORM_COPYNAME, "mv_nextpage",
+				CURLFORM_PTRCONTENTS, nextpage,
+				CURLFORM_END);
 	if (failpage)
-		curl_formadd(&post, &last
-				, CURLFORM_COPYNAME, "mv_failpage"
-				, CURLFORM_PTRCONTENTS, failpage
-				, CURLFORM_END);
+		curl_formadd(&post, &last,
+				CURLFORM_COPYNAME, "mv_failpage",
+				CURLFORM_PTRCONTENTS, failpage,
+				CURLFORM_END);
 	last = NULL;
 	request(handler, member, post, "%s", "process");
 	curl_formfree(post);

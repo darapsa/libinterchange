@@ -1,6 +1,24 @@
+#include <stddef.h>
 #include <stdbool.h>
-#include "request.h"
+#include "login.h"
 #include "icclient/member.h"
+
+void icclient_member_newaccount(size_t (*handler)(void *, size_t, size_t, void *),
+		struct icclient_member *member, const char *username, const char *password,
+		const char *verify, const char *successpage, const char *nextpage,
+		const char *failpage)
+{
+	login(handler, member, username, password, verify, "NewAccount", successpage,
+			nextpage, failpage);
+}
+
+void icclient_member_login(size_t (*handler)(void *, size_t, size_t, void *),
+		struct icclient_member *member, const char *username, const char *password,
+		const char *successpage, const char *nextpage, const char *failpage)
+{
+	login(handler, member, username, password, NULL, "Login", successpage, nextpage,
+			failpage);
+}
 
 void icclient_member_account(const char *fname, const char *lname, const char *address1,
 		const char *address2, const char *city, const char *state,
@@ -97,4 +115,9 @@ void icclient_member_changepassword(const char *password_old, const char *passwo
 	request(NULL, NULL, post, "%s", "member/change_password");
 	curl_formfree(post);
 	post = NULL;
+}
+
+void icclient_member_logout()
+{
+	request(NULL, NULL, NULL, "%s", "logout");
 }

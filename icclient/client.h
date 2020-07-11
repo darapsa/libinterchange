@@ -3,7 +3,6 @@
 
 struct icclient_product;
 struct icclient_catalog;
-struct icclient_member;
 struct icclient_ord_order;
 
 #ifdef __cplusplus
@@ -54,17 +53,6 @@ extern "C" {
 	 */
 	void icclient_order(const char *sku, const struct icclient_catalog *catalog,
 			struct icclient_ord_order **orderptr);
-	void icclient_newaccount(size_t (*handler)(void *, size_t, size_t, void *),
-			struct icclient_member *member,
-			const char *username, const char *password,
-			const char *verify, const char *successpage,
-			const char *nextpage, const char *failpage);
-	void icclient_login(size_t (*handler)(void *, size_t, size_t, void *),
-			struct icclient_member *member,
-			const char *username, const char *password,
-			const char *successpage, const char *nextpage,
-			const char *failpage);
-	void icclient_logout();
 	void icclient_page(const char *path,
 			size_t (*handler)(void *, size_t, size_t, void *),
 			void **dataptr);

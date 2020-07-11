@@ -1,11 +1,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "login.h"
+#include "request.h"
 #include "icclient/product.h"
 #include "icclient/catalog.h"
 #include "icclient/ord.h"
-#include "icclient/member.h"
 #include "icclient/client.h"
 
 typedef struct icclient_product icclient_product;
@@ -128,29 +127,6 @@ void icclient_order(const char *sku, const icclient_catalog *catalog,
 	order->total_cost += item->product->price;
 
 	request(NULL, NULL, NULL, "%s%s", "order?mv_arg=", sku);
-}
-
-void icclient_newaccount(size_t (*handler)(void *, size_t, size_t, void *),
-		struct icclient_member *member,
-		const char *username, const char *password, const char *verify,
-		const char *successpage, const char *nextpage, const char *failpage)
-{
-	login(handler, member, username, password, verify, "NewAccount", successpage,
-			nextpage, failpage);
-}
-
-void icclient_login(size_t (*handler)(void *, size_t, size_t, void *),
-		struct icclient_member *member,
-		const char *username, const char *password,
-		const char *successpage, const char *nextpage, const char *failpage)
-{
-	login(handler, member, username, password, NULL, "Login", successpage, nextpage,
-			failpage);
-}
-
-void icclient_logout()
-{
-	request(NULL, NULL, NULL, "%s", "logout");
 }
 
 void icclient_page(const char *path,
