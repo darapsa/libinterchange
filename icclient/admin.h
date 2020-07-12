@@ -1,15 +1,21 @@
 #ifndef ICCLIENT_ADMIN_H
 #define ICCLIENT_ADMIN_H
 
+struct icclient_admin {
+	char *name;
+	char *username;
+	bool super;
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	void icclient_admin_login(size_t (*handler)(void *, size_t, size_t, void *),
-			struct icclient_member *member, const char *username,
+	struct icclient_admin *icclient_admin_login(const char *username,
 			const char *password, const char *successpage,
-			const char *nextpage, const char *failpage);
-	void icclient_admin_logout();
+			const char *nextpage, const char *failpage,
+			size_t (*handler)(void *, size_t, size_t, void *));
+	void icclient_admin_logout(struct icclient_admin *admin);
 
 #ifdef __cplusplus
 }

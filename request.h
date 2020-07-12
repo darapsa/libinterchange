@@ -12,8 +12,8 @@
 extern CURL *curl;
 extern char *server_url;
 
-inline void request(size_t (*writefunction)(void *, size_t, size_t, void *)
-		, void *writedata, struct curl_httppost *post, char *fmt, ...)
+inline void request(size_t (*writefunction)(void *, size_t, size_t, void *),
+		void *writedata, struct curl_httppost *post, char *fmt, ...)
 {
 	va_list ap;
 	char *p, *sval;
@@ -83,8 +83,8 @@ inline void request(size_t (*writefunction)(void *, size_t, size_t, void *)
 	if (res != CURLE_OK) {
 		const char *error = curl_easy_strerror(res);
 #ifdef ANDROID
-		__android_log_print(ANDROID_LOG_ERROR, "libicclient", "%s: %s"
-				, __func__, error);
+		__android_log_print(ANDROID_LOG_ERROR, "libicclient", "%s: %s", __func__,
+				error);
 #else
 		fprintf(stderr, "%s: %s\n", __func__, error);
 #endif // ANDROID

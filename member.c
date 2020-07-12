@@ -1,23 +1,81 @@
-#include <stddef.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include "login.h"
 #include "icclient/member.h"
 
-void icclient_member_newaccount(size_t (*handler)(void *, size_t, size_t, void *),
-		struct icclient_member *member, const char *username, const char *password,
-		const char *verify, const char *successpage, const char *nextpage,
-		const char *failpage)
+typedef struct icclient_member icclient_member;
+
+icclient_member *initialise(const char *username, const char *password)
 {
-	login(handler, member, username, password, verify, "NewAccount", successpage,
-			nextpage, failpage);
+	icclient_member *member = malloc(sizeof(icclient_member));
+	member->username = NULL;
+	member->usernick = NULL;
+	member->password = NULL;
+	member->expiration = NULL;
+	member->acl = NULL;
+	member->mod_time = NULL;
+	member->s_nickname = NULL;
+	member->company = NULL;
+	member->fname = NULL;
+	member->lname = NULL;
+	member->address1 = NULL;
+	member->address2 = NULL;
+	member->address3 = NULL;
+	member->city = NULL;
+	member->state = NULL;
+	member->zip = NULL;
+	member->country = NULL;
+	member->phone_day = NULL;
+	member->mv_shipmode = NULL;
+	member->b_nickname = NULL;
+	member->b_fname = NULL;
+	member->b_lname = NULL;
+	member->b_company = NULL;
+	member->b_address1 = NULL;
+	member->b_address2 = NULL;
+	member->b_address3 = NULL;
+	member->b_city = NULL;
+	member->b_state = NULL;
+	member->b_zip = NULL;
+	member->b_country = NULL;
+	member->b_phone = NULL;
+	member->p_nickname = NULL;
+	member->email = NULL;
+	member->fax = NULL;
+	member->phone_night = NULL;
+	member->address_book = NULL;
+	member->accounts = NULL;
+	member->preferences = NULL;
+	member->carts = NULL;
+	member->owner = NULL;
+	member->file_acl = NULL;
+	member->db_acl = NULL;
+	member->mail_list = NULL;
+	member->credit_limit = NULL;
+	member->inactive = false;
+	member->dealer = false;
+	member->price_level = NULL;
+	return member;
 }
 
-void icclient_member_login(size_t (*handler)(void *, size_t, size_t, void *),
-		struct icclient_member *member, const char *username, const char *password,
-		const char *successpage, const char *nextpage, const char *failpage)
+icclient_member *icclient_member_newaccount(const char *username, const char *password,
+		const char *verify, const char *successpage, const char *nextpage,
+		const char *failpage, size_t (*handler)(void *, size_t, size_t, void *))
 {
-	login(handler, member, username, password, NULL, "Login", successpage, nextpage,
-			failpage);
+	icclient_member *member = initialise(username, password);
+	login(username, password, verify, "NewAccount", successpage, nextpage, failpage,
+			handler, member);
+	return member;
+}
+
+icclient_member *icclient_member_login(const char *username, const char *password,
+		const char *successpage, const char *nextpage, const char *failpage,
+		size_t (*handler)(void *, size_t, size_t, void *))
+{
+	icclient_member *member = initialise(username, password);
+	login(username, password, NULL, "Login", successpage, nextpage, failpage, handler,
+			member);
+	return member;
 }
 
 void icclient_member_account(const char *fname, const char *lname, const char *address1,
@@ -117,7 +175,7 @@ void icclient_member_changepassword(const char *password_old, const char *passwo
 	post = NULL;
 }
 
-void icclient_member_logout()
+void icclient_member_logout(icclient_member *member)
 {
 	request(NULL, NULL, NULL, "%s", "logout");
 }
