@@ -21,4 +21,10 @@ icclient_admin *icclient_admin_login(const char *username, const char *password,
 void icclient_admin_logout(icclient_admin *admin)
 {
 	request(NULL, NULL, NULL, "%s", "admin/login");
+	if (admin->name)
+		free(admin->name);
+	if (admin->username)
+		free(admin->username);
+	free(admin);
+	admin = NULL;
 }
