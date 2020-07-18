@@ -15,6 +15,8 @@ extern "C" {
 			const char *password, const char *successpage,
 			const char *nextpage, const char *failpage,
 			size_t (*handler)(void *, size_t, size_t, void *));
+	void icclient_admin_newitem(const char *description, const char *comment,
+			const char *price, const char *image_path);
 	void icclient_admin_logout(struct icclient_admin *admin);
 
 #ifdef __cplusplus
