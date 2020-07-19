@@ -2,8 +2,9 @@
 #define ICCLIENT_ADMIN_H
 
 struct icclient_admin {
-	char *name;
 	char *username;
+	char *password;
+	char *name;
 	bool super;
 };
 
