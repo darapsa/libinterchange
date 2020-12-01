@@ -10,6 +10,7 @@ struct icclient_ord_order {
 	double subtotal;
 	double shipping;
 	double total_cost;
+	char *profile;
 	size_t nitems;
 	struct icclient_ord_item *items[];
 };
@@ -27,6 +28,8 @@ extern "C" {
 	 */
 	void icclient_ord_order(const char *sku, const struct icclient_catalog *catalog,
 			struct icclient_ord_order **orderptr);
+	void icclient_ord_checkout(struct icclient_ord_order *order,
+			struct icclient_member *member);
 	void icclient_ord_free(struct icclient_ord_order *order);
 
 #ifdef __cplusplus

@@ -1,6 +1,11 @@
 #ifndef ICCLIENT_MEMBER_H
 #define ICCLIENT_MEMBER_H
 
+struct icclient_member_preferences {
+	bool mv_same_billing;
+	bool email_copy;
+};
+
 struct icclient_member {
 	char *username;
 	char *usernick;
@@ -39,7 +44,7 @@ struct icclient_member {
 	char *phone_night;
 	char *address_book;
 	char *accounts;
-	char *preferences;
+	struct icclient_member_preferences *preferences;
 	char *carts;
 	char *owner;
 	char *file_acl;
