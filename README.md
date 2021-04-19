@@ -14,7 +14,7 @@ $ autoreconf --install
 ## Optionally setting environment values
 
 ```sh
-$ export ANDROID_NDK_ROOT=/opt/android-ndk
+$ export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/21.3.6528147
 $ export TOOLCHAIN=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64
 ```
 
