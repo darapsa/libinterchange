@@ -7,7 +7,6 @@
 ```sh
 $ git clone git://darapsa.org/libicclient.git
 $ cd libicclient
-$ libtoolize
 $ autoreconf --install
 ```
 
