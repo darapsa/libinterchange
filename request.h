@@ -1,7 +1,7 @@
 #ifndef ICCLIENT_REQUEST_H
 #define ICCLIENT_REQUEST_H
 
-#if defined(ANDROID) && defined(DEBUG)
+#if defined __ANDROID__ && defined DEBUG
 #include <android/log.h>
 #endif
 #include <string.h>
@@ -77,19 +77,18 @@ inline void request(size_t (*writefunction)(void *, size_t, size_t, void *),
 
 #ifdef DEBUG
 	CURLcode res =
-#endif // DEBUG
+#endif
 		curl_easy_perform(curl);
 #ifdef DEBUG
 	if (res != CURLE_OK) {
 		const char *error = curl_easy_strerror(res);
-#ifdef ANDROID
-		__android_log_print(ANDROID_LOG_ERROR, "libicclient", "%s: %s", __func__,
-				error);
+#ifdef __ANDROID__
+		__android_log_print(ANDROID_LOG_ERROR, "libicclient.so", "%s: %s", __func__, error);
 #else
 		fprintf(stderr, "%s: %s\n", __func__, error);
-#endif // ANDROID
+#endif
 	}
-#endif // DEBUG
+#endif
 }
 
-#endif // ICCLIENT_REQUEST_H
+#endif
