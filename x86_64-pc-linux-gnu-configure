@@ -1,0 +1,4 @@
+#!/bin/sh
+export CPPFLAGS="$CPPFLAGS -DDEBUG"
+export CFLAGS="$CFLAGS -g"
+./configure --libdir=/usr/local/lib64 --disable-static
