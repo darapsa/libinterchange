@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.swp
+*.wasm
 .deps
 .libs
 Makefile
