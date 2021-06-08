@@ -10,6 +10,14 @@ libicclient_la_SOURCES = \
 			 member.c \
 			 admin.c \
 			 client.c
+libicclient_la_CFLAGS = -I${prefix}/include
+libicclient_la_LDFLAGS = $(CURL_LIBS)
+if WASM
+libicclient_la_LDFLAGS += -static
+endif
+if IOS
+libicclient_la_LDFLAGS += -static
+endif
 pkginclude_HEADERS = \
 		  icclient/product.h \
 		  icclient/catalog.h \
@@ -17,4 +25,3 @@ pkginclude_HEADERS = \
 		  icclient/member.h \
 		  icclient/admin.h \
 		  icclient/client.h
-libicclient_la_LDFLAGS = -lcurl
