@@ -3,10 +3,8 @@
 
 #include "request.h"
 
-inline void login(const char *username, const char *password, const char *verify,
-		const char *click, const char *successpage, const char *nextpage,
-		const char *failpage, size_t (*handler)(void *, size_t, size_t, void *),
-		void *user)
+inline void login(const char *username, const char *password, const char *verify, const char *click,
+		const char *successpage, const char *nextpage, const char *failpage, icclient_handler handler, void *user)
 {
 	struct curl_httppost *post, *last = NULL;
 	curl_formadd(&post, &last,

@@ -60,7 +60,7 @@ icclient_member *initialise(const char *username, const char *password)
 
 icclient_member *icclient_member_newaccount(const char *username, const char *password,
 		const char *verify, const char *successpage, const char *nextpage,
-		const char *failpage, size_t (*handler)(void *, size_t, size_t, void *))
+		const char *failpage, icclient_handler handler)
 {
 	icclient_member *member = initialise(username, password);
 	login(username, password, verify, "NewAccount", successpage, nextpage, failpage,
@@ -69,8 +69,7 @@ icclient_member *icclient_member_newaccount(const char *username, const char *pa
 }
 
 icclient_member *icclient_member_login(const char *username, const char *password,
-		const char *successpage, const char *nextpage, const char *failpage,
-		size_t (*handler)(void *, size_t, size_t, void *))
+		const char *successpage, const char *nextpage, const char *failpage, icclient_handler handler)
 {
 	icclient_member *member = initialise(username, password);
 	login(username, password, NULL, "Login", successpage, nextpage, failpage, handler,

@@ -7,7 +7,7 @@ typedef struct icclient_admin icclient_admin;
 
 icclient_admin *icclient_admin_login(const char *username, const char *password,
 		const char *successpage, const char *nextpage, const char *failpage,
-		size_t (*handler)(void *, size_t, size_t, void *))
+		icclient_handler handler)
 {
 	icclient_admin *admin = malloc(sizeof(icclient_admin));
 	admin->name = NULL;

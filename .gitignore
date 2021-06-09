@@ -1,7 +1,9 @@
 *~
+*.js
 *.la
 *.lo
 *.o
+*.out
 *.swp
 *.wasm
 .deps
@@ -19,7 +21,6 @@ configure
 configure.scan
 depcomp
 html
-icclienttest
 install-sh
 libtool
 ltmain.sh

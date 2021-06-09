@@ -62,12 +62,10 @@ extern "C" {
 
 	struct icclient_member *icclient_member_newaccount(const char *username,
 			const char *password, const char *verify, const char *successpage,
-			const char *nextpage, const char *failpage,
-			size_t (*handler)(void *, size_t, size_t, void *));
+			const char *nextpage, const char *failpage, icclient_handler handler);
 	struct icclient_member *icclient_member_login(const char *username,
 			const char *password, const char *successpage,
-			const char *nextpage, const char *failpage,
-			size_t (*handler)(void *, size_t, size_t, void *));
+			const char *nextpage, const char *failpage, icclient_handler handler);
 	void icclient_member_account(const char *fname, const char *lname,
 			const char *address1, const char *address2, const char *city,
 			const char *state, const char *zip, const char *email,

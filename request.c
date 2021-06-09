@@ -1,4 +1,9 @@
 #include "request.h"
 
-extern inline void request(size_t (*)(void *, size_t, size_t, void *), void *
-		, struct curl_httppost *, char *, ...);
+extern inline void request(icclient_handler, void *,
+#ifdef __EMSCRIPTEN__
+		int
+#else
+		struct curl_httppost *
+#endif
+		, char *, ...);
