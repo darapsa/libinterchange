@@ -13,11 +13,11 @@ libicclient_la_SOURCES += \
 			 member.c \
 			 admin.c
 endif
-libicclient_la_CFLAGS = -I${prefix}/include
+libicclient_la_CPPFLAGS = -I${prefix}/include $(DEPS_CFLAGS)
 if WASM
 libicclient_la_LDFLAGS = -static
 else
-libicclient_la_LDFLAGS = $(CURL_LIBS)
+libicclient_la_LDFLAGS = $(DEPS_LIBS)
 endif
 if IOS
 libicclient_la_LDFLAGS += -static
@@ -33,3 +33,8 @@ pkginclude_HEADERS += \
 		  icclient/member.h \
 		  icclient/admin.h
 endif
+
+bin_PROGRAMS = testicclient
+testicclient_SOURCES = main.c client.c catalog.c product.c request.c
+testicclient_CPPFLAGS = -I${prefix}/include $(DEPS_CFLAGS)
+testicclient_LDFLAGS = $(DEPS_LIBS)

@@ -19,17 +19,12 @@ extern "C" {
 	/*!
 	 * \brief For fetching data about products that belong a specific group.
 	 * \param prod_group The name of the product group.
-	 * \param handler A pointer to a cURL write function callback.
-	 * \param catalogptr A pointer to pointer to the catalog to store the data.
+	 * \param callback A pointer to the function that needs to be called after the catalog is ready.
+	 * \param catalog A pointer to pointer to the catalog to store the data.
+	 * \param handler A pointer to the function when a custom handler is needed to arrange the data into the catalog.
 	 */
-	void icclient_results(const char *prod_group, icclient_handler handler, struct icclient_catalog **catalogptr);
-
-	/*!
-	 * \brief For fetching data about all active products.
-	 * \param handler A pointer to a cURL write function callback.
-	 * \param catalogptr A pointer to pointer to the catalog to store the data.
-	 */
-	void icclient_allproducts(icclient_handler handler, struct icclient_catalog **catalogptr);
+	void icclient_results(const char *prod_group, void (*callback)(struct icclient_catalog *),
+			struct icclient_catalog **catalog, icclient_handler handler);
 
 	/*!
 	 * \brief For fetching data about a specific product.
@@ -46,4 +41,6 @@ extern "C" {
 }
 #endif
 
-#endif // ICCLIENT_CLIENT_H
+#define	icclient_allproducts(callback, catalog, handler) icclient_results("All-Products", callback, catalog, handler)
+
+#endif

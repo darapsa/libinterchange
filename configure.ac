@@ -3,7 +3,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
-PKG_CHECK_EXISTS([CURL], [libcurl])
+PKG_CHECK_MODULES([DEPS], [libcurl json-c])
 AC_CHECK_HEADER_STDBOOL
 AC_C_INLINE
 AC_CHECK_FUNCS([memset])

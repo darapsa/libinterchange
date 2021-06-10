@@ -10,10 +10,11 @@ struct icclient_catalog {
 extern "C" {
 #endif
 
+	void icclient_catalog_init();
 	void icclient_catalog_free(struct icclient_catalog *catalog);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // ICCLIENT_CATALOG_H
+#endif

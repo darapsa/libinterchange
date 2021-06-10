@@ -37,23 +37,23 @@ bool icclient_init(const char *url, const char *certificate)
 		if (append)
 			strcat(server_url, "/");
 	}
+	icclient_catalog_init();
 	return (bool)curl;
 #endif
 }
 
-void icclient_results(const char *prod_group, icclient_handler handler, struct icclient_catalog **catalogptr)
+extern size_t icclient_catalog_results(void *, size_t, size_t, void *);
+
+void icclient_results(const char *prod_group,
+		void (*callback)(struct icclient_catalog *), struct icclient_catalog **catalog, icclient_handler handler)
 {
 	char nonspaced[strlen(prod_group) + 1];
 	strcpy(nonspaced, prod_group);
 	char *space = NULL;
 	while ((space = strchr(nonspaced, ' ')))
 		*space = '-';
-	request(handler, (void *)catalogptr, 0, "%s", nonspaced);
-}
-
-void icclient_allproducts(icclient_handler handler, struct icclient_catalog **catalogptr)
-{
-	request(handler, (void *)catalogptr, 0, "%s", "All-Products");
+	request(handler ? handler : icclient_catalog_results, (void *)catalog, 0, "%s", nonspaced);
+	callback(*catalog);
 }
 
 void icclient_flypage(const char *sku, icclient_handler handler, struct icclient_product **productptr)
