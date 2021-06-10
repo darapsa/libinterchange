@@ -8,13 +8,16 @@
 
 #ifdef __EMSCRIPTEN__
 emscripten_fetch_attr_t attr;
+extern void icclient_catalog_results(emscripten_fetch_t *);
 #else
 CURL *curl = NULL;
 char *server_url = NULL;
+extern size_t icclient_catalog_results(void *, size_t, size_t, void *);
 #endif
 
 bool icclient_init(const char *url, const char *certificate)
 {
+	icclient_catalog_init();
 #ifdef __EMSCRIPTEN__
 	emscripten_fetch_attr_init(&attr);
 	attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
@@ -37,12 +40,9 @@ bool icclient_init(const char *url, const char *certificate)
 		if (append)
 			strcat(server_url, "/");
 	}
-	icclient_catalog_init();
 	return (bool)curl;
 #endif
 }
-
-extern size_t icclient_catalog_results(void *, size_t, size_t, void *);
 
 void icclient_results(const char *prod_group,
 		void (*callback)(struct icclient_catalog *), struct icclient_catalog **catalog, icclient_handler handler)
@@ -52,8 +52,10 @@ void icclient_results(const char *prod_group,
 	char *space = NULL;
 	while ((space = strchr(nonspaced, ' ')))
 		*space = '-';
-	request(handler ? handler : icclient_catalog_results, (void *)catalog, 0, "%s", nonspaced);
-	callback(*catalog);
+	struct icclient_catalog_callback *catalog_callback = malloc(sizeof(struct icclient_catalog_callback));
+	catalog_callback->catalog = catalog;
+	catalog_callback->callback = callback;
+	request(handler ? handler : icclient_catalog_results, (void *)catalog_callback, 0, "%s", nonspaced);
 }
 
 void icclient_flypage(const char *sku, icclient_handler handler, struct icclient_product **productptr)
