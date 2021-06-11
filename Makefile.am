@@ -35,8 +35,8 @@ pkginclude_HEADERS += \
 endif
 
 #if !WASM
-#bin_PROGRAMS = testicclient
-#testicclient_SOURCES = main.c client.c catalog.c product.c request.c
-#testicclient_CPPFLAGS = -I${prefix}/include $(DEPS_CFLAGS)
-#testicclient_LDFLAGS = $(DEPS_LIBS) -lcurl
+#bin_PROGRAMS = icclient
+#icclient_SOURCES = main.c client.c catalog.c product.c request.c
+#icclient_CPPFLAGS = -I${prefix}/include $(DEPS_CFLAGS)
+#icclient_LDFLAGS = $(DEPS_LIBS) -lcurl
 #endif
