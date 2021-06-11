@@ -1,6 +1,8 @@
 #ifndef ICCLIENT_CLIENT_H
 #define ICCLIENT_CLIENT_H
 
+#define	icclient_allproducts(callback, catalog, handler) icclient_results("All-Products", callback, catalog, handler)
+
 struct icclient_product;
 struct icclient_catalog;
 
@@ -40,7 +42,5 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-#define	icclient_allproducts(callback, catalog, handler) icclient_results("All-Products", callback, catalog, handler)
 
 #endif
