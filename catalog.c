@@ -29,9 +29,9 @@ size_t icclient_catalog_results(void *contents, size_t size, size_t nmemb, void 
 #endif
 		;
 #ifndef __EMSCRIPTEN__
-	char data[realsize];
-	memcpy(data, contents, realsize - 1);
-	data[realsize - 1] = '\0';
+	char data[realsize + 1];
+	memcpy(data, contents, realsize);
+	data[realsize] = '\0';
 #endif
 	json_object *products = json_tokener_parse_ex(tokener,
 #ifdef __EMSCRIPTEN__
@@ -118,5 +118,4 @@ void icclient_catalog_free(struct icclient_catalog *catalog)
 	free(catalog);
 	catalog = NULL;
 	json_tokener_free(tokener);
-
 }
