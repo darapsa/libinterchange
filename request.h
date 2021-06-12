@@ -86,34 +86,21 @@ inline void request(icclient_handler writefunction, void *writedata,
 
 #ifdef __EMSCRIPTEN__
 	attr.onsuccess = writefunction;
+	if (writedata)
+		attr.userData = writedata;
+	strcpy(attr.requestMethod, "GET");
+	emscripten_fetch(&attr, url);
 #else
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunction);
-#endif
 	if (writedata)
-#ifdef __EMSCRIPTEN__
-		attr.userData = writedata;
-#else
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, writedata);
 	else
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, stdout);
-#endif
 	if (post)
-#ifdef __EMSCRIPTEN__
-		strcpy(attr.requestMethod, "POST");
-#else
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
-#endif
 	else
-#ifdef __EMSCRIPTEN__
-		strcpy(attr.requestMethod, "GET");
-#else
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
-#endif
-
-#ifdef __EMSCRIPTEN__
-		emscripten_fetch(&attr, url);
-#else
 #ifdef DEBUG
 	CURLcode res =
 #endif
