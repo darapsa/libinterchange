@@ -36,7 +36,7 @@ endif
 
 #if !WASM
 #bin_PROGRAMS = icclient
-#icclient_SOURCES = main.c client.c catalog.c product.c request.c
+#icclient_SOURCES = main.c client.c catalog.c product.c request.c login.c member.c
 #icclient_CPPFLAGS = -I${prefix}/include $(DEPS_CFLAGS)
 #icclient_LDFLAGS = $(DEPS_LIBS) -lcurl
 #endif

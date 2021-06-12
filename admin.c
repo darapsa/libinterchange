@@ -13,92 +13,36 @@ icclient_admin *icclient_admin_login(const char *username, const char *password,
 	admin->name = NULL;
 	admin->username = NULL;
 	admin->super = false;
-	login(username, password, NULL, "MMLogin", successpage, nextpage, failpage,
-			handler, admin);
+	login(username, password, NULL, "MMLogin", successpage, nextpage, failpage, handler, admin);
 	return admin;
 }
 
-void icclient_admin_newitem(const char *description, const char *comment,
-		const char *price, const char *image_path)
+void icclient_admin_newitem(const char *description, const char *comment, const char *price, const char *image_path)
 {
-	struct curl_httppost *post, *last = NULL;
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_click",
-			CURLFORM_COPYCONTENTS, "process_filter",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_data_fields",
-			CURLFORM_COPYCONTENTS, "sku description prod_group category comment inactive price wholesale image thumb image_large weight nontaxable gift_cert",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_ui",
-			CURLFORM_COPYCONTENTS, "1",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "ui_new_item",
-			CURLFORM_COPYCONTENTS, "1",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_todo",
-			CURLFORM_COPYCONTENTS, "set",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_update_empty",
-			CURLFORM_COPYCONTENTS, "1",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_action",
-			CURLFORM_COPYCONTENTS, "set",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_data_table",
-			CURLFORM_COPYCONTENTS, "products",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_data_function",
-			CURLFORM_COPYCONTENTS, "insert",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_data_key",
-			CURLFORM_COPYCONTENTS, "sku",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_return_table",
-			CURLFORM_COPYCONTENTS, "products",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "sku",
-			CURLFORM_PTRCONTENTS, image_path,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "description",
-			CURLFORM_PTRCONTENTS, description,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "comment",
-			CURLFORM_PTRCONTENTS, comment,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "price",
-			CURLFORM_PTRCONTENTS, price,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "image",
-			CURLFORM_FILE, image_path,
-			CURLFORM_CONTENTTYPE, "image/jpeg",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_data_file_field",
-			CURLFORM_COPYCONTENTS, "image",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_data_file_path",
-			CURLFORM_COPYCONTENTS, "images/items",
-			CURLFORM_END);
-	last = NULL;
-	request(NULL, NULL, post, "%s", "admin/item_edit");
-	curl_formfree(post);
-	post = NULL;
+	request(NULL, NULL, &(struct icclient_request_data){ 15, {
+			{ "mv_click", "process_filter" },
+			{ "mv_data_fields", "sku description prod_group category comment inactive price wholesale image thumb image_large weight nontaxable gift_cert" },
+			{ "mv_ui", "1" },
+			{ "ui_new_item", "1" },
+			{ "mv_todo", "set" },
+			{ "mv_update_empty", "1" },
+			{ "mv_action", "set" },
+			{ "mv_data_table", "products" },
+			{ "mv_data_function", "insert" },
+			{ "mv_data_key", "sku" },
+			{ "mv_return_table", "products" },
+			{ "sku", image_path },
+			{ "description", description },
+			{ "comment", comment },
+			{ "price", price }
+			/*
+			   { "image",
+			   CURLFORM_FILE, image_path,
+			   CURLFORM_CONTENTTYPE, "image/jpeg" },
+			   { "mv_data_file_field", "image" },
+			   { "mv_data_file_path", "images/items" }
+			   */
+	}}, "%s", "admin/item_edit");
 }
 
 void icclient_admin_logout(icclient_admin *admin)

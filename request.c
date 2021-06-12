@@ -1,9 +1,12 @@
 #include "request.h"
 
-extern inline void request(icclient_handler, void *,
 #ifdef __EMSCRIPTEN__
-		int
+emscripten_fetch_attr_t attr;
 #else
-		struct curl_httppost *
+CURL *curl;
+char *server_url;
 #endif
-		, char *, ...);
+
+extern inline bool icclient_request_init(const char *, const char *);
+extern inline void request(icclient_handler, void *, struct icclient_request_data *, char *, ...);
+extern inline void icclient_request_cleanup();

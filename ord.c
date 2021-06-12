@@ -87,77 +87,22 @@ void icclient_ord_order(const char *sku, const icclient_catalog *catalog,
 void icclient_ord_checkout(struct icclient_ord_order *order,
 		struct icclient_member *member)
 {
-	struct curl_httppost *post, *last = NULL;
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_todo",
-			CURLFORM_COPYCONTENTS, "submit",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_action",
-			CURLFORM_COPYCONTENTS, "refresh",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_order_profile",
-			CURLFORM_PTRCONTENTS, order->profile,
-			CURLFORM_END);
-	if (member->fname)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "fname",
-				CURLFORM_PTRCONTENTS, member->fname,
-				CURLFORM_END);
-	if (member->lname)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "lname",
-				CURLFORM_PTRCONTENTS, member->lname,
-				CURLFORM_END);
-	if (member->address1)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "address1",
-				CURLFORM_PTRCONTENTS, member->address1,
-				CURLFORM_END);
-	if (member->address2)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "address2",
-				CURLFORM_PTRCONTENTS, member->address2,
-				CURLFORM_END);
-	if (member->city)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "city",
-				CURLFORM_PTRCONTENTS, member->city,
-				CURLFORM_END);
-	if (member->state)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "state",
-				CURLFORM_PTRCONTENTS, member->state,
-				CURLFORM_END);
-	if (member->zip)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "zip",
-				CURLFORM_PTRCONTENTS, member->zip,
-				CURLFORM_END);
-	if (member->email)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "email",
-				CURLFORM_PTRCONTENTS, member->email,
-				CURLFORM_END);
-	if (member->phone_day)
-		curl_formadd(&post, &last,
-				CURLFORM_COPYNAME, "phone_day",
-				CURLFORM_PTRCONTENTS, member->phone_day,
-				CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_same_billing",
-			CURLFORM_COPYCONTENTS,
-			member->preferences->mv_same_billing? "1" : "0",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "email_copy",
-			CURLFORM_COPYCONTENTS, member->preferences->email_copy? "1" : "0",
-			CURLFORM_END);
-	last = NULL;
-	request(NULL, NULL, post, "%s", "ord/checkout");
-	curl_formfree(post);
-	post = NULL;
+	request(NULL, NULL, &(struct icclient_request_data){ 14, {
+			{ "mv_todo", "submit" },
+			{ "mv_action", "refresh" },
+			{ "mv_order_profile", order->profile },
+			{ "fname", member->fname },
+			{ "lname", member->lname },
+			{ "address1", member->address1 },
+			{ "address2", member->address2 },
+			{ "city", member->city },
+			{ "state", member->state },
+			{ "zip", member->zip },
+			{ "email", member->email },
+			{ "phone_day", member->phone_day },
+			{ "mv_same_billing", member->preferences->mv_same_billing? "1" : "0" },
+			{ "email_copy", member->preferences->email_copy? "1" : "0" }
+			}}, "%s", "ord/checkout");
 }
 
 void icclient_ord_free(struct icclient_ord_order *order)

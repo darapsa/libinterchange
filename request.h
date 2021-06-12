@@ -7,10 +7,20 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #ifndef __EMSCRIPTEN__
 #include <curl/curl.h>
 #endif
 #include "icclient/typedefs.h"
+
+struct icclient_request_data {
+	size_t num_pairs;
+	struct icclient_request_pair {
+		const char *key;
+		const char *value;
+	} pairs[16];
+};
 
 #ifdef __EMSCRIPTEN__
 extern emscripten_fetch_attr_t attr;
@@ -19,13 +29,35 @@ extern CURL *curl;
 extern char *server_url;
 #endif
 
-inline void request(icclient_handler writefunction, void *writedata, 
+inline bool icclient_request_init(const char *url, const char *certificate)
+{
 #ifdef __EMSCRIPTEN__
-		int
+	emscripten_fetch_attr_init(&attr);
+	attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
+	return true;
 #else
-		struct curl_httppost *
+	curl_global_init(CURL_GLOBAL_SSL);
+	curl = curl_easy_init();
+	if (curl) {
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
+		if (certificate)
+			curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
+#ifdef DEBUG
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
-		post, char *fmt, ...)
+		size_t length = strlen(url);
+		bool append = !(bool)(url[length - 1] == '/');
+		server_url = malloc(length + (size_t)append + 1);
+		strcpy(server_url, url);
+		if (append)
+			strcat(server_url, "/");
+	}
+	return (bool)curl;
+#endif
+}
+
+inline void request(icclient_handler writefunction, void *writedata, struct icclient_request_data *body, char *fmt, ...)
 {
 	va_list ap;
 	char *p, *sval;
@@ -97,14 +129,27 @@ inline void request(icclient_handler writefunction, void *writedata,
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, writedata);
 	else
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, stdout);
-	if (post)
+	struct curl_httppost *post, *last = NULL;
+	if (body) {
+		for (size_t i = 0; i < body->num_pairs; i++) {
+			struct icclient_request_pair pair = body->pairs[i];
+			if (!pair.value)
+				continue;
+			curl_formadd(&post, &last,
+					CURLFORM_COPYNAME, pair.key,
+					CURLFORM_PTRCONTENTS, pair.value,
+					CURLFORM_END);
+		}
+		last = NULL;
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
-	else
+	} else
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
 #ifdef DEBUG
 	CURLcode res =
 #endif
 		curl_easy_perform(curl);
+	if (post)
+		curl_formfree(post);
 #ifdef DEBUG
 	if (res != CURLE_OK) {
 		const char *error = curl_easy_strerror(res);
@@ -115,6 +160,17 @@ inline void request(icclient_handler writefunction, void *writedata,
 #endif
 #endif
 	}
+#endif
+}
+
+inline void icclient_request_cleanup()
+{
+#ifndef __EMSCRIPTEN__
+	if (curl) {
+		free(server_url);
+		curl_easy_cleanup(curl);
+	}
+	curl_global_cleanup();
 #endif
 }
 

@@ -63,8 +63,7 @@ icclient_member *icclient_member_newaccount(const char *username, const char *pa
 		const char *failpage, icclient_handler handler)
 {
 	icclient_member *member = initialise(username, password);
-	login(username, password, verify, "NewAccount", successpage, nextpage, failpage,
-			handler, member);
+	login(username, password, verify, "NewAccount", successpage, nextpage, failpage, handler, member);
 	return member;
 }
 
@@ -72,8 +71,7 @@ icclient_member *icclient_member_login(const char *username, const char *passwor
 		const char *successpage, const char *nextpage, const char *failpage, icclient_handler handler)
 {
 	icclient_member *member = initialise(username, password);
-	login(username, password, NULL, "Login", successpage, nextpage, failpage, handler,
-			member);
+	login(username, password, NULL, "Login", successpage, nextpage, failpage, handler, member);
 	return member;
 }
 
@@ -81,97 +79,33 @@ void icclient_member_account(const char *fname, const char *lname, const char *a
 		const char *address2, const char *city, const char *state,
 		const char *zip, const char *email, const char *phone_day)
 {
-	struct curl_httppost *post, *last = NULL;
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_form_profile",
-			CURLFORM_COPYCONTENTS, "account_change",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_todo",
-			CURLFORM_COPYCONTENTS, "return",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_nextpage",
-			CURLFORM_COPYCONTENTS, "member/account",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_check",
-			CURLFORM_COPYCONTENTS, "Save_database",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "fname",
-			CURLFORM_PTRCONTENTS, fname,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "lname",
-			CURLFORM_PTRCONTENTS, lname,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "address1",
-			CURLFORM_PTRCONTENTS, address1,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "address2",
-			CURLFORM_PTRCONTENTS, address2,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "city",
-			CURLFORM_PTRCONTENTS, city,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "state",
-			CURLFORM_PTRCONTENTS, state,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "zip",
-			CURLFORM_PTRCONTENTS, zip,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "email",
-			CURLFORM_PTRCONTENTS, email,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "phone_day",
-			CURLFORM_PTRCONTENTS, phone_day,
-			CURLFORM_END);
-	last = NULL;
-	request(NULL, NULL, post, "%s", "process");
-	curl_formfree(post);
-	post = NULL;
+	request(NULL, NULL, &(struct icclient_request_data){ 13, {
+			{ "mv_form_profile", "account_change" },
+			{ "mv_todo", "return" },
+			{ "mv_nextpage", "member/account" },
+			{ "mv_check", "Save_database" },
+			{ "fname", fname },
+			{ "lname", lname },
+			{ "address1", address1 },
+			{ "address2", address2 },
+			{ "city", city },
+			{ "state", state },
+			{ "zip", zip },
+			{ "email", email },
+			{ "phone_day", phone_day }
+			}}, "%s", "process");
 }
 
-void icclient_member_changepassword(const char *password_old, const char *password,
-		const char *verify)
+void icclient_member_changepassword(const char *password_old, const char *password, const char *verify)
 {
-	struct curl_httppost *post, *last = NULL;
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_action",
-			CURLFORM_COPYCONTENTS, "return",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_check",
-			CURLFORM_COPYCONTENTS, "Change_password",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_successpage",
-			CURLFORM_COPYCONTENTS, "member/service",
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_password_old",
-			CURLFORM_PTRCONTENTS, password_old,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_password",
-			CURLFORM_PTRCONTENTS, password,
-			CURLFORM_END);
-	curl_formadd(&post, &last,
-			CURLFORM_COPYNAME, "mv_verify",
-			CURLFORM_PTRCONTENTS, verify,
-			CURLFORM_END);
-	last = NULL;
-	request(NULL, NULL, post, "%s", "member/change_password");
-	curl_formfree(post);
-	post = NULL;
+	request(NULL, NULL, &(struct icclient_request_data){ 6, {
+			{ "mv_action", "return" },
+			{ "mv_check", "Change_password" },
+			{ "mv_successpage", "member/service" },
+			{ "mv_password_old", password_old },
+			{ "mv_password", password },
+			{ "mv_verify", verify }
+			}}, "%s", "member/change_password");
 }
 
 void icclient_member_logout(icclient_member *member)
