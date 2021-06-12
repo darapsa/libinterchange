@@ -7,12 +7,12 @@
 #ifdef __EMSCRIPTEN__
 #include <emscripten/fetch.h>
 #define ICCLIENT_HANDLER_REALSIZE fetch->numBytes
-#define ICCLIENT_HANDLER_STRUCT fetch->
 #define ICCLIENT_HANDLER_RETURN 
+#define ICCLIENT_HANDLER_STRUCT fetch->
 #else
 #define ICCLIENT_HANDLER_REALSIZE size * nmemb
-#define ICCLIENT_HANDLER_STRUCT
 #define ICCLIENT_HANDLER_RETURN realsize
+#define ICCLIENT_HANDLER_STRUCT
 #endif
 
 #ifdef __EMSCRIPTEN__
