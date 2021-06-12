@@ -1,20 +1,6 @@
 #include <stdlib.h>
 #include "icclient/product.h"
 
-void icclient_product_init(struct icclient_product *product)
-{
-	product->sku = NULL;
-	product->description = NULL;
-	product->comment = NULL;
-	product->thumb = NULL;
-	product->image = NULL;
-	product->price = .0;
-	product->prod_group = NULL;
-	product->weight = .0;
-	product->author = NULL;
-	product->crosssell = NULL;
-}
-
 void icclient_product_free(struct icclient_product *product)
 {
 	if (product->crosssell)
@@ -34,5 +20,4 @@ void icclient_product_free(struct icclient_product *product)
 		free(product->description);
 	free(product->sku);
 	free(product);
-	product = NULL;
 }

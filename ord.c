@@ -36,7 +36,7 @@ void icclient_ord_order(const char *sku, const icclient_catalog *catalog,
 	icclient_product **products = ((icclient_catalog *)catalog)->products;
 	qsort(products, catalog->length, sizeof(icclient_product *), prodcmp);
 	icclient_product *key_product = malloc(sizeof(icclient_product));
-	icclient_product_init(key_product);
+	memset(key_product, '\0', sizeof(icclient_product));
 	key_product->sku = malloc(strlen(sku) + 1);
 	strcpy(key_product->sku, sku);
 	icclient_product *product = *(icclient_product **)bsearch(&key_product

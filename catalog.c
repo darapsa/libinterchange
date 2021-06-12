@@ -41,7 +41,7 @@ size_t icclient_catalog_results(void *data, size_t size, size_t nmemb, void *use
 	for (size_t i = 0; i < length; i++) {
 		catalog->products[i] = malloc(sizeof(struct icclient_product));
 		struct icclient_product *product = catalog->products[i];
-		icclient_product_init(product);
+		memset(product, '\0', sizeof(struct icclient_product));
 		json_object *object = json_object_array_get_idx(products, i);
 		struct json_object_iterator iterator = json_object_iter_begin(object);
 		struct json_object_iterator iterator_end = json_object_iter_end(object);
