@@ -70,7 +70,7 @@ size_t icclient_catalog_results(void *data, size_t size, size_t nmemb, void *use
 			json_object_iter_next(&iterator);
 		}
 	}
-	((void (*)(struct icclient_catalog *))userData)(catalog);
+	((void (*)(struct icclient_catalog *))ICCLIENT_HANDLER_STRUCT userData)(catalog);
 #ifdef __EMSCRIPTEN__
 	emscripten_fetch_close(fetch);
 #endif
