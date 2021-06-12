@@ -6,11 +6,6 @@ struct icclient_catalog {
 	struct icclient_product *products[];
 };
 
-struct icclient_catalog_callback {
-	struct icclient_catalog **catalog;
-	void (*callback)(struct icclient_catalog *);
-};
-
 #ifdef __cplusplus
 extern "C" {
 #endif

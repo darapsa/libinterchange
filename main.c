@@ -26,6 +26,7 @@ static void print_catalog(struct icclient_catalog *catalog)
 				product->prod_group
 		      );
 	}
+	icclient_catalog_free(catalog);
 }
 
 static size_t print_user(void *contents, size_t size, size_t nmemb, void *userData)
@@ -51,9 +52,7 @@ int main(int argc, char *argv[])
 	icclient_init(url, NULL);
 	free(url);
 
-	struct icclient_catalog *catalog;
-	icclient_allproducts(print_catalog, &catalog, NULL);
-	icclient_catalog_free(catalog);
+	icclient_allproducts(print_catalog, NULL);
 
 	char *name_line = NULL;
 	printf("\nName: ");
