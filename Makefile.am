@@ -10,11 +10,11 @@ libicclient_la_SOURCES = \
 			 login.c \
 			 member.c \
 			 admin.c
-libicclient_la_CPPFLAGS = -I${prefix}/include $(DEPS_CFLAGS)
+libicclient_la_CPPFLAGS = -I${prefix}/include
 if WASM
 libicclient_la_LDFLAGS = -static
 else
-libicclient_la_LDFLAGS = $(DEPS_LIBS) -lcurl
+libicclient_la_LDFLAGS = -lcurl
 endif
 if IOS
 libicclient_la_LDFLAGS += -static
@@ -27,9 +27,3 @@ pkginclude_HEADERS = \
 		  icclient/ord.h \
 		  icclient/member.h \
 		  icclient/admin.h
-#if !WASM
-#bin_PROGRAMS = icclient
-#icclient_SOURCES = main.c client.c catalog.c product.c request.c ord.c login.c member.c admin.c
-#icclient_CPPFLAGS = -I${prefix}/include $(DEPS_CFLAGS)
-#icclient_LDFLAGS = $(DEPS_LIBS) -lcurl
-#endif

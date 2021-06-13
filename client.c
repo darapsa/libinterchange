@@ -23,7 +23,7 @@ void icclient_results(const char *prod_group, void (*callback)(struct icclient_c
 	char *space = NULL;
 	while ((space = strchr(nonspaced, ' ')))
 		*space = '-';
-	request(handler ? handler : icclient_catalog_results, (void *)callback, 0, "%s", nonspaced);
+	request(handler, (void *)callback, 0, "%s", nonspaced);
 }
 
 void icclient_flypage(const char *sku, icclient_handler handler, struct icclient_product **productptr)
