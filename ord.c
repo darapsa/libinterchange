@@ -41,7 +41,7 @@ void icclient_ord_order(const char *sku, const icclient_catalog *catalog,
 	icclient_product *product = *(icclient_product **)bsearch(&key_product
 			, products, catalog->length, sizeof(icclient_product *)
 			, prodcmp);
-	icclient_product_free(key_product);
+	icclient_free_product(key_product);
 
 	struct icclient_ord_order *order = *orderptr;
 	icclient_ord_item *item = NULL;
@@ -107,5 +107,5 @@ void icclient_ord_checkout(struct icclient_ord_order *order,
 void icclient_ord_free(struct icclient_ord_order *order)
 {
 	for (size_t i = 0; i < order->nitems; i++)
-		icclient_product_free(order->items[i]->product);
+		icclient_free_product(order->items[i]->product);
 }
