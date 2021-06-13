@@ -1,12 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include "icclient/typedefs.h"
-#include "icclient/product.h"
-#include "icclient/catalog.h"
+#include "icclient.h"
 #include "icclient/member.h"
-#include "icclient/client.h"
 
 static void print_catalog(struct icclient_catalog *catalog)
 {

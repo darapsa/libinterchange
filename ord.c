@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "request.h"
-#include "icclient/catalog.h"
-#include "icclient/product.h"
+#include "icclient.h"
 #include "icclient/member.h"
 #include "icclient/ord.h"
 
