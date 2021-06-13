@@ -7,7 +7,7 @@ typedef struct icclient_admin icclient_admin;
 
 icclient_admin *icclient_admin_login(const char *username, const char *password,
 		const char *successpage, const char *nextpage, const char *failpage,
-		icclient_handler handler)
+		void (*handler)(icclient_fetch_t *))
 {
 	icclient_admin *admin = malloc(sizeof(icclient_admin));
 	admin->name = NULL;
@@ -19,7 +19,7 @@ icclient_admin *icclient_admin_login(const char *username, const char *password,
 
 void icclient_admin_newitem(const char *description, const char *comment, const char *price, const char *image_path)
 {
-	request(NULL, NULL, &(struct icclient_request_data){ 15, {
+	request(NULL, NULL, &(struct body){ 15, {
 			{ "mv_click", "process_filter" },
 			{ "mv_data_fields", "sku description prod_group category comment inactive price wholesale image thumb image_large weight nontaxable gift_cert" },
 			{ "mv_ui", "1" },

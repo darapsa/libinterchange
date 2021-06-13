@@ -13,9 +13,9 @@
 #endif
 #include "icclient/typedefs.h"
 
-struct icclient_request_data {
+struct body {
 	size_t num_pairs;
-	struct icclient_request_pair {
+	struct pair {
 		const char *key;
 		const char *value;
 	} pairs[16];
@@ -26,9 +26,10 @@ extern emscripten_fetch_attr_t attr;
 #else
 extern CURL *curl;
 extern char *server_url;
+size_t append(char *, size_t, size_t, icclient_fetch_t *);
 #endif
 
-inline void icclient_request_init(const char *url, const char *certificate)
+inline void init(const char *url, const char *certificate)
 {
 #ifdef __EMSCRIPTEN__
 	emscripten_fetch_attr_init(&attr);
@@ -36,25 +37,23 @@ inline void icclient_request_init(const char *url, const char *certificate)
 #else
 	curl_global_init(CURL_GLOBAL_SSL);
 	curl = curl_easy_init();
-	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-		curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
-		if (certificate)
-			curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
+	if (certificate)
+		curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
 #ifdef DEBUG
-		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
-		size_t length = strlen(url);
-		size_t append = !(url[length - 1] == '/');
-		server_url = malloc(length + append + 1);
-		strcpy(server_url, url);
-		if (append)
-			strcat(server_url, "/");
-	}
+	size_t length = strlen(url);
+	size_t append = url[length - 1] != '/';
+	server_url = malloc(length + append + 1);
+	strcpy(server_url, url);
+	if (append)
+		strcat(server_url, "/");
 #endif
 }
 
-inline void request(icclient_handler writefunction, void *writedata, struct icclient_request_data *body, char *fmt, ...)
+inline void request(void (*handler)(icclient_fetch_t *), void *callback, struct body *body, char *fmt, ...)
 {
 	va_list ap;
 	char *p, *sval;
@@ -89,7 +88,7 @@ inline void request(icclient_handler writefunction, void *writedata, struct iccl
 
 	char url[length + 1];
 #ifdef __EMSCRIPTEN__
-	memset(url, 0, length + 1);
+	memset(url, '\0', length + 1);
 #else
 	strcpy(url, server_url);
 #endif
@@ -114,22 +113,19 @@ inline void request(icclient_handler writefunction, void *writedata, struct iccl
 	va_end(ap);
 
 #ifdef __EMSCRIPTEN__
-	attr.onsuccess = writefunction;
-	if (writedata)
-		attr.userData = writedata;
+	attr.onsuccess = handler;
+	attr.userData = callback;
 	strcpy(attr.requestMethod, "GET");
 	emscripten_fetch(&attr, url);
 #else
 	curl_easy_setopt(curl, CURLOPT_URL, url);
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunction);
-	if (writedata)
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, writedata);
-	else
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, stdout);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, append);
+	icclient_fetch_t fetch = { .userData = callback, .numBytes = 0 };
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &fetch);
 	struct curl_httppost *post, *last = NULL;
 	if (body) {
 		for (size_t i = 0; i < body->num_pairs; i++) {
-			struct icclient_request_pair pair = body->pairs[i];
+			struct pair pair = body->pairs[i];
 			if (!pair.value)
 				continue;
 			curl_formadd(&post, &last,
@@ -141,34 +137,31 @@ inline void request(icclient_handler writefunction, void *writedata, struct iccl
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
 	} else
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
-#ifdef DEBUG
-	CURLcode res =
-#endif
-		curl_easy_perform(curl);
+	CURLcode res = curl_easy_perform(curl);
 	if (post)
 		curl_formfree(post);
+	if (res == CURLE_OK) 
+		handler(&fetch);
 #ifdef DEBUG
-	if (res != CURLE_OK) {
+	else {
 		const char *error = curl_easy_strerror(res);
 #ifdef __ANDROID__
-		__android_log_print(ANDROID_LOG_ERROR, "libicclient.so", "%s: %s", __func__, error);
+		__android_log_print(ANDROID_LOG_ERROR, "libicclient.so", "%s", error);
 #else
-		fprintf(stderr, "%s: %s\n", __func__, error);
-#endif
+		fprintf(stderr, "%s\n", error);
 #endif
 	}
+#endif
 #endif
 }
 
-inline void icclient_request_cleanup()
-{
 #ifndef __EMSCRIPTEN__
-	if (curl) {
-		free(server_url);
-		curl_easy_cleanup(curl);
-	}
+inline void cleanup()
+{
+	free(server_url);
+	curl_easy_cleanup(curl);
 	curl_global_cleanup();
-#endif
 }
+#endif
 
 #endif

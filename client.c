@@ -2,18 +2,12 @@
 #include "request.h"
 #include "icclient.h"
 
-#ifdef __EMSCRIPTEN__
-extern void icclient_catalog_results(emscripten_fetch_t *);
-#else
-extern size_t icclient_catalog_results(void *, size_t, size_t, void *);
-#endif
-
 void icclient_init(const char *url, const char *certificate)
 {
-	icclient_request_init(url, certificate);
+	init(url, certificate);
 }
 
-void icclient_results(const char *prod_group, void (*callback)(struct icclient_catalog *), icclient_handler handler)
+void icclient_results(const char *prod_group, void (*callback)(struct icclient_catalog *), void (*handler)(icclient_fetch_t *))
 {
 	char nonspaced[strlen(prod_group) + 1];
 	strcpy(nonspaced, prod_group);
@@ -23,12 +17,12 @@ void icclient_results(const char *prod_group, void (*callback)(struct icclient_c
 	request(handler, (void *)callback, 0, "%s", nonspaced);
 }
 
-void icclient_flypage(const char *sku, icclient_handler handler, struct icclient_product **productptr)
+void icclient_flypage(const char *sku, void (*handler)(icclient_fetch_t *), struct icclient_product **productptr)
 {
 	request(handler, (void *)productptr, 0, "%s", sku);
 }
 
-void icclient_page(const char *path, icclient_handler handler, void **dataptr)
+void icclient_page(const char *path, void (*handler)(icclient_fetch_t *), void **dataptr)
 {
 	request(handler, (void *)dataptr, 0, "%s", path);
 }
@@ -63,5 +57,7 @@ void icclient_free_catalog(struct icclient_catalog *catalog)
 
 void icclient_cleanup()
 {
-	icclient_request_cleanup();
+#ifndef __EMSCRIPTEN__
+	cleanup();
+#endif
 }

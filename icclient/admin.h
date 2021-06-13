@@ -15,7 +15,7 @@ extern "C" {
 	struct icclient_admin *icclient_admin_login(const char *username,
 			const char *password, const char *successpage,
 			const char *nextpage, const char *failpage,
-			icclient_handler handler);
+			void (*handler)(icclient_fetch_t *));
 	void icclient_admin_newitem(const char *description, const char *comment,
 			const char *price, const char *image_path);
 	void icclient_admin_logout(struct icclient_admin *admin);

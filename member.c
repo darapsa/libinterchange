@@ -60,7 +60,7 @@ icclient_member *initialise(const char *username, const char *password)
 
 icclient_member *icclient_member_newaccount(const char *username, const char *password,
 		const char *verify, const char *successpage, const char *nextpage,
-		const char *failpage, icclient_handler handler)
+		const char *failpage, void (*handler)(icclient_fetch_t *))
 {
 	icclient_member *member = initialise(username, password);
 	login(username, password, verify, "NewAccount", successpage, nextpage, failpage, handler, member);
@@ -68,7 +68,7 @@ icclient_member *icclient_member_newaccount(const char *username, const char *pa
 }
 
 icclient_member *icclient_member_login(const char *username, const char *password,
-		const char *successpage, const char *nextpage, const char *failpage, icclient_handler handler)
+		const char *successpage, const char *nextpage, const char *failpage, void (*handler)(icclient_fetch_t *))
 {
 	icclient_member *member = initialise(username, password);
 	login(username, password, NULL, "Login", successpage, nextpage, failpage, handler, member);
@@ -79,7 +79,7 @@ void icclient_member_account(const char *fname, const char *lname, const char *a
 		const char *address2, const char *city, const char *state,
 		const char *zip, const char *email, const char *phone_day)
 {
-	request(NULL, NULL, &(struct icclient_request_data){ 13, {
+	request(NULL, NULL, &(struct body){ 13, {
 			{ "mv_form_profile", "account_change" },
 			{ "mv_todo", "return" },
 			{ "mv_nextpage", "member/account" },
@@ -98,7 +98,7 @@ void icclient_member_account(const char *fname, const char *lname, const char *a
 
 void icclient_member_changepassword(const char *password_old, const char *password, const char *verify)
 {
-	request(NULL, NULL, &(struct icclient_request_data){ 6, {
+	request(NULL, NULL, &(struct body){ 6, {
 			{ "mv_action", "return" },
 			{ "mv_check", "Change_password" },
 			{ "mv_successpage", "member/service" },

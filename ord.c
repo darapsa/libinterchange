@@ -86,7 +86,7 @@ void icclient_ord_order(const char *sku, const icclient_catalog *catalog,
 void icclient_ord_checkout(struct icclient_ord_order *order,
 		struct icclient_member *member)
 {
-	request(NULL, NULL, &(struct icclient_request_data){ 14, {
+	request(NULL, NULL, &(struct body){ 14, {
 			{ "mv_todo", "submit" },
 			{ "mv_action", "refresh" },
 			{ "mv_order_profile", order->profile },

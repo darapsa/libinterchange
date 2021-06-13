@@ -1,5 +1,5 @@
-#ifndef ICCLIENT_CLIENT_H
-#define ICCLIENT_CLIENT_H
+#ifndef ICCLIENT_H
+#define ICCLIENT_H
 
 #include <icclient/typedefs.h>
 
@@ -44,7 +44,7 @@ void icclient_init(const char *url, const char *certificate);
  * \param callback A pointer to the function that needs to be called after the catalog is ready.
  * \param handler A pointer to the function when a custom handler is needed to arrange the data into the catalog.
  */
-void icclient_results(const char *prod_group, void (*callback)(struct icclient_catalog *), icclient_handler handler);
+void icclient_results(const char *prod_group, void (*callback)(struct icclient_catalog *), void (*handler)(icclient_fetch_t *));
 
 /*!
  * \brief For fetching data about a specific product.
@@ -52,9 +52,9 @@ void icclient_results(const char *prod_group, void (*callback)(struct icclient_c
  * \param handler A pointer to a cURL write function callback.
  * \param productptr A pointer to pointer to the product to store the data.
  */
-void icclient_flypage(const char *sku, icclient_handler handler, struct icclient_product **productptr);
+void icclient_flypage(const char *sku, void (*handler)(icclient_fetch_t *), struct icclient_product **productptr);
 
-void icclient_page(const char *path, icclient_handler handler, void **dataptr);
+void icclient_page(const char *path, void (*handler)(icclient_fetch_t *), void **dataptr);
 
 void icclient_free_product(struct icclient_product *product);
 
