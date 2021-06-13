@@ -17,8 +17,8 @@ endif
 if IOS
 libicclient_la_LDFLAGS += -static
 endif
+include_HEADERS = icclient.h
 pkginclude_HEADERS = \
-		  icclient.h \
 		  icclient/typedefs.h \
 		  icclient/ord.h \
 		  icclient/member.h \

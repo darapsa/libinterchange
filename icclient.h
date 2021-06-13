@@ -1,25 +1,29 @@
 #ifndef ICCLIENT_CLIENT_H
 #define ICCLIENT_CLIENT_H
 
+#include <icclient/typedefs.h>
+
 #define	icclient_allproducts(callback, handler) icclient_results("All-Products", callback, handler)
+
+struct icclient_product {
+	char *sku;
+	char *description;
+	char *comment;
+	char *thumb;
+	char *image;
+	double price;
+	char *prod_group;
+	double weight;
+	char *author;
+	struct icclient_product_crosssell {
+		size_t length;
+		char *skus[];
+	} *crosssell;
+};
 
 struct icclient_catalog {
 	size_t length;
-	struct icclient_product {
-		char *sku;
-		char *description;
-		char *comment;
-		char *thumb;
-		char *image;
-		double price;
-		char *prod_group;
-		double weight;
-		char *author;
-		struct icclient_product_crosssell {
-			size_t length;
-			char *skus[];
-		} *crosssell;
-	} *products[];
+	struct icclient_product *products[];
 };
 
 #ifdef __cplusplus

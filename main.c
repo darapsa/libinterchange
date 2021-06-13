@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "icclient/typedefs.h"
 #include "icclient.h"
 #include "icclient/member.h"
 
