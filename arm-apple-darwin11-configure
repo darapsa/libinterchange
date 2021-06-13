@@ -3,4 +3,4 @@ export TARGET=arm-apple-darwin11
 export CC=ios-clang
 export PREFIX=/opt/iPhoneOS8.1.sdk/usr
 export CFLAGS="$CFLAGS -g0 -O2"
-./configure --host=$TARGET --prefix=$PREFIX --disable-shared
+../configure --host=$TARGET --prefix=$PREFIX --disable-shared

@@ -6,4 +6,4 @@ export CC=$TOOLCHAIN/bin/$TARGET$API-clang
 export PREFIX=$TOOLCHAIN/sysroot/usr
 export CPPFLAGS="$CPPFLAGS -DDEBUG"
 export CFLAGS="$CFLAGS -g"
-./configure --host=$TARGET --prefix=$PREFIX --libdir=$PREFIX/lib/$TARGET/$API --disable-static
+../configure --host=$TARGET --prefix=$PREFIX --libdir=$PREFIX/lib/$TARGET/$API --disable-static

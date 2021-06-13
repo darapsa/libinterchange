@@ -3,4 +3,4 @@ export TARGET=i686-w64-mingw32
 export CC=$TARGET-gcc
 export CPPFLAGS="$CPPFLAGS -DDEBUG"
 export CFLAGS="$CFLAGS -g"
-./configure --host=$TARGET --prefix=/usr/$TARGET/usr
+../configure --host=$TARGET --prefix=/usr/$TARGET/usr
