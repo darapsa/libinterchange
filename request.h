@@ -4,11 +4,10 @@
 #if defined __ANDROID__ && defined DEBUG
 #include <android/log.h>
 #endif
-#include <string.h>
-#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <stdarg.h>
+#include <string.h>
 #ifndef __EMSCRIPTEN__
 #include <curl/curl.h>
 #endif
@@ -29,12 +28,11 @@ extern CURL *curl;
 extern char *server_url;
 #endif
 
-inline bool icclient_request_init(const char *url, const char *certificate)
+inline void icclient_request_init(const char *url, const char *certificate)
 {
 #ifdef __EMSCRIPTEN__
 	emscripten_fetch_attr_init(&attr);
 	attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
-	return true;
 #else
 	curl_global_init(CURL_GLOBAL_SSL);
 	curl = curl_easy_init();
@@ -47,13 +45,12 @@ inline bool icclient_request_init(const char *url, const char *certificate)
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
 		size_t length = strlen(url);
-		bool append = !(bool)(url[length - 1] == '/');
-		server_url = malloc(length + (size_t)append + 1);
+		size_t append = !(url[length - 1] == '/');
+		server_url = malloc(length + append + 1);
 		strcpy(server_url, url);
 		if (append)
 			strcat(server_url, "/");
 	}
-	return (bool)curl;
 #endif
 }
 

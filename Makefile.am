@@ -3,8 +3,6 @@ libicclient_la_SOURCES = \
 			 client.c \
 			 request.h \
 			 request.c \
-			 catalog.c \
-			 product.c \
 			 ord.c \
 			 login.h \
 			 login.c \
@@ -21,8 +19,6 @@ libicclient_la_LDFLAGS += -static
 endif
 pkginclude_HEADERS = \
 		  icclient/client.h \
-		  icclient/catalog.h \
-		  icclient/product.h \
 		  icclient/typedefs.h \
 		  icclient/ord.h \
 		  icclient/member.h \

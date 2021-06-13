@@ -7,6 +7,6 @@ CURL *curl;
 char *server_url;
 #endif
 
-extern inline bool icclient_request_init(const char *, const char *);
+extern inline void icclient_request_init(const char *, const char *);
 extern inline void request(icclient_handler, void *, struct icclient_request_data *, char *, ...);
 extern inline void icclient_request_cleanup();

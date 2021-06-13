@@ -3,8 +3,24 @@
 
 #define	icclient_allproducts(callback, handler) icclient_results("All-Products", callback, handler)
 
-struct icclient_product;
-struct icclient_catalog;
+struct icclient_catalog {
+	size_t length;
+	struct icclient_product {
+		char *sku;
+		char *description;
+		char *comment;
+		char *thumb;
+		char *image;
+		double price;
+		char *prod_group;
+		double weight;
+		char *author;
+		struct icclient_product_crosssell {
+			size_t length;
+			char *skus[];
+		} *crosssell;
+	} *products[];
+};
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,7 +32,7 @@ extern "C" {
  * \param certificate Path to the CA certificate file.
  * \return True if the initialisation works, false otherwise.
  */
-bool icclient_init(const char *url, const char *certificate);
+void icclient_init(const char *url, const char *certificate);
 
 /*!
  * \brief For fetching data about products that belong a specific group.
@@ -35,6 +51,11 @@ void icclient_results(const char *prod_group, void (*callback)(struct icclient_c
 void icclient_flypage(const char *sku, icclient_handler handler, struct icclient_product **productptr);
 
 void icclient_page(const char *path, icclient_handler handler, void **dataptr);
+
+void icclient_free_product(struct icclient_product *product);
+
+void icclient_free_catalog(struct icclient_catalog *catalog);
+
 void icclient_cleanup();
 
 #ifdef __cplusplus
