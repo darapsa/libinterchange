@@ -1,7 +1,6 @@
-#include <stdbool.h>
 #include <string.h>
 #include "request.h"
-#include "icclient/client.h"
+#include "icclient.h"
 
 #ifdef __EMSCRIPTEN__
 extern void icclient_catalog_results(emscripten_fetch_t *);
