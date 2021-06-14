@@ -4,7 +4,6 @@
 emscripten_fetch_attr_t attr;
 #else
 CURL *curl;
-char *server_url;
 size_t append(char *data, size_t size, size_t nmemb, icclient_fetch_t *fetch)
 {
 	size_t realsize = size * nmemb;
@@ -16,6 +15,6 @@ size_t append(char *data, size_t size, size_t nmemb, icclient_fetch_t *fetch)
 }
 #endif
 
-extern inline void init(const char *, const char *);
+extern inline void init(const char *);
 extern inline void request(void (*)(icclient_fetch_t *), void *, struct body *, char *, ...);
 extern inline void cleanup();

@@ -25,11 +25,11 @@ struct body {
 extern emscripten_fetch_attr_t attr;
 #else
 extern CURL *curl;
-extern char *server_url;
+extern char *sampleurl;
 size_t append(char *, size_t, size_t, icclient_fetch_t *);
 #endif
 
-inline void init(const char *url, const char *certificate)
+inline void init(const char *certificate)
 {
 #ifdef __EMSCRIPTEN__
 	emscripten_fetch_attr_init(&attr);
@@ -44,12 +44,6 @@ inline void init(const char *url, const char *certificate)
 #ifdef DEBUG
 	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
-	size_t length = strlen(url);
-	size_t append = url[length - 1] != '/';
-	server_url = malloc(length + append + 1);
-	strcpy(server_url, url);
-	if (append)
-		strcat(server_url, "/");
 #endif
 }
 
@@ -60,7 +54,7 @@ inline void request(void (*handler)(icclient_fetch_t *), void *callback, struct 
 	unsigned int ival;
 	size_t length =
 #ifndef __EMSCRIPTEN__
-		strlen(server_url) +
+		strlen(sampleurl) +
 #endif
 		strlen(fmt);
 
@@ -90,7 +84,7 @@ inline void request(void (*handler)(icclient_fetch_t *), void *callback, struct 
 #ifdef __EMSCRIPTEN__
 	memset(url, '\0', length + 1);
 #else
-	strcpy(url, server_url);
+	strcpy(url, sampleurl);
 #endif
 
 	va_start(ap, fmt);
@@ -158,7 +152,7 @@ inline void request(void (*handler)(icclient_fetch_t *), void *callback, struct 
 #ifndef __EMSCRIPTEN__
 inline void cleanup()
 {
-	free(server_url);
+	free(sampleurl);
 	curl_easy_cleanup(curl);
 	curl_global_cleanup();
 }
