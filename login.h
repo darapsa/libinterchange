@@ -3,7 +3,7 @@
 
 #include "request.h"
 
-inline void login(const char *username, const char *password, const char *verify, const char *click,
+static inline void login(const char *username, const char *password, const char *verify, const char *click,
 		const char *successpage, const char *nextpage, const char *failpage, void (*handler)(icclient_fetch_t *), void *user)
 {
 	request(handler, user, &(struct body){ 7, {

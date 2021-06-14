@@ -29,7 +29,7 @@ extern char *sampleurl;
 size_t append(char *, size_t, size_t, icclient_fetch_t *);
 #endif
 
-inline void init(const char *certificate)
+static inline void init(const char *certificate)
 {
 #ifdef __EMSCRIPTEN__
 	emscripten_fetch_attr_init(&attr);
@@ -47,7 +47,7 @@ inline void init(const char *certificate)
 #endif
 }
 
-inline void request(void (*handler)(icclient_fetch_t *), void *callback, struct body *body, char *fmt, ...)
+static inline void request(void (*handler)(icclient_fetch_t *), void *callback, struct body *body, char *fmt, ...)
 {
 	va_list ap;
 	char *p, *sval;
@@ -150,7 +150,7 @@ inline void request(void (*handler)(icclient_fetch_t *), void *callback, struct 
 }
 
 #ifndef __EMSCRIPTEN__
-inline void cleanup()
+static inline void cleanup()
 {
 	free(sampleurl);
 	curl_easy_cleanup(curl);
