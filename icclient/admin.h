@@ -6,6 +6,11 @@ struct icclient_admin {
 	char *password;
 	char *name;
 	bool super;
+	enum icclient_admin_group {
+		ICCLIENT_ADMIN_GROUP_CONTENT,
+		ICCLIENT_ADMIN_GROUP_MERCH,
+		ICCLIENT_ADMIN_GROUP_ORDERS
+	} group;
 };
 
 #ifdef __cplusplus
@@ -16,12 +21,14 @@ extern "C" {
 			const char *password, const char *successpage,
 			const char *nextpage, const char *failpage,
 			void (*handler)(icclient_fetch_t *));
-	void icclient_admin_newitem(const char *description, const char *comment,
-			const char *price, const char *image_path);
-	void icclient_admin_logout(struct icclient_admin *admin);
+	void icclient_admin_new_admin(const char *username, const char *password, const char *name, bool super,
+			enum icclient_admin_group group, void (*handler)(icclient_fetch_t *));
+	void icclient_admin_new_item(const char *description, const char *comment, const char *price, const char *image_path,
+			void (*handler)(icclient_fetch_t *));
+	void icclient_admin_logout(struct icclient_admin *admin, void (*handler)(icclient_fetch_t *));
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // ICCLIENT_ADMIN_H
+#endif

@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "icclient.h"
 #include "icclient/member.h"
+#include "icclient/admin.h"
 
 static void print_catalog(struct icclient_catalog *catalog)
 {
@@ -23,36 +24,22 @@ static void print_catalog(struct icclient_catalog *catalog)
 	}
 	icclient_free_catalog(catalog);
 }
-/*
-static void print_user(icclient_fetch_t *fetch)
+
+static void print(icclient_fetch_t *fetch)
 {
 	printf("%s\n", fetch->data);
 }
-*/
+
 int main(int argc, char *argv[])
 {
 	icclient_init("https://demo.interchangecommerce.org/i/demo", "/demo/images", NULL);
-	icclient_allproducts(print_catalog, NULL);
 /*
-	char *name_line = NULL;
-	printf("\nName: ");
-	ssize_t name_nread = getline(&name_line, &(size_t){0}, stdin);
-	char *name = malloc(--name_nread + 1);
-	strncpy(name, name_line, name_nread);
-	free(name_line);
-
-	char *pass_line = NULL;
-	printf("Pass: ");
-	ssize_t pass_nread = getline(&pass_line, &(size_t){0}, stdin);
-	char *pass = malloc(--pass_nread + 1);
-	strncpy(pass, pass_line, pass_nread);
-	free(pass_line);
-	pass[pass_nread] = '\0';
-
-	struct icclient_member *member = icclient_member_login(name, pass, NULL, NULL, NULL, print_user);
-	free(name);
-	free(pass);
+	icclient_allproducts(print_catalog, NULL);
+	struct icclient_member *member = icclient_member_login("kirk@icdevgroup.net", "kirk", NULL, NULL, NULL, print);
 	icclient_member_logout(member);
 */
+	struct icclient_admin *admin = icclient_admin_login("interch", "pass", NULL, NULL, NULL, NULL);
+	icclient_admin_new_admin("Hardware", "pass", "Hardware stuff", 0, ICCLIENT_ADMIN_GROUP_MERCH, NULL);
+	icclient_admin_logout(admin, NULL);
 	icclient_cleanup();
 }
