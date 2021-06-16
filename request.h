@@ -107,7 +107,8 @@ static inline void request(void (*handler)(icclient_fetch_t *), void *callback, 
 	va_end(ap);
 
 #ifdef __EMSCRIPTEN__
-	attr.onsuccess = handler;
+	if (handler)
+		attr.onsuccess = handler;
 	attr.userData = callback;
 	strcpy(attr.requestMethod, "GET");
 	emscripten_fetch(&attr, url);
@@ -134,7 +135,7 @@ static inline void request(void (*handler)(icclient_fetch_t *), void *callback, 
 	CURLcode res = curl_easy_perform(curl);
 	if (post)
 		curl_formfree(post);
-	if (res == CURLE_OK) 
+	if (res == CURLE_OK && handler)
 		handler(&fetch);
 #ifdef DEBUG
 	else {
