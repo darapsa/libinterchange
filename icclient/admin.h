@@ -1,16 +1,18 @@
 #ifndef ICCLIENT_ADMIN_H
 #define ICCLIENT_ADMIN_H
 
+enum icclient_admin_group {
+	ICCLIENT_ADMIN_GROUP_CONTENT,
+	ICCLIENT_ADMIN_GROUP_MERCH,
+	ICCLIENT_ADMIN_GROUP_ORDERS
+};
+
 struct icclient_admin {
 	char *username;
 	char *password;
 	char *name;
 	bool super;
-	enum icclient_admin_group {
-		ICCLIENT_ADMIN_GROUP_CONTENT,
-		ICCLIENT_ADMIN_GROUP_MERCH,
-		ICCLIENT_ADMIN_GROUP_ORDERS
-	} group;
+	enum icclient_admin_group group;
 };
 
 #ifdef __cplusplus
