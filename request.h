@@ -29,24 +29,6 @@ extern char *sampleurl;
 size_t append(char *, size_t, size_t, icclient_response *);
 #endif
 
-static inline void init(const char *certificate)
-{
-#ifdef __EMSCRIPTEN__
-	emscripten_fetch_attr_init(&attr);
-	attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
-#else
-	curl_global_init(CURL_GLOBAL_SSL);
-	curl = curl_easy_init();
-	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
-	if (certificate)
-		curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
-#ifdef DEBUG
-	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-#endif
-#endif
-}
-
 static inline void request(void (*handler)(icclient_response *), void (*callback)(void *), struct body *body, char *fmt, ...)
 {
 	va_list ap;
@@ -109,10 +91,9 @@ static inline void request(void (*handler)(icclient_response *), void (*callback
 #ifdef __EMSCRIPTEN__
 	if (handler)
 		attr.onsuccess = handler;
-	char *post = NULL;
 	if (body) {
 		size_t length = 0;
-		post = malloc(1);
+		char *post = malloc(1);
 		memset(post, '\0', 1);
 		for (size_t i = 0; i < body->num_pairs; i++) {
 			struct pair pair = body->pairs[i];
@@ -172,14 +153,5 @@ static inline void request(void (*handler)(icclient_response *), void (*callback
 #endif
 #endif
 }
-
-#ifndef __EMSCRIPTEN__
-static inline void cleanup()
-{
-	free(sampleurl);
-	curl_easy_cleanup(curl);
-	curl_global_cleanup();
-}
-#endif
 
 #endif

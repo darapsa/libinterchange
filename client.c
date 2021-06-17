@@ -3,7 +3,22 @@
 
 char *sampleurl;
 char *image_dir;
+#ifdef __EMSCRIPTEN__
+emscripten_fetch_attr_t attr;
+#else
+CURL *curl;
+size_t append(char *data, size_t size, size_t nmemb, icclient_response *response)
+{
+	size_t realsize = size * nmemb;
+	response->data = realloc(response->data, response->numBytes + realsize + 1);
+	memcpy(&(response->data[response->numBytes]), data, realsize);
+	response->numBytes += realsize;
+	response->data[response->numBytes] = '\0';
+	return realsize;
+}
+#endif
 
+extern inline void request(void (*)(icclient_response *), void (*)(void *), struct body *, char *, ...);
 extern void handle_results(icclient_response *);
 
 void icclient_init(const char *url, const char *dir, const char *certificate)
@@ -16,7 +31,20 @@ void icclient_init(const char *url, const char *dir, const char *certificate)
 		strcat(sampleurl, "/");
 	image_dir = malloc(strlen(dir) + 1);
 	strcpy(image_dir, dir);
-	init(certificate);
+#ifdef __EMSCRIPTEN__
+	emscripten_fetch_attr_init(&attr);
+	attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
+#else
+	curl_global_init(CURL_GLOBAL_SSL);
+	curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
+	if (certificate)
+		curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
+#ifdef DEBUG
+	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+#endif
+#endif
 }
 
 void icclient_results(const char *prod_group, void (*handler)(icclient_response *), void (*callback)(struct icclient_catalog *))
@@ -67,9 +95,21 @@ void icclient_free_catalog(struct icclient_catalog *catalog)
 	free(catalog);
 }
 
+void icclient_free_response(icclient_response *response)
+{
+#ifdef __EMSCRIPTEN__
+	emscripten_fetch_close(response);
+#else
+	if (response->userData)
+		free(response->userData);
+#endif
+}
+
 void icclient_cleanup()
 {
 #ifndef __EMSCRIPTEN__
-	cleanup();
+	free(sampleurl);
+	curl_easy_cleanup(curl);
+	curl_global_cleanup();
 #endif
 }
