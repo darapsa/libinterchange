@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#ifndef __EMSCRIPTEN__
+#include <curl/curl.h>
+#endif
 #include "icclient/typedefs.h"
 
 struct body {
@@ -126,10 +129,7 @@ static inline void request(void (*handler)(icclient_response *), void (*callback
 		attr.requestHeaders = headers;
 		attr.requestData = post;
 		attr.requestDataSize = length + 1;
-		struct icclient_post_callback *post_callback = malloc(sizeof(struct icclient_post_callback));
-		post_callback->post = post;
-		post_callback->callback = callback;
-		attr.userData = post_callback;
+		attr.userData = post;
 	} else {
 		strcpy(attr.requestMethod, "GET");
 		attr.userData = callback;
@@ -138,7 +138,8 @@ static inline void request(void (*handler)(icclient_response *), void (*callback
 #else
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, append);
-	icclient_response response = { .numBytes = 0 };
+	icclient_response response = { .userData = callback, .numBytes = 0 };
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 	struct curl_httppost *post, *last = NULL;
 	if (body) {
 		for (size_t i = 0; i < body->num_pairs; i++) {
@@ -152,16 +153,11 @@ static inline void request(void (*handler)(icclient_response *), void (*callback
 		}
 		last = NULL;
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
-		struct icclient_post_callback *post_callback = malloc(sizeof(struct icclient_post_callback));
-		post_callback->post = post;
-		post_callback->callback = callback;
-		response.userData = post_callback;
-	} else {
+	} else
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
-		response.userData = callback;
-	}
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 	CURLcode res = curl_easy_perform(curl);
+	if (post)
+		curl_formfree(post);
 	if (res == CURLE_OK && handler)
 		handler(&response);
 #ifdef DEBUG
