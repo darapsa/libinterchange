@@ -109,8 +109,31 @@ static inline void request(void (*handler)(icclient_fetch_t *), void *callback, 
 #ifdef __EMSCRIPTEN__
 	if (handler)
 		attr.onsuccess = handler;
-	attr.userData = callback;
-	strcpy(attr.requestMethod, "GET");
+	char *post = NULL;
+	if (body) {
+		size_t length = 0;
+		post = malloc(1);
+		memset(post, '\0', 1);
+		for (size_t i = 0; i < body->num_pairs; i++) {
+			struct pair pair = body->pairs[i];
+			if (!pair.value)
+				continue;
+			length += strlen(pair.key) + strlen(pair.value) + (i ? 1 : 0) + 1;
+			post = realloc(post, length + 1);
+			if (i)
+				strcat(post, "&");
+			sprintf(post, "%s%s=%s", post, pair.key, pair.value);
+		}
+		strcpy(attr.requestMethod, "POST");
+		const char *headers[] = { "Content-Type", "application/x-www-form-urlencoded", NULL };
+		attr.requestHeaders = headers;
+		attr.requestData = post;
+		attr.requestDataSize = length + 1;
+		attr.userData = post;
+	} else {
+		strcpy(attr.requestMethod, "GET");
+		attr.userData = callback;
+	}
 	emscripten_fetch(&attr, url);
 #else
 	curl_easy_setopt(curl, CURLOPT_URL, url);
