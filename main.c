@@ -33,13 +33,10 @@ static void print(icclient_fetch_t *fetch)
 int main(int argc, char *argv[])
 {
 	icclient_init("https://demo.interchangecommerce.org/i/demo", "/demo/images", NULL);
-/*
-	icclient_allproducts(print_catalog, NULL);
-	struct icclient_member *member = icclient_member_login("kirk@icdevgroup.net", "kirk", NULL, NULL, NULL, print);
-	icclient_member_logout(member);
-*/
-	struct icclient_admin *admin = icclient_admin_login("interch", "pass", NULL);
-	icclient_admin_new_admin("Hardware", "pass", "Hardware stuff", 0, ICCLIENT_ADMIN_GROUP_MERCH, NULL);
+	icclient_allproducts(NULL, print_catalog);
+	struct icclient_admin *admin = icclient_admin_login("demo", "demo", NULL);
 	icclient_admin_logout(admin, NULL);
+	struct icclient_member *member = icclient_member_login("kirk@icdevgroup.net", "kirk", print);
+	icclient_member_logout(member);
 	icclient_cleanup();
 }

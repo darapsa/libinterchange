@@ -19,7 +19,7 @@ void icclient_init(const char *url, const char *dir, const char *certificate)
 	init(certificate);
 }
 
-void icclient_results(const char *prod_group, void (*callback)(struct icclient_catalog *), void (*handler)(icclient_fetch_t *))
+void icclient_results(const char *prod_group, void (*handler)(icclient_fetch_t *), void (*callback)(struct icclient_catalog *))
 {
 	char nonspaced[strlen(prod_group) + 1];
 	strcpy(nonspaced, prod_group);
