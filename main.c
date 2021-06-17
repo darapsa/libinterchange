@@ -34,9 +34,7 @@ int main(int argc, char *argv[])
 {
 	icclient_init("https://demo.interchangecommerce.org/i/demo", "/demo/images", NULL);
 	icclient_allproducts(NULL, print_catalog);
-	struct icclient_admin *admin = icclient_admin_login("demo", "demo", NULL);
-	icclient_admin_logout(admin, NULL);
-	struct icclient_member *member = icclient_member_login("kirk@icdevgroup.net", "kirk", print);
-	icclient_member_logout(member);
+	icclient_admin_login("demo", "demo", print, NULL);
+	icclient_member_login("kirk@icdevgroup.net", "kirk", print, NULL);
 	icclient_cleanup();
 }

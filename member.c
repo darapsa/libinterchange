@@ -3,74 +3,16 @@
 #include "login.h"
 #include "icclient/member.h"
 
-typedef struct icclient_member icclient_member;
-
-icclient_member *initialise(const char *username, const char *password)
+void icclient_member_newaccount(const char *username, const char *password, const char *verify,
+		void (*handler)(icclient_fetch_t *), void (*callback)(struct icclient_member *))
 {
-	icclient_member *member = malloc(sizeof(icclient_member));
-	member->username = NULL;
-	member->usernick = NULL;
-	member->password = NULL;
-	member->expiration = NULL;
-	member->acl = NULL;
-	member->mod_time = NULL;
-	member->s_nickname = NULL;
-	member->company = NULL;
-	member->fname = NULL;
-	member->lname = NULL;
-	member->address1 = NULL;
-	member->address2 = NULL;
-	member->address3 = NULL;
-	member->city = NULL;
-	member->state = NULL;
-	member->zip = NULL;
-	member->country = NULL;
-	member->phone_day = NULL;
-	member->mv_shipmode = NULL;
-	member->b_nickname = NULL;
-	member->b_fname = NULL;
-	member->b_lname = NULL;
-	member->b_company = NULL;
-	member->b_address1 = NULL;
-	member->b_address2 = NULL;
-	member->b_address3 = NULL;
-	member->b_city = NULL;
-	member->b_state = NULL;
-	member->b_zip = NULL;
-	member->b_country = NULL;
-	member->b_phone = NULL;
-	member->p_nickname = NULL;
-	member->email = NULL;
-	member->fax = NULL;
-	member->phone_night = NULL;
-	member->address_book = NULL;
-	member->accounts = NULL;
-	member->preferences = NULL;
-	member->carts = NULL;
-	member->owner = NULL;
-	member->file_acl = NULL;
-	member->db_acl = NULL;
-	member->mail_list = NULL;
-	member->credit_limit = NULL;
-	member->inactive = false;
-	member->dealer = false;
-	member->price_level = NULL;
-	return member;
+	login(username, password, verify, "NewAccount", handler, (void (*)(void *))callback);
 }
 
-icclient_member *icclient_member_newaccount(const char *username, const char *password, const char *verify,
-		void (*handler)(icclient_fetch_t *))
+void icclient_member_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *),
+		void (*callback)(struct icclient_member *))
 {
-	icclient_member *member = initialise(username, password);
-	login(username, password, verify, "NewAccount", handler, member);
-	return member;
-}
-
-icclient_member *icclient_member_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *))
-{
-	icclient_member *member = initialise(username, password);
-	login(username, password, NULL, "Login", handler, member);
-	return member;
+	login(username, password, NULL, "Login", handler, (void (*)(void *))callback);
 }
 
 void icclient_member_account(const char *fname, const char *lname, const char *address1,
@@ -106,7 +48,7 @@ void icclient_member_changepassword(const char *password_old, const char *passwo
 			}}, "%s", "member/change_password");
 }
 
-void icclient_member_logout(icclient_member *member)
+void icclient_member_logout(struct icclient_member *member)
 {
 	request(NULL, NULL, NULL, "%s", "logout");
 	if (member->username)
@@ -200,5 +142,4 @@ void icclient_member_logout(icclient_member *member)
 	if (member->price_level)
 		free(member->price_level);
 	free(member);
-	member = NULL;
 }

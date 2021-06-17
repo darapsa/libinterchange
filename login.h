@@ -4,9 +4,9 @@
 #include "request.h"
 
 static inline void login(const char *username, const char *password, const char *verify, const char *click,
-		void (*handler)(icclient_fetch_t *), void *user)
+		void (*handler)(icclient_fetch_t *), void (*callback)(void *))
 {
-	request(handler, user, &(struct body){ 4, {
+	request(handler, callback, &(struct body){ 4, {
 			{ "mv_username", username },
 			{ "mv_password", password },
 			{ "mv_verify", verify },

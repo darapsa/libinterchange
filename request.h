@@ -44,7 +44,7 @@ static inline void init(const char *certificate)
 #endif
 }
 
-static inline void request(void (*handler)(icclient_fetch_t *), void *callback, struct body *body, char *fmt, ...)
+static inline void request(void (*handler)(icclient_fetch_t *), void (*callback)(void *), struct body *body, char *fmt, ...)
 {
 	va_list ap;
 	char *p, *sval;

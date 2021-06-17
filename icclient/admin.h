@@ -19,7 +19,8 @@ struct icclient_admin {
 extern "C" {
 #endif
 
-	struct icclient_admin *icclient_admin_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *));
+	void icclient_admin_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *),
+			void (*callback)(struct icclient_admin *));
 	void icclient_admin_new_admin(const char *username, const char *password, const char *name, bool super,
 			enum icclient_admin_group group, void (*handler)(icclient_fetch_t *));
 	void icclient_admin_new_item(const char *description, const char *comment, const char *price, const char *image_path,

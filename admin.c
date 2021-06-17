@@ -3,16 +3,10 @@
 #include "login.h"
 #include "icclient/admin.h"
 
-typedef struct icclient_admin icclient_admin;
-
-icclient_admin *icclient_admin_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *))
+void icclient_admin_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *),
+		void (*callback)(struct icclient_admin *))
 {
-	icclient_admin *admin = malloc(sizeof(icclient_admin));
-	admin->name = NULL;
-	admin->username = NULL;
-	admin->super = false;
-	login(username, password, NULL, "MMLogin", handler, admin);
-	return admin;
+	login(username, password, NULL, "MMLogin", handler, (void (*)(void *))callback);
 }
 
 void icclient_admin_new_admin(const char *username, const char *password, const char *name, bool super,
@@ -65,7 +59,7 @@ void icclient_admin_new_item(const char *description, const char *comment, const
 	}}, "%s", "admin/item_edit");
 }
 
-void icclient_admin_logout(icclient_admin *admin, void (*handler)(icclient_fetch_t *))
+void icclient_admin_logout(struct icclient_admin *admin, void (*handler)(icclient_fetch_t *))
 {
 	request(handler, NULL, NULL, "%s", "admin/login");
 	if (admin->name)
@@ -73,5 +67,4 @@ void icclient_admin_logout(icclient_admin *admin, void (*handler)(icclient_fetch
 	if (admin->username)
 		free(admin->username);
 	free(admin);
-	admin = NULL;
 }

@@ -27,7 +27,7 @@ typedef struct curl_httppost icclient_post;
 
 struct icclient_post_callback {
 	icclient_post *post;
-	void (*callback)(icclient_fetch_t *);
+	void (*callback)(void *);
 };
 
 #endif

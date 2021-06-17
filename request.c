@@ -16,5 +16,5 @@ size_t append(char *data, size_t size, size_t nmemb, icclient_fetch_t *fetch)
 #endif
 
 extern inline void init(const char *);
-extern inline void request(void (*)(icclient_fetch_t *), void *, struct body *, char *, ...);
+extern inline void request(void (*)(icclient_fetch_t *), void (*)(void *), struct body *, char *, ...);
 extern inline void cleanup();
