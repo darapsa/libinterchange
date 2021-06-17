@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	struct icclient_member *member = icclient_member_login("kirk@icdevgroup.net", "kirk", NULL, NULL, NULL, print);
 	icclient_member_logout(member);
 */
-	struct icclient_admin *admin = icclient_admin_login("interch", "pass", NULL, NULL, NULL, NULL);
+	struct icclient_admin *admin = icclient_admin_login("interch", "pass", NULL);
 	icclient_admin_new_admin("Hardware", "pass", "Hardware stuff", 0, ICCLIENT_ADMIN_GROUP_MERCH, NULL);
 	icclient_admin_logout(admin, NULL);
 	icclient_cleanup();

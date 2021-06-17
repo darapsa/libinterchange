@@ -58,20 +58,18 @@ icclient_member *initialise(const char *username, const char *password)
 	return member;
 }
 
-icclient_member *icclient_member_newaccount(const char *username, const char *password,
-		const char *verify, const char *successpage, const char *nextpage,
-		const char *failpage, void (*handler)(icclient_fetch_t *))
+icclient_member *icclient_member_newaccount(const char *username, const char *password, const char *verify,
+		void (*handler)(icclient_fetch_t *))
 {
 	icclient_member *member = initialise(username, password);
-	login(username, password, verify, "NewAccount", successpage, nextpage, failpage, handler, member);
+	login(username, password, verify, "NewAccount", handler, member);
 	return member;
 }
 
-icclient_member *icclient_member_login(const char *username, const char *password,
-		const char *successpage, const char *nextpage, const char *failpage, void (*handler)(icclient_fetch_t *))
+icclient_member *icclient_member_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *))
 {
 	icclient_member *member = initialise(username, password);
-	login(username, password, NULL, "Login", successpage, nextpage, failpage, handler, member);
+	login(username, password, NULL, "Login", handler, member);
 	return member;
 }
 

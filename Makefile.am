@@ -26,6 +26,6 @@ pkginclude_HEADERS = \
 		  icclient/member.h \
 		  icclient/admin.h
 #bin_PROGRAMS = icclient
-#icclient_SOURCES = main.c client.c request.c handler.c login.c member.c
+#icclient_SOURCES = main.c client.c request.c handler.c login.c member.c admin.c
 #icclient_CPPFLAGS = $(TIDY_CFLAGS)
 #icclient_LDFLAGS = -lcurl $(TIDY_LIBS)

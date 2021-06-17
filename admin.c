@@ -5,15 +5,13 @@
 
 typedef struct icclient_admin icclient_admin;
 
-icclient_admin *icclient_admin_login(const char *username, const char *password,
-		const char *successpage, const char *nextpage, const char *failpage,
-		void (*handler)(icclient_fetch_t *))
+icclient_admin *icclient_admin_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *))
 {
 	icclient_admin *admin = malloc(sizeof(icclient_admin));
 	admin->name = NULL;
 	admin->username = NULL;
 	admin->super = false;
-	login(username, password, NULL, "MMLogin", successpage, nextpage, failpage, handler, admin);
+	login(username, password, NULL, "MMLogin", handler, admin);
 	return admin;
 }
 
