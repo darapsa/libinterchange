@@ -4,12 +4,12 @@
 #include "icclient/member.h"
 
 void icclient_member_newaccount(const char *username, const char *password, const char *verify,
-		void (*handler)(icclient_fetch_t *), void (*callback)(struct icclient_member *))
+		void (*handler)(icclient_response *), void (*callback)(struct icclient_member *))
 {
 	login(username, password, verify, "NewAccount", handler, (void (*)(void *))callback);
 }
 
-void icclient_member_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *),
+void icclient_member_login(const char *username, const char *password, void (*handler)(icclient_response *),
 		void (*callback)(struct icclient_member *))
 {
 	login(username, password, NULL, "Login", handler, (void (*)(void *))callback);

@@ -4,7 +4,7 @@
 char *sampleurl;
 char *image_dir;
 
-extern void handle_results(icclient_fetch_t *fetch);
+extern void handle_results(icclient_response *);
 
 void icclient_init(const char *url, const char *dir, const char *certificate)
 {
@@ -19,7 +19,7 @@ void icclient_init(const char *url, const char *dir, const char *certificate)
 	init(certificate);
 }
 
-void icclient_results(const char *prod_group, void (*handler)(icclient_fetch_t *), void (*callback)(struct icclient_catalog *))
+void icclient_results(const char *prod_group, void (*handler)(icclient_response *), void (*callback)(struct icclient_catalog *))
 {
 	char nonspaced[strlen(prod_group) + 1];
 	strcpy(nonspaced, prod_group);
@@ -29,12 +29,12 @@ void icclient_results(const char *prod_group, void (*handler)(icclient_fetch_t *
 	request(handler ? handler : handle_results, (void *)callback, 0, "%s", nonspaced);
 }
 
-void icclient_flypage(const char *sku, void (*handler)(icclient_fetch_t *), struct icclient_product **productptr)
+void icclient_flypage(const char *sku, void (*handler)(icclient_response *), struct icclient_product **productptr)
 {
 	request(handler, (void *)productptr, 0, "%s", sku);
 }
 
-void icclient_page(const char *path, void (*handler)(icclient_fetch_t *), void **dataptr)
+void icclient_page(const char *path, void (*handler)(icclient_response *), void **dataptr)
 {
 	request(handler, (void *)dataptr, 0, "%s", path);
 }

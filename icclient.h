@@ -50,7 +50,7 @@ void icclient_init(const char *sampleurl, const char *image_dir, const char *cer
  * \param handler A pointer to the function when a custom handler is needed to arrange the data into the catalog.
  * \param callback A pointer to the function that needs to be called after the catalog is ready.
  */
-void icclient_results(const char *prod_group, void (*handler)(icclient_fetch_t *), void (*callback)(struct icclient_catalog *));
+void icclient_results(const char *prod_group, void (*handler)(icclient_response *), void (*callback)(struct icclient_catalog *));
 
 /*!
  * \brief For fetching data about a specific product.
@@ -58,9 +58,9 @@ void icclient_results(const char *prod_group, void (*handler)(icclient_fetch_t *
  * \param handler A pointer to a cURL write function callback.
  * \param productptr A pointer to pointer to the product to store the data.
  */
-void icclient_flypage(const char *sku, void (*handler)(icclient_fetch_t *), struct icclient_product **productptr);
+void icclient_flypage(const char *sku, void (*handler)(icclient_response *), struct icclient_product **productptr);
 
-void icclient_page(const char *path, void (*handler)(icclient_fetch_t *), void **dataptr);
+void icclient_page(const char *path, void (*handler)(icclient_response *), void **dataptr);
 
 void icclient_free_product(struct icclient_product *product);
 

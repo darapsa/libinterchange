@@ -25,9 +25,9 @@ static void print_catalog(struct icclient_catalog *catalog)
 	icclient_free_catalog(catalog);
 }
 
-static void print(icclient_fetch_t *fetch)
+static void print(icclient_response *response)
 {
-	printf("%s\n", fetch->data);
+	printf("%s\n", response->data);
 }
 
 int main(int argc, char *argv[])

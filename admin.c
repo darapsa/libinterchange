@@ -3,14 +3,14 @@
 #include "login.h"
 #include "icclient/admin.h"
 
-void icclient_admin_login(const char *username, const char *password, void (*handler)(icclient_fetch_t *),
+void icclient_admin_login(const char *username, const char *password, void (*handler)(icclient_response *),
 		void (*callback)(struct icclient_admin *))
 {
 	login(username, password, NULL, "MMLogin", handler, (void (*)(void *))callback);
 }
 
 void icclient_admin_new_admin(const char *username, const char *password, const char *name, bool super,
-		enum icclient_admin_group group, void (*handler)(icclient_fetch_t *))
+		enum icclient_admin_group group, void (*handler)(icclient_response *))
 {
 	request(handler, NULL, &(struct body){ 13, {
 			{ "mv_todo", "set" },
@@ -31,7 +31,7 @@ void icclient_admin_new_admin(const char *username, const char *password, const 
 }
 
 void icclient_admin_new_item(const char *description, const char *comment, const char *price, const char *image_path,
-		void (*handler)(icclient_fetch_t *))
+		void (*handler)(icclient_response *))
 {
 	request(handler, NULL, &(struct body){ 15, {
 			{ "mv_click", "process_filter" },
@@ -59,7 +59,7 @@ void icclient_admin_new_item(const char *description, const char *comment, const
 	}}, "%s", "admin/item_edit");
 }
 
-void icclient_admin_logout(struct icclient_admin *admin, void (*handler)(icclient_fetch_t *))
+void icclient_admin_logout(struct icclient_admin *admin, void (*handler)(icclient_response *))
 {
 	request(handler, NULL, NULL, "%s", "admin/login");
 	if (admin->name)

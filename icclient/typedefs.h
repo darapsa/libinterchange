@@ -9,7 +9,7 @@
 
 #include <emscripten/fetch.h>
 
-typedef emscripten_fetch_t icclient_fetch_t;
+typedef emscripten_fetch_t icclient_response;
 typedef char icclient_post;
 
 #else
@@ -20,7 +20,7 @@ typedef struct {
 	void *userData;
 	char *data;
 	size_t numBytes;
-} icclient_fetch_t;
+} icclient_response;
 typedef struct curl_httppost icclient_post;
 
 #endif

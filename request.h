@@ -23,7 +23,7 @@ extern emscripten_fetch_attr_t attr;
 #else
 extern CURL *curl;
 extern char *sampleurl;
-size_t append(char *, size_t, size_t, icclient_fetch_t *);
+size_t append(char *, size_t, size_t, icclient_response *);
 #endif
 
 static inline void init(const char *certificate)
@@ -44,7 +44,7 @@ static inline void init(const char *certificate)
 #endif
 }
 
-static inline void request(void (*handler)(icclient_fetch_t *), void (*callback)(void *), struct body *body, char *fmt, ...)
+static inline void request(void (*handler)(icclient_response *), void (*callback)(void *), struct body *body, char *fmt, ...)
 {
 	va_list ap;
 	char *p, *sval;
@@ -138,7 +138,7 @@ static inline void request(void (*handler)(icclient_fetch_t *), void (*callback)
 #else
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, append);
-	icclient_fetch_t fetch = { .numBytes = 0 };
+	icclient_response response = { .numBytes = 0 };
 	struct curl_httppost *post, *last = NULL;
 	if (body) {
 		for (size_t i = 0; i < body->num_pairs; i++) {
@@ -155,15 +155,15 @@ static inline void request(void (*handler)(icclient_fetch_t *), void (*callback)
 		struct icclient_post_callback *post_callback = malloc(sizeof(struct icclient_post_callback));
 		post_callback->post = post;
 		post_callback->callback = callback;
-		fetch.userData = post_callback;
+		response.userData = post_callback;
 	} else {
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
-		fetch.userData = callback;
+		response.userData = callback;
 	}
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &fetch);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 	CURLcode res = curl_easy_perform(curl);
 	if (res == CURLE_OK && handler)
-		handler(&fetch);
+		handler(&response);
 #ifdef DEBUG
 	else {
 		const char *error = curl_easy_strerror(res);

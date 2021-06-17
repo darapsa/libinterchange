@@ -118,11 +118,11 @@ static void dumpNode(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catal
 	}
 }
 
-void handle_results(icclient_fetch_t *fetch)
+void handle_results(icclient_response *response)
 {
 	TidyDoc tdoc = tidyCreate();
 	tidyOptSetBool(tdoc, TidyXhtmlOut, yes);
-	tidyParseString(tdoc, fetch->data);
+	tidyParseString(tdoc, response->data);
 	tidyCleanAndRepair(tdoc);
 	tidyOptSetBool(tdoc, TidyForceOutput, yes);
 	TidyBuffer output = {0};
@@ -135,5 +135,5 @@ void handle_results(icclient_fetch_t *fetch)
 	tidyRelease(tdoc);
 	if (loc)
 		freelocale(loc);
-	((void (*)(struct icclient_catalog *))fetch->userData)(catalog);
+	((void (*)(struct icclient_catalog *))response->userData)(catalog);
 }
