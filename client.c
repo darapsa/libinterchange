@@ -47,24 +47,24 @@ void icclient_init(const char *url, const char *dir, const char *certificate)
 #endif
 }
 
-void icclient_results(const char *prod_group, void (*handler)(icclient_response *), void (*callback)(struct icclient_catalog *))
+void icclient_catalog(const char *prod_group, void (*handler)(icclient_response *), void (*callback)(struct icclient_catalog *))
 {
 	char nonspaced[strlen(prod_group) + 1];
 	strcpy(nonspaced, prod_group);
 	char *space = NULL;
 	while ((space = strchr(nonspaced, ' ')))
 		*space = '-';
-	request(handler ? handler : handle_results, (void *)callback, 0, "%s", nonspaced);
+	request(handler ? handler : handle_results, (void (*)(void *))callback, NULL, "%s", nonspaced);
 }
 
-void icclient_flypage(const char *sku, void (*handler)(icclient_response *), struct icclient_product **productptr)
+void icclient_product(const char *sku, void (*handler)(icclient_response *), void (*callback)(struct icclient_product *))
 {
-	request(handler, (void *)productptr, 0, "%s", sku);
+	request(handler, (void (*)(void *))callback, NULL, "%s", sku);
 }
 
-void icclient_page(const char *path, void (*handler)(icclient_response *), void **dataptr)
+void icclient_page(const char *path, void (*handler)(icclient_response *))
 {
-	request(handler, (void *)dataptr, 0, "%s", path);
+	request(handler, NULL, NULL, "%s", path);
 }
 
 void icclient_free_product(struct icclient_product *product)
