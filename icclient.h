@@ -66,6 +66,8 @@ void icclient_free_product(struct icclient_product *product);
 
 void icclient_free_catalog(struct icclient_catalog *catalog);
 
+void icclient_free_response(icclient_response *response);
+
 void icclient_cleanup();
 
 #ifdef __cplusplus
