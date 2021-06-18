@@ -8,7 +8,7 @@
 extern char *image_dir;
 static locale_t loc = 0;
 
-static void dumpNode(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catalog, char **category,
+static void recurse(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catalog, char **category,
 		bool is_sku, bool is_category, bool is_price)
 {
 	struct icclient_product *product;
@@ -34,19 +34,21 @@ static void dumpNode(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catal
 				sprintf(prefix, "%s%s", image_dir, subdir);
 				size_t prefix_len = strlen(prefix);
 				for (TidyAttr attr = tidyAttrFirst(child); attr; attr = tidyAttrNext(attr)) {
-					if (!strcmp(tidyAttrName(attr), "src")) {
-						if (strncmp(tidyAttrValue(attr), prefix, prefix_len))
+					ctmbstr name = tidyAttrName(attr);
+					ctmbstr value = tidyAttrValue(attr);
+					if (!strcmp(name, "src")) {
+						if (strncmp(value, prefix, prefix_len))
 							break;
 						product = malloc(sizeof(struct icclient_product));
 						memset(product, '\0', sizeof(struct icclient_product));
-						size_t len = strlen(tidyAttrValue(attr)) - prefix_len;
+						size_t len = strlen(value) - prefix_len;
 						product->image = malloc(len + 1);
-						strncpy(product->image, tidyAttrValue(attr) + prefix_len, len + 1);
+						strncpy(product->image, value + prefix_len, len + 1);
 					}
-					if (strcmp(tidyAttrName(attr), "title"))
+					if (strcmp(name, "title"))
 						continue;
-					product->description = malloc(strlen(tidyAttrValue(attr)) + 1);
-					strcpy(product->description, tidyAttrValue(attr));
+					product->description = malloc(strlen(value) + 1);
+					strcpy(product->description, value);
 					if (*category) {
 						product->category = malloc(strlen(*category) + 1);
 						strcpy(product->category, *category);
@@ -56,6 +58,7 @@ static void dumpNode(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catal
 							+ sizeof(struct icclient_product *[(*catalog)->length]));
 					(*catalog)->products[(*catalog)->length - 1] = product;
 				}
+				continue;
 			} else if (!strcmp(name, "h4")) {
 				is_sku = true;
 				is_category = false;
@@ -80,6 +83,7 @@ static void dumpNode(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catal
 				is_category = false;
 				is_price = false;
 			}
+			recurse(doc, child, catalog, category, is_sku, is_category, is_price);
 		} else if (is_category || is_price) {
 			TidyBuffer buf;
 			tidyBufInit(&buf);
@@ -114,7 +118,6 @@ static void dumpNode(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catal
 			}
 			tidyBufFree(&buf);
 		}
-		dumpNode(doc, child, catalog, category, is_sku, is_category, is_price);
 	}
 }
 
@@ -130,7 +133,7 @@ void handle_results(icclient_response *response)
 	tidySaveBuffer(tdoc, &output);
 	struct icclient_catalog *catalog = malloc(sizeof(struct icclient_catalog));
 	catalog->length = 0;
-	dumpNode(tdoc, tidyGetRoot(tdoc), &catalog, &(char *){NULL}, false, false, false);
+	recurse(tdoc, tidyGetRoot(tdoc), &catalog, &(char *){NULL}, false, false, false);
 	tidyBufFree(&output);
 	tidyRelease(tdoc);
 	if (loc)
