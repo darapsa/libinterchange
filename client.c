@@ -97,11 +97,10 @@ void icclient_free_catalog(struct icclient_catalog *catalog)
 
 void icclient_free_response(icclient_response *response)
 {
-#ifdef __EMSCRIPTEN__
-	emscripten_fetch_close(response);
-#else
 	if (response->userData)
 		free(response->userData);
+#ifdef __EMSCRIPTEN__
+	emscripten_fetch_close(response);
 #endif
 }
 
