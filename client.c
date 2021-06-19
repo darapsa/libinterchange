@@ -34,7 +34,9 @@ void icclient_init(const char *url, const char *dir, const char *cert)
 		certificate = malloc(strlen(certificate) + 1);
 		strcpy(certificate, cert);
 	}
+#ifndef __EMSCRIPTEN__
 	curl_global_init(CURL_GLOBAL_SSL);
+#endif
 }
 
 void icclient_catalog(const char *prod_group, void (*handler)(icclient_response *), void (*callback)(struct icclient_catalog *))
