@@ -6,13 +6,26 @@
 #include <stdarg.h>
 #include <string.h>
 #include "request.h"
+
 #ifdef __EMSCRIPTEN__
+
 extern emscripten_fetch_attr_t attr;
+
 #else
+
 #include <threads.h>
 #include <curl/curl.h>
+
 extern char *sampleurl;
 extern CURL *curl;
+
+struct container {
+	CURL *curl;
+	struct curl_httppost *post;
+	void (*handler)(icclient_response *);
+	icclient_response *response;
+};
+
 static size_t append(char *data, size_t size, size_t nmemb, icclient_response *response)
 {
 	size_t realsize = size * nmemb;
@@ -21,6 +34,30 @@ static size_t append(char *data, size_t size, size_t nmemb, icclient_response *r
 	response->numBytes += realsize;
 	response->data[response->numBytes] = '\0';
 	return realsize;
+}
+
+static int async(void *arg)
+{
+	int ret = thrd_success;
+	struct container *container = (struct container *)arg;
+	CURLcode res = curl_easy_perform(container->curl);
+	if (container->post)
+		curl_formfree(container->post);
+	if (res == CURLE_OK && container->handler)
+		container->handler(container->response);
+	else {
+		ret = thrd_error;
+#ifdef DEBUG
+		const char *error = curl_easy_strerror(res);
+#ifdef __ANDROID__
+		__android_log_print(ANDROID_LOG_ERROR, "libicclient.so", "%s", error);
+#else
+		fprintf(stderr, "%s\n", error);
+#endif
+#endif
+	}
+	free(container);
+	return ret;
 }
 #endif
 
@@ -131,20 +168,12 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
 	} else
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
-	CURLcode res = curl_easy_perform(curl);
-	if (post)
-		curl_formfree(post);
-	if (res == CURLE_OK && handler)
-		handler(response);
-#ifdef DEBUG
-	else {
-		const char *error = curl_easy_strerror(res);
-#ifdef __ANDROID__
-		__android_log_print(ANDROID_LOG_ERROR, "libicclient.so", "%s", error);
-#else
-		fprintf(stderr, "%s\n", error);
-#endif
-	}
-#endif
+	struct container *container = malloc(sizeof(struct container));
+	container->curl = curl;
+	container->post = post;
+	container->handler = handler;
+	container->response = response;
+	thrd_t thread;
+	thrd_create(&thread, async, container);
 #endif
 }
