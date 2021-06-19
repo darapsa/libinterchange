@@ -151,6 +151,7 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 	CURLcode res = curl_easy_perform(curl);
 	if (post)
 		curl_formfree(post);
+	curl_easy_cleanup(curl);
 	if (res == CURLE_OK && handler)
 		handler(response);
 #ifdef DEBUG
@@ -163,6 +164,5 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 #endif
 	}
 #endif
-	curl_easy_cleanup(curl);
 #endif
 }
