@@ -116,8 +116,8 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, append);
 	icclient_response *response = malloc(sizeof(icclient_response));
 	response->data = malloc(1);
-       	response->userData = callback;
 	response->numBytes = 0;
+	response->userData = callback;
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, response);
 	struct curl_httppost *post, *last = NULL;
 	if (body) {
@@ -125,10 +125,7 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 			struct pair pair = body->pairs[i];
 			if (!pair.value)
 				continue;
-			curl_formadd(&post, &last,
-					CURLFORM_COPYNAME, pair.key,
-					CURLFORM_PTRCONTENTS, pair.value,
-					CURLFORM_END);
+			curl_formadd(&post, &last, CURLFORM_COPYNAME, pair.key, CURLFORM_PTRCONTENTS, pair.value, CURLFORM_END);
 		}
 		last = NULL;
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
