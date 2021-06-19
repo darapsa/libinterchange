@@ -1,40 +1,34 @@
+#include <stdlib.h>
+#include <string.h>
+#ifndef __EMSCRIPTEN__
+#include <curl/curl.h>
+#endif
 #include "request.h"
 #include "icclient.h"
 
-char *sampleurl;
 char *image_dir;
-char *certificate = NULL;
-
-extern inline void request(void (*)(icclient_response *), void (*)(void *), struct body *, char *, ...);
-extern void handle_results(icclient_response *);
-
 #ifndef __EMSCRIPTEN__
-size_t append(char *data, size_t size, size_t nmemb, icclient_response *response)
-{
-	size_t realsize = size * nmemb;
-	response->data = realloc(response->data, response->numBytes + realsize + 1);
-	memcpy(&(response->data[response->numBytes]), data, realsize);
-	response->numBytes += realsize;
-	response->data[response->numBytes] = '\0';
-	return realsize;
-}
+char *sampleurl;
+char *certificate = NULL;
 #endif
+
+extern void handle_results(icclient_response *);
 
 void icclient_init(const char *url, const char *dir, const char *cert)
 {
+	image_dir = malloc(strlen(dir) + 1);
+	strcpy(image_dir, dir);
+#ifndef __EMSCRIPTEN__
 	size_t length = strlen(url);
 	size_t append = url[length - 1] != '/';
 	sampleurl = malloc(length + append + 1);
 	strcpy(sampleurl, url);
 	if (append)
 		strcat(sampleurl, "/");
-	image_dir = malloc(strlen(dir) + 1);
-	strcpy(image_dir, dir);
 	if (certificate) {
 		certificate = malloc(strlen(certificate) + 1);
 		strcpy(certificate, cert);
 	}
-#ifndef __EMSCRIPTEN__
 	curl_global_init(CURL_GLOBAL_SSL);
 #endif
 }
@@ -93,14 +87,17 @@ void icclient_free_response(icclient_response *response)
 		free(response->userData);
 #ifdef __EMSCRIPTEN__
 	emscripten_fetch_close(response);
+#else
+	free(response->data);
+	free(response);
 #endif
 }
 
 void icclient_cleanup()
 {
+	free(image_dir);
 #ifndef __EMSCRIPTEN__
 	free(sampleurl);
-	free(image_dir);
 	if (certificate)
 		free(certificate);
 	curl_global_cleanup();

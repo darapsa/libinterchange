@@ -1,10 +1,9 @@
 lib_LTLIBRARIES = libicclient.la
 libicclient_la_SOURCES = \
 			 client.c \
-			 request.h \
+			 request.c \
 			 handler.c \
 			 ord.c \
-			 login.h \
 			 login.c \
 			 member.c \
 			 admin.c
@@ -26,7 +25,7 @@ pkginclude_HEADERS = \
 		  icclient/admin.h
 #if !WASM
 #bin_PROGRAMS = icclient
-#icclient_SOURCES = main.c client.c handler.c login.c member.c admin.c
+#icclient_SOURCES = main.c client.c request.c handler.c login.c member.c admin.c
 #icclient_CPPFLAGS = $(TIDY_CFLAGS)
 #icclient_LDFLAGS = -lcurl $(TIDY_LIBS)
 #endif
