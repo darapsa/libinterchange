@@ -9,6 +9,7 @@
 #include <stdarg.h>
 #include <string.h>
 #ifndef __EMSCRIPTEN__
+#include <threads.h>
 #include <curl/curl.h>
 #endif
 #include "icclient/typedefs.h"
@@ -21,11 +22,9 @@ struct body {
 	} pairs[16];
 };
 
-#ifdef __EMSCRIPTEN__
-extern emscripten_fetch_attr_t attr;
-#else
-extern CURL *curl;
+#ifndef __EMSCRIPTEN__
 extern char *sampleurl;
+extern char *certificate;
 size_t append(char *, size_t, size_t, icclient_response *);
 #endif
 
@@ -89,6 +88,9 @@ static inline void request(void (*handler)(icclient_response *), void (*callback
 	va_end(ap);
 
 #ifdef __EMSCRIPTEN__
+	emscripten_fetch_attr_t attr;
+	emscripten_fetch_attr_init(&attr);
+	attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
 	if (handler)
 		attr.onsuccess = handler;
 	if (body) {
@@ -117,6 +119,14 @@ static inline void request(void (*handler)(icclient_response *), void (*callback
 	}
 	emscripten_fetch(&attr, url);
 #else
+	CURL *curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
+	if (certificate)
+		curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
+#ifdef DEBUG
+	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+#endif
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, append);
 	icclient_response response = { .userData = callback, .numBytes = 0 };
@@ -151,6 +161,7 @@ static inline void request(void (*handler)(icclient_response *), void (*callback
 #endif
 	}
 #endif
+	curl_easy_cleanup(curl);
 #endif
 }
 

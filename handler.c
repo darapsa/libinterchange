@@ -34,7 +34,7 @@ static void recurse(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catalo
 				sprintf(prefix, "%s%s", image_dir, subdir);
 				size_t prefix_len = strlen(prefix);
 				for (TidyAttr attr = tidyAttrFirst(child); attr; attr = tidyAttrNext(attr)) {
-					ctmbstr name = tidyAttrName(attr);
+					name = tidyAttrName(attr);
 					ctmbstr value = tidyAttrValue(attr);
 					if (!strcmp(name, "src")) {
 						if (strncmp(value, prefix, prefix_len))
