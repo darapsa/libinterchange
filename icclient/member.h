@@ -1,6 +1,8 @@
 #ifndef ICCLIENT_MEMBER_H
 #define ICCLIENT_MEMBER_H
 
+#include "typedefs.h"
+
 struct icclient_member_preferences {
 	bool mv_same_billing;
 	bool email_copy;

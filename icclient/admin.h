@@ -1,6 +1,8 @@
 #ifndef ICCLIENT_ADMIN_H
 #define ICCLIENT_ADMIN_H
 
+#include "typedefs.h"
+
 enum icclient_admin_group {
 	ICCLIENT_ADMIN_GROUP_CONTENT,
 	ICCLIENT_ADMIN_GROUP_MERCH,
