@@ -5,8 +5,10 @@
 ```sh
 $ git clone git://darapsa.org/libicclient.git
 $ cd libicclient
-$ autoreconf --install
-$ ./configure # (or use the platform specific wrappers, and adjust as necessary)
-$ make
+$ autoreconf -is
+$ mkdir build
+$ cd build
+$ ../configure # (or use the platform specific wrappers, and adjust as necessary)
+$ make # -jN
 $ make install
 ```
