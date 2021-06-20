@@ -1,7 +1,6 @@
 #ifndef REQUEST_H
 #define REQUEST_H
 
-#include <stddef.h>
 #include "icclient/typedefs.h"
 
 struct body {

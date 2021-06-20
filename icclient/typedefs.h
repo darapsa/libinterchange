@@ -1,9 +1,7 @@
 #ifndef ICCLIENT_TYPEDEFS_H
 #define ICCLIENT_TYPEDEFS_H
 
-#ifdef __cplusplus
-#include <cstddef>
-#endif
+#include <stddef.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten/fetch.h>
 typedef emscripten_fetch_t icclient_response;
