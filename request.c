@@ -156,7 +156,8 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 	response->numBytes = 0;
 	response->userData = callback;
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, response);
-	struct curl_httppost *post, *last = NULL;
+	struct curl_httppost *post = NULL;
+	struct curl_httppost *last = NULL;
 	if (body) {
 		for (size_t i = 0; i < body->num_pairs; i++) {
 			struct pair pair = body->pairs[i];
@@ -170,7 +171,7 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
 	struct container *container = malloc(sizeof(struct container));
 	container->curl = curl;
-	container->post = post ? post : NULL;
+	container->post = post;
 	container->handler = handler;
 	container->response = response;
 	thrd_t thread;
