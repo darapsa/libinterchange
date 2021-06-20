@@ -170,7 +170,7 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
 	struct container *container = malloc(sizeof(struct container));
 	container->curl = curl;
-	container->post = post;
+	container->post = post ? post : NULL;
 	container->handler = handler;
 	container->response = response;
 	thrd_t thread;
