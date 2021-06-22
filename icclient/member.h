@@ -1,6 +1,7 @@
 #ifndef ICCLIENT_MEMBER_H
 #define ICCLIENT_MEMBER_H
 
+#include <stdbool.h>
 #include "typedefs.h"
 
 struct icclient_member_preferences {

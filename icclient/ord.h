@@ -19,21 +19,19 @@ struct icclient_ord_order {
 extern "C" {
 #endif
 
-	void icclient_ord_init(struct icclient_ord_order *order);
-	/*!
-	 * \brief For putting an item to a cart.
-	 * \param sku The SKU of the item to order.
-	 * \param catalog A pointer to the catalog from which the item is.
-	 * \param orderptr A pointer to pointer to the order.
-	 */
-	void icclient_ord_order(const char *sku, const struct icclient_catalog *catalog,
-			struct icclient_ord_order **orderptr);
-	void icclient_ord_checkout(struct icclient_ord_order *order,
-			struct icclient_member *member);
-	void icclient_ord_free(struct icclient_ord_order *order);
+/*!
+ * \brief For putting an item to a cart.
+ * \param sku The SKU of the item to order.
+ * \param catalog The catalog from which the item is.
+ * \param order The address of an order instance.
+ */
+void icclient_ord_order(const char *sku, const struct icclient_catalog *catalog,
+		struct icclient_ord_order **order);
+void icclient_ord_checkout(const struct icclient_ord_order *order, const struct icclient_member *member);
+void icclient_ord_free(struct icclient_ord_order *order);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // ICCLIENT_ORD_H
+#endif
