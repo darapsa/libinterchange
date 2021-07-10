@@ -60,7 +60,7 @@ void icclient_catalog(const char *prod_group, void (*handler)(icclient_response 
 */
 void icclient_product(const char *sku, void (*handler)(icclient_response *), void (*callback)(struct icclient_product *));
 
-void icclient_page(const char *path, void (*handler)(icclient_response *));
+void icclient_path(const char *path, void (*handler)(icclient_response *));
 
 void icclient_free_product(struct icclient_product *product);
 
