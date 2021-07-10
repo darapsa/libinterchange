@@ -4,8 +4,6 @@ AC_PROG_CC
 AM_PROG_AR
 LT_INIT
 PKG_CHECK_MODULES([TIDY], [tidy])
-AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile])
 AC_CHECK_HEADER_STDBOOL
 AC_C_INLINE
 AC_CHECK_FUNCS([memset])
@@ -24,4 +22,6 @@ case $host in
 	*) ios=false;;
 esac
 AM_CONDITIONAL([IOS], [test x$ios = xtrue])
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
