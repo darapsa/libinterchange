@@ -1,5 +1,0 @@
-#!/bin/sh
-export PREFIX=/usr/local/lib
-export CPPFLAGS="$CPPFLAGS -DDEBUG"
-export CFLAGS="$CFLAGS -g"
-emconfigure ../configure --prefix=$PREFIX/emscripten/system
