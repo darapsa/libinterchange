@@ -57,7 +57,7 @@ void icclient_product(const char *sku, void (*handler)(icclient_response *), voi
 	request(handler, (void (*)(void *))callback, NULL, "%s", sku);
 }
 
-void icclient_path(const char *path, void (*handler)(icclient_response *))
+void icclient_page(const char *path, void (*handler)(icclient_response *))
 {
 	request(handler, NULL, NULL, "%s", path);
 }
