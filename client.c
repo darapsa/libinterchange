@@ -1,8 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#ifndef __EMSCRIPTEN__
-#include <curl/curl.h>
-#endif
 #include "request.h"
 #include "icclient.h"
 
@@ -11,7 +8,7 @@ char *image_dir;
 emscripten_fetch_attr_t attr;
 #else
 char *sampleurl;
-CURL *curl;
+char *cainfo = NULL;
 #endif
 
 extern void handle_results(icclient_response *);
@@ -31,14 +28,10 @@ void icclient_init(const char *url, const char *dir, const char *certificate)
 	if (append)
 		strcat(sampleurl, "/");
 	curl_global_init(CURL_GLOBAL_SSL);
-	curl = curl_easy_init();
-	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
-	if (certificate)
-		curl_easy_setopt(curl, CURLOPT_CAINFO, certificate);
-#ifdef DEBUG
-	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-#endif
+	if (certificate) {
+		cainfo = malloc(strlen(certificate) + 1);
+		strcpy(cainfo, certificate);
+	}
 #endif
 }
 
@@ -98,6 +91,7 @@ void icclient_free_response(icclient_response *response)
 	emscripten_fetch_close(response);
 #else
 	free(response->data);
+	curl_easy_cleanup(response->curl);
 	free(response);
 #endif
 }
@@ -106,8 +100,8 @@ void icclient_cleanup()
 {
 	free(image_dir);
 #ifndef __EMSCRIPTEN__
+	free(cainfo);
 	free(sampleurl);
-	curl_easy_cleanup(curl);
 	curl_global_cleanup();
 #endif
 }

@@ -6,10 +6,12 @@
 #include <emscripten/fetch.h>
 typedef emscripten_fetch_t icclient_response;
 #else
+#include <curl/curl.h>
 typedef struct {
 	void *userData;
 	char *data;
 	size_t numBytes;
+	CURL *curl;
 } icclient_response;
 #endif
 

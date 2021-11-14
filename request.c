@@ -17,10 +17,9 @@ extern emscripten_fetch_attr_t attr;
 #include <curl/curl.h>
 
 extern char *sampleurl;
-extern CURL *curl;
+extern char *cainfo;
 
 struct container {
-	CURL *curl;
 	struct curl_httppost *post;
 	void (*handler)(icclient_response *);
 	icclient_response *response;
@@ -40,7 +39,7 @@ static int async(void *arg)
 {
 	int ret = thrd_success;
 	struct container *container = (struct container *)arg;
-	CURLcode res = curl_easy_perform(container->curl);
+	CURLcode res = curl_easy_perform(container->response->curl);
 	if (container->post)
 		curl_formfree(container->post);
 	if (res == CURLE_OK && container->handler)
@@ -149,6 +148,14 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 	}
 	emscripten_fetch(&attr, url);
 #else
+	CURL *curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
+	if (cainfo)
+		curl_easy_setopt(curl, CURLOPT_CAINFO, cainfo);
+#ifdef DEBUG
+	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+#endif
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, append);
 	icclient_response *response = malloc(sizeof(icclient_response));
@@ -170,7 +177,7 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 	} else
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
 	struct container *container = malloc(sizeof(struct container));
-	container->curl = curl;
+	response->curl = curl;
 	container->post = post;
 	container->handler = handler;
 	container->response = response;
