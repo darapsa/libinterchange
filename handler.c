@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include <locale.h>
+#ifdef HAVE_LANGINFO_H
 #include <langinfo.h>
+#endif
 #include <tidy.h>
 #include <tidybuffio.h>
 #include "icclient.h"
@@ -99,7 +101,7 @@ static void recurse(TidyDoc doc, TidyNode tnod, struct icclient_catalog **catalo
 				strcpy(*category, text);
 			} else {
 				is_price = false;
-#ifndef __ANDROID__
+#ifdef HAVE_LANGINFO_H
 				char *symbol = nl_langinfo_l(CRNCYSTR, loc);
 				size_t symbol_len = strlen(symbol) - 1;
 				if (symbol[0] == '-')
