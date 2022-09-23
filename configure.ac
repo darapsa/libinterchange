@@ -1,4 +1,4 @@
-AC_INIT([icclient], [0.0], [pt@darapsa.co.id])
+AC_INIT([interchange], [0.0], [prabowo@darapsa.org])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AM_PROG_AR
