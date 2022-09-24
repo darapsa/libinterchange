@@ -11,15 +11,13 @@ if WASM
 libinterchange_la_LDFLAGS = -static
 else
 libinterchange_la_CPPFLAGS += $(CURL_CFLAGS)
-libinterchange_la_LDFLAGS = $(CURL_LIBS)
 endif
 if IOS
-libinterchange_la_LDFLAGS += -static
+libinterchange_la_LDFLAGS = -static
 endif
-if TIDY
+if STRAP
 libinterchange_la_SOURCES += handler.c
 libinterchange_la_CPPFLAGS += $(TIDY_CFLAGS)
-libinterchange_la_LDFLAGS += $(TIDY_LIBS)
 endif
 include_HEADERS = icclient.h
 pkginclude_HEADERS = \

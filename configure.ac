@@ -3,14 +3,12 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AM_PROG_AR
 LT_INIT
-AC_ARG_WITH([tidy],
-	    [AS_HELP_STRING([--with-tidy],
-			    [enable HTML parsing with libtidy])],
-			    [],
-			    [with_tidy=no])
-AS_IF([test "x$with_tidy" != xno],
-      [PKG_CHECK_MODULES([TIDY], [tidy])])
-AM_CONDITIONAL([TIDY], [test "x$with_tidy" = xyes])
+AC_ARG_ENABLE([strap],
+	      [AS_HELP_STRING([--enable-strap],
+			      [enable Strap template parsing with libtidy])],
+			      [PKG_CHECK_MODULES([TIDY], [tidy])],
+			      [enable_strap=no])
+AM_CONDITIONAL([STRAP], [test "x$enable_strap" = xyes])
 AC_CANONICAL_HOST
 case $host_cpu in
 	*wasm* ) wasm=true;;
