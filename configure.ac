@@ -3,7 +3,27 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AM_PROG_AR
 LT_INIT
-PKG_CHECK_MODULES([TIDY], [tidy])
+AC_ARG_WITH([tidy],
+	    [AS_HELP_STRING([--with-tidy],
+			    [enable HTML parsing with libtidy])],
+			    [],
+			    [with_tidy=no])
+AS_IF([test "x$with_tidy" != xno],
+      [PKG_CHECK_MODULES([TIDY], [tidy])])
+AM_CONDITIONAL([TIDY], [test "x$with_tidy" = xyes])
+AC_CANONICAL_HOST
+case $host_cpu in
+	*wasm* ) wasm=true;;
+	*) wasm=false;;
+esac
+AM_CONDITIONAL([WASM], [test "x$wasm" = xtrue])
+AS_IF([test "x$wasm" != xtrue],
+      [PKG_CHECK_MODULES([CURL], [libcurl])])
+case $host in
+	*arm*apple-darwin1* ) ios=true;;
+	*) ios=false;;
+esac
+AM_CONDITIONAL([IOS], [test "x$ios" = xtrue])
 AC_CHECK_HEADERS([stddef.h, locale.h])
 AC_CHECK_HEADERS([threads.h],
 		 [AC_DEFINE([HAVE_THREADS_H])])
@@ -16,17 +36,6 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
-AC_CANONICAL_HOST
-case $host_cpu in
-	*wasm* ) wasm=true;;
-	*) wasm=false;;
-esac
-AM_CONDITIONAL([WASM], [test x$wasm = xtrue])
-case $host in
-	*arm*apple-darwin1* ) ios=true;;
-	*) ios=false;;
-esac
-AM_CONDITIONAL([IOS], [test x$ios = xtrue])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -1,21 +1,25 @@
-lib_LTLIBRARIES = libicclient.la
-libicclient_la_SOURCES = \
+lib_LTLIBRARIES = libinterchange.la
+libinterchange_la_SOURCES = \
 			 client.c \
 			 request.c \
-			 handler.c \
 			 ord.c \
 			 login.c \
 			 member.c \
 			 admin.c
-libicclient_la_CPPFLAGS = -I${prefix}/include $(TIDY_CFLAGS)
-libicclient_la_LDFLAGS =  $(TIDY_LIBS)
-if IOS
-libicclient_la_LDFLAGS += -static
-endif
+libinterchange_la_CPPFLAGS = -I${prefix}/include
 if WASM
-libicclient_la_LDFLAGS += -static
+libinterchange_la_LDFLAGS = -static
 else
-libicclient_la_LDFLAGS += -lcurl
+libinterchange_la_CPPFLAGS += $(CURL_CFLAGS)
+libinterchange_la_LDFLAGS = $(CURL_LIBS)
+endif
+if IOS
+libinterchange_la_LDFLAGS += -static
+endif
+if TIDY
+libinterchange_la_SOURCES += handler.c
+libinterchange_la_CPPFLAGS += $(TIDY_CFLAGS)
+libinterchange_la_LDFLAGS += $(TIDY_LIBS)
 endif
 include_HEADERS = icclient.h
 pkginclude_HEADERS = \
@@ -23,9 +27,3 @@ pkginclude_HEADERS = \
 		  icclient/ord.h \
 		  icclient/member.h \
 		  icclient/admin.h
-#if !WASM
-#bin_PROGRAMS = icclient
-#icclient_SOURCES = main.c client.c request.c handler.c login.c member.c admin.c
-#icclient_CPPFLAGS = $(TIDY_CFLAGS)
-#icclient_LDFLAGS = -lcurl $(TIDY_LIBS)
-#endif
