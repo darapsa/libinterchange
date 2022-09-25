@@ -11,7 +11,9 @@ char *sampleurl;
 char *cainfo = NULL;
 #endif
 
+#ifdef ENABLE_STRAP
 extern void handle_results(interchange_response *);
+#endif
 
 void interchange_init(const char *url, const char *dir, const char *certificate)
 {
@@ -42,7 +44,11 @@ void interchange_catalog(const char *prod_group, void (*handler)(interchange_res
 	char *space = NULL;
 	while ((space = strchr(nonspaced, ' ')))
 		*space = '-';
+#ifdef ENABLE_STRAP
 	request(handler ? handler : handle_results, (void (*)(void *))callback, NULL, "%s", nonspaced);
+#else
+	request(handler, (void (*)(void *))callback, NULL, "%s", nonspaced);
+#endif
 }
 
 void interchange_product(const char *sku, void (*handler)(interchange_response *), void (*callback)(struct interchange_product *))
