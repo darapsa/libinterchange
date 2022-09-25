@@ -15,7 +15,7 @@ if IOS
 libinterchange_la_LDFLAGS = -static
 endif
 if STRAP
-libinterchange_la_SOURCES += handler.c
+libinterchange_la_SOURCES += strap.c
 libinterchange_la_CPPFLAGS = $(libinterchange_la_CPPFLAGS) $(TIDY_CFLAGS)
 endif
 include_HEADERS = icclient.h
