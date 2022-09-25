@@ -1,10 +1,10 @@
-#ifndef ICCLIENT_TYPEDEFS_H
-#define ICCLIENT_TYPEDEFS_H
+#ifndef INTERCHANGE_TYPEDEFS_H
+#define INTERCHANGE_TYPEDEFS_H
 
 #include <stddef.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten/fetch.h>
-typedef emscripten_fetch_t icclient_response;
+typedef emscripten_fetch_t interchange_response;
 #else
 #include <curl/curl.h>
 typedef struct {
@@ -12,7 +12,7 @@ typedef struct {
 	char *data;
 	size_t numBytes;
 	CURL *curl;
-} icclient_response;
+} interchange_response;
 #endif
 
 #endif

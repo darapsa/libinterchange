@@ -1,9 +1,9 @@
-#ifndef ICCLIENT_H
-#define ICCLIENT_H
+#ifndef INTERCHANGE_H
+#define INTERCHANGE_H
 
-#include "icclient/typedefs.h"
+#include "interchange/typedefs.h"
 
-struct icclient_product {
+struct interchange_product {
 	char *sku;
 	char *description;
 	char *comment;
@@ -14,15 +14,15 @@ struct icclient_product {
 	char *category;
 	double weight;
 	char *author;
-	struct icclient_product_crosssell {
+	struct interchange_product_crosssell {
 		size_t length;
 		char *skus[];
 	} *crosssell;
 };
 
-struct icclient_catalog {
+struct interchange_catalog {
 	size_t length;
-	struct icclient_product *products[];
+	struct interchange_product *products[];
 };
 
 /*!
@@ -30,7 +30,7 @@ struct icclient_catalog {
  * \param handler A pointer to the function when a custom handler is needed to arrange the data into the catalog.
  * \param callback A pointer to the function that needs to be called after the catalog is ready.
  */
-#define	icclient_allproducts(handler, callback) icclient_catalog("All-Products", handler, callback)
+#define	interchange_allproducts(handler, callback) interchange_catalog("All-Products", handler, callback)
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,7 +42,7 @@ extern "C" {
  * \param image_dir The value of the IMAGE_DIR setting in products/variable.txt.
  * \param certificate Path to the CA certificate file.
  */
-void icclient_init(const char *sampleurl, const char *image_dir, const char *certificate);
+void interchange_init(const char *sampleurl, const char *image_dir, const char *certificate);
 
 /*!
  * \brief For fetching data about products that belong a specific group.
@@ -50,7 +50,7 @@ void icclient_init(const char *sampleurl, const char *image_dir, const char *cer
  * \param handler A pointer to the function when a custom handler is needed to arrange the data into the catalog.
  * \param callback A pointer to the function that needs to be called after the catalog is ready.
  */
-void icclient_catalog(const char *prod_group, void (*handler)(icclient_response *), void (*callback)(struct icclient_catalog *));
+void interchange_catalog(const char *prod_group, void (*handler)(interchange_response *), void (*callback)(struct interchange_catalog *));
 
 /*!
  * \brief For fetching data about a specific product.
@@ -58,17 +58,17 @@ void icclient_catalog(const char *prod_group, void (*handler)(icclient_response 
  * \param handler A pointer to the function when a custom handler is needed to arrange the data into the product.
  * \param callback A pointer to the function that needs to be called after the product is ready.
 */
-void icclient_product(const char *sku, void (*handler)(icclient_response *), void (*callback)(struct icclient_product *));
+void interchange_product(const char *sku, void (*handler)(interchange_response *), void (*callback)(struct interchange_product *));
 
-void icclient_page(const char *path, void (*handler)(icclient_response *));
+void interchange_page(const char *path, void (*handler)(interchange_response *));
 
-void icclient_free_product(struct icclient_product *product);
+void interchange_free_product(struct interchange_product *product);
 
-void icclient_free_catalog(struct icclient_catalog *catalog);
+void interchange_free_catalog(struct interchange_catalog *catalog);
 
-void icclient_free_response(icclient_response *response);
+void interchange_free_response(interchange_response *response);
 
-void icclient_cleanup();
+void interchange_cleanup();
 
 #ifdef __cplusplus
 }

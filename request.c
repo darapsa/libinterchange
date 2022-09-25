@@ -26,11 +26,11 @@ extern char *cainfo;
 
 struct container {
 	struct curl_httppost *post;
-	void (*handler)(icclient_response *);
-	icclient_response *response;
+	void (*handler)(interchange_response *);
+	interchange_response *response;
 };
 
-static size_t append(char *data, size_t size, size_t nmemb, icclient_response *response)
+static size_t append(char *data, size_t size, size_t nmemb, interchange_response *response)
 {
 	size_t realsize = size * nmemb;
 	response->data = realloc(response->data, response->numBytes + realsize + 1);
@@ -64,7 +64,7 @@ async(void *arg)
 #ifdef DEBUG
 		const char *error = curl_easy_strerror(res);
 #ifdef __ANDROID__
-		__android_log_print(ANDROID_LOG_ERROR, "libicclient.so", "%s", error);
+		__android_log_print(ANDROID_LOG_ERROR, "libinterchange.so", "%s", error);
 #else
 		fprintf(stderr, "%s\n", error);
 #endif
@@ -79,7 +79,7 @@ async(void *arg)
 }
 #endif
 
-void request(void (*handler)(icclient_response *), void (*callback)(void *), struct body *body, char *fmt, ...)
+void request(void (*handler)(interchange_response *), void (*callback)(void *), struct body *body, char *fmt, ...)
 {
 	va_list ap;
 	char *p, *sval;
@@ -177,7 +177,7 @@ void request(void (*handler)(icclient_response *), void (*callback)(void *), str
 #endif
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, append);
-	icclient_response *response = malloc(sizeof(icclient_response));
+	interchange_response *response = malloc(sizeof(interchange_response));
 	response->data = malloc(1);
 	response->numBytes = 0;
 	response->userData = callback;

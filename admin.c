@@ -1,19 +1,19 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "login.h"
-#include "icclient.h"
-#include "icclient/member.h"
-#include "icclient/ord.h"
-#include "icclient/admin.h"
+#include "interchange.h"
+#include "interchange/member.h"
+#include "interchange/ord.h"
+#include "interchange/admin.h"
 
-void icclient_admin_login(const char *username, const char *password, void (*handler)(icclient_response *),
-		void (*callback)(struct icclient_admin *))
+void interchange_admin_login(const char *username, const char *password, void (*handler)(interchange_response *),
+		void (*callback)(struct interchange_admin *))
 {
 	login(username, password, NULL, "MMLogin", handler, (void (*)(void *))callback);
 }
 
-void icclient_admin_new_admin(const char *username, const char *password, const char *name, bool super,
-		enum icclient_admin_group group, void (*handler)(icclient_response *))
+void interchange_admin_new_admin(const char *username, const char *password, const char *name, bool super,
+		enum interchange_admin_group group, void (*handler)(interchange_response *))
 {
 	request(handler, NULL, &(struct body){ 13, {
 		{ "mv_todo", "set" },
@@ -28,13 +28,13 @@ void icclient_admin_new_admin(const char *username, const char *password, const 
 		{ "username", username },
 		{ "password", password },
 		{ "super", super ? "1" : "0" },
-		{ "groups", group == ICCLIENT_ADMIN_GROUP_CONTENT ? ":CONTENT"
-		: group == ICCLIENT_ADMIN_GROUP_MERCH ? ":MERCH" : ":ORDERS" }
+		{ "groups", group == INTERCHANGE_ADMIN_GROUP_CONTENT ? ":CONTENT"
+		: group == INTERCHANGE_ADMIN_GROUP_MERCH ? ":MERCH" : ":ORDERS" }
 	}}, "%s", "ui");
 }
 
-void icclient_admin_new_item(const char *description, const char *comment, const char *price,
-		const char *image_path, void (*handler)(icclient_response *))
+void interchange_admin_new_item(const char *description, const char *comment, const char *price,
+		const char *image_path, void (*handler)(interchange_response *))
 {
 	request(handler, NULL, &(struct body){ 15, {
 		{ "mv_click", "process_filter" },
@@ -63,9 +63,9 @@ void icclient_admin_new_item(const char *description, const char *comment, const
 	}}, "%s", "admin/item_edit");
 }
 
-void icclient_admin_new_transaction(const struct icclient_ord_order *order,
-		const struct icclient_member *member, bool new_customer_id,
-		void (*handler)(icclient_response *))
+void interchange_admin_new_transaction(const struct interchange_ord_order *order,
+		const struct interchange_member *member, bool new_customer_id,
+		void (*handler)(interchange_response *))
 {
 	request(handler, NULL, &(struct body){ 12, {
 		{ "mv_values_space", "order_entry" },
@@ -83,7 +83,7 @@ void icclient_admin_new_transaction(const struct icclient_ord_order *order,
 	}}, "%s", "process");
 }
 
-void icclient_admin_logout(struct icclient_admin *admin, void (*handler)(icclient_response *))
+void interchange_admin_logout(struct interchange_admin *admin, void (*handler)(interchange_response *))
 {
 	request(handler, NULL, NULL, "%s", "admin/login");
 	if (admin->name)

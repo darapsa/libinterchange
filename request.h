@@ -1,7 +1,7 @@
 #ifndef REQUEST_H
 #define REQUEST_H
 
-#include "icclient/typedefs.h"
+#include "interchange/typedefs.h"
 
 struct body {
 	size_t num_pairs;
@@ -11,6 +11,6 @@ struct body {
 	} pairs[16];
 };
 
-void request(void (*)(icclient_response *), void (*)(void *), struct body *, char *, ...);
+void request(void (*)(interchange_response *), void (*)(void *), struct body *, char *, ...);
 
 #endif

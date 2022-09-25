@@ -1,10 +1,10 @@
-#ifndef ICCLIENT_LOGIN_H
-#define ICCLIENT_LOGIN_H
+#ifndef INTERCHANGE_LOGIN_H
+#define INTERCHANGE_LOGIN_H
 
 #include "request.h"
 
 static inline void login(const char *username, const char *password, const char *verify, const char *click,
-		void (*handler)(icclient_response *), void (*callback)(void *))
+		void (*handler)(interchange_response *), void (*callback)(void *))
 {
 	request(handler, callback, &(struct body){ 4, {
 			{ "mv_username", username },

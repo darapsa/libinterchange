@@ -1,15 +1,15 @@
-#ifndef ICCLIENT_MEMBER_H
-#define ICCLIENT_MEMBER_H
+#ifndef INTERCHANGE_MEMBER_H
+#define INTERCHANGE_MEMBER_H
 
 #include <stdbool.h>
 #include "typedefs.h"
 
-struct icclient_member_preferences {
+struct interchange_member_preferences {
 	bool mv_same_billing;
 	bool email_copy;
 };
 
-struct icclient_member {
+struct interchange_member {
 	char *username;
 	char *usernick;
 	char *password;
@@ -47,7 +47,7 @@ struct icclient_member {
 	char *phone_night;
 	char *address_book;
 	char *accounts;
-	struct icclient_member_preferences *preferences;
+	struct interchange_member_preferences *preferences;
 	char *carts;
 	char *owner;
 	char *file_acl;
@@ -63,14 +63,14 @@ struct icclient_member {
 extern "C" {
 #endif
 
-	void icclient_member_newaccount(const char *username, const char *password, const char *verify,
-			void (*handler)(icclient_response *), void (*callback)(struct icclient_member *));
-	void icclient_member_login(const char *username, const char *password, void (*handler)(icclient_response *),
-			void (*callback)(struct icclient_member *));
-	void icclient_member_account(const char *fname, const char *lname, const char *address1, const char *address2,
+	void interchange_member_newaccount(const char *username, const char *password, const char *verify,
+			void (*handler)(interchange_response *), void (*callback)(struct interchange_member *));
+	void interchange_member_login(const char *username, const char *password, void (*handler)(interchange_response *),
+			void (*callback)(struct interchange_member *));
+	void interchange_member_account(const char *fname, const char *lname, const char *address1, const char *address2,
 			const char *city, const char *state, const char *zip, const char *email, const char *phone_day);
-	void icclient_member_changepassword(const char *password_old, const char *password, const char *verify);
-	void icclient_member_logout(struct icclient_member *member);
+	void interchange_member_changepassword(const char *password_old, const char *password, const char *verify);
+	void interchange_member_logout(struct interchange_member *member);
 
 #ifdef __cplusplus
 }

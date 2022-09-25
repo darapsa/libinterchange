@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libinterchange.la
 libinterchange_la_SOURCES = \
-			 client.c \
+			 interchange.c \
 			 request.c \
 			 ord.c \
 			 login.c \
@@ -18,9 +18,9 @@ if STRAP
 libinterchange_la_SOURCES += strap.c
 libinterchange_la_CPPFLAGS = $(libinterchange_la_CPPFLAGS) $(TIDY_CFLAGS)
 endif
-include_HEADERS = icclient.h
+include_HEADERS = interchange.h
 pkginclude_HEADERS = \
-		  icclient/typedefs.h \
-		  icclient/ord.h \
-		  icclient/member.h \
-		  icclient/admin.h
+		  interchange/typedefs.h \
+		  interchange/ord.h \
+		  interchange/member.h \
+		  interchange/admin.h

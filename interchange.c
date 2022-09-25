@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "request.h"
-#include "icclient.h"
+#include "interchange.h"
 
 char *image_dir;
 #ifdef __EMSCRIPTEN__
@@ -11,9 +11,9 @@ char *sampleurl;
 char *cainfo = NULL;
 #endif
 
-extern void handle_results(icclient_response *);
+extern void handle_results(interchange_response *);
 
-void icclient_init(const char *url, const char *dir, const char *certificate)
+void interchange_init(const char *url, const char *dir, const char *certificate)
 {
 	image_dir = malloc(strlen(dir) + 1);
 	strcpy(image_dir, dir);
@@ -35,7 +35,7 @@ void icclient_init(const char *url, const char *dir, const char *certificate)
 #endif
 }
 
-void icclient_catalog(const char *prod_group, void (*handler)(icclient_response *), void (*callback)(struct icclient_catalog *))
+void interchange_catalog(const char *prod_group, void (*handler)(interchange_response *), void (*callback)(struct interchange_catalog *))
 {
 	char nonspaced[strlen(prod_group) + 1];
 	strcpy(nonspaced, prod_group);
@@ -45,17 +45,17 @@ void icclient_catalog(const char *prod_group, void (*handler)(icclient_response 
 	request(handler ? handler : handle_results, (void (*)(void *))callback, NULL, "%s", nonspaced);
 }
 
-void icclient_product(const char *sku, void (*handler)(icclient_response *), void (*callback)(struct icclient_product *))
+void interchange_product(const char *sku, void (*handler)(interchange_response *), void (*callback)(struct interchange_product *))
 {
 	request(handler, (void (*)(void *))callback, NULL, "%s", sku);
 }
 
-void icclient_page(const char *path, void (*handler)(icclient_response *))
+void interchange_page(const char *path, void (*handler)(interchange_response *))
 {
 	request(handler, NULL, NULL, "%s", path);
 }
 
-void icclient_free_product(struct icclient_product *product)
+void interchange_free_product(struct interchange_product *product)
 {
 	if (product->crosssell)
 		for (size_t i = 0; i < product->crosssell->length; i++)
@@ -76,14 +76,14 @@ void icclient_free_product(struct icclient_product *product)
 	free(product);
 }
 
-void icclient_free_catalog(struct icclient_catalog *catalog)
+void interchange_free_catalog(struct interchange_catalog *catalog)
 {
 	for (size_t i = 0; i < catalog->length; i++)
-		icclient_free_product(catalog->products[i]);
+		interchange_free_product(catalog->products[i]);
 	free(catalog);
 }
 
-void icclient_free_response(icclient_response *response)
+void interchange_free_response(interchange_response *response)
 {
 	if (response->userData)
 		free(response->userData);
@@ -96,7 +96,7 @@ void icclient_free_response(icclient_response *response)
 #endif
 }
 
-void icclient_cleanup()
+void interchange_cleanup()
 {
 	free(image_dir);
 #ifndef __EMSCRIPTEN__

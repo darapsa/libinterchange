@@ -1,20 +1,20 @@
 #include <stdlib.h>
 #include "login.h"
-#include "icclient/member.h"
+#include "interchange/member.h"
 
-void icclient_member_newaccount(const char *username, const char *password, const char *verify,
-		void (*handler)(icclient_response *), void (*callback)(struct icclient_member *))
+void interchange_member_newaccount(const char *username, const char *password, const char *verify,
+		void (*handler)(interchange_response *), void (*callback)(struct interchange_member *))
 {
 	login(username, password, verify, "NewAccount", handler, (void (*)(void *))callback);
 }
 
-void icclient_member_login(const char *username, const char *password, void (*handler)(icclient_response *),
-		void (*callback)(struct icclient_member *))
+void interchange_member_login(const char *username, const char *password, void (*handler)(interchange_response *),
+		void (*callback)(struct interchange_member *))
 {
 	login(username, password, NULL, "Login", handler, (void (*)(void *))callback);
 }
 
-void icclient_member_account(const char *fname, const char *lname, const char *address1,
+void interchange_member_account(const char *fname, const char *lname, const char *address1,
 		const char *address2, const char *city, const char *state,
 		const char *zip, const char *email, const char *phone_day)
 {
@@ -35,7 +35,7 @@ void icclient_member_account(const char *fname, const char *lname, const char *a
 			}}, "%s", "process");
 }
 
-void icclient_member_changepassword(const char *password_old, const char *password, const char *verify)
+void interchange_member_changepassword(const char *password_old, const char *password, const char *verify)
 {
 	request(NULL, NULL, &(struct body){ 6, {
 			{ "mv_action", "return" },
@@ -47,7 +47,7 @@ void icclient_member_changepassword(const char *password_old, const char *passwo
 			}}, "%s", "member/change_password");
 }
 
-void icclient_member_logout(struct icclient_member *member)
+void interchange_member_logout(struct interchange_member *member)
 {
 	request(NULL, NULL, NULL, "%s", "logout");
 	if (member->username)
