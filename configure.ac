@@ -7,7 +7,8 @@ AC_ARG_ENABLE([strap],
 	      [AS_HELP_STRING([--enable-strap],
 			      [enable Strap template parsing with libtidy])],
 			      [PKG_CHECK_MODULES([TIDY], [tidy])
-			      AC_DEFINE([ENABLE_STRAP])],
+			      AC_DEFINE([ENABLE_STRAP], [1],
+					[Define to 1 if you enable Strap.])],
 			      [enable_strap=no])
 AM_CONDITIONAL([STRAP], [test "x$enable_strap" = xyes])
 AC_CANONICAL_HOST
@@ -35,5 +36,6 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
