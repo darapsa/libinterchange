@@ -10,9 +10,10 @@ if WASM
 libinterchange_la_LDFLAGS = -static
 else
 libinterchange_la_CPPFLAGS = $(CURL_CFLAGS)
+libinterchange_la_LDFLAGS = $(CURL_LIBS)
 endif
 if IOS
-libinterchange_la_LDFLAGS = -static
+libinterchange_la_LDFLAGS += -static
 endif
 if STRAP
 libinterchange_la_SOURCES += strap.c
