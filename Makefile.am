@@ -18,6 +18,7 @@ endif
 if STRAP
 libinterchange_la_SOURCES += strap.c
 libinterchange_la_CPPFLAGS = $(libinterchange_la_CPPFLAGS) $(TIDY_CFLAGS)
+libinterchange_la_LDFLAGS += $(TIDY_LIBS)
 endif
 include_HEADERS = interchange.h
 pkginclude_HEADERS = \
