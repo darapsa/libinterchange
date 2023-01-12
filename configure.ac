@@ -25,8 +25,6 @@ case $host in
 esac
 AM_CONDITIONAL([IOS], [test "x$ios" = xtrue])
 AC_CHECK_HEADERS([stddef.h, locale.h])
-AC_CHECK_HEADERS([threads.h],
-		 [AC_DEFINE([HAVE_THREADS_H])])
 AC_CHECK_HEADERS([langinfo.h],
 		 [AC_DEFINE([HAVE_LANGINFO_H])])
 AC_CHECK_HEADER_STDBOOL

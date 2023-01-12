@@ -13,12 +13,8 @@ extern emscripten_fetch_attr_t attr;
 
 #else
 
-#ifdef HAVE_THREADS_H
-#include <threads.h>
-#else
 #include <pthread.h>
 typedef pthread_t thrd_t;
-#endif
 #include <curl/curl.h>
 
 extern char *sampleurl;
@@ -40,17 +36,8 @@ static size_t append(char *data, size_t size, size_t nmemb, interchange_response
 	return realsize;
 }
 
-static
-#ifdef HAVE_THREADS_H
-int
-#else
-void *
-#endif
-async(void *arg)
+static void *async(void *arg)
 {
-#ifdef HAVE_THREADS_H
-	int ret = thrd_success;
-#endif
 	struct container *container = (struct container *)arg;
 	CURLcode res = curl_easy_perform(container->response->curl);
 	if (container->post)
@@ -58,9 +45,6 @@ async(void *arg)
 	if (res == CURLE_OK && container->handler)
 		container->handler(container->response);
 	else {
-#ifdef HAVE_THREADS_H
-		ret = thrd_error;
-#endif
 #ifdef DEBUG
 		const char *error = curl_easy_strerror(res);
 #ifdef __ANDROID__
@@ -71,11 +55,7 @@ async(void *arg)
 #endif
 	}
 	free(container);
-#ifdef HAVE_THREADS_H
-	return ret;
-#else
 	return NULL;
-#endif
 }
 #endif
 
@@ -201,10 +181,6 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 	container->handler = handler;
 	container->response = response;
 	thrd_t thread;
-#ifdef HAVE_THREADS_H
-	thrd_create(&thread, async, container);
-#else
 	pthread_create(&thread, NULL, async, container);
-#endif
 #endif
 }
