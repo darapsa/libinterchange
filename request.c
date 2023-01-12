@@ -14,7 +14,6 @@ extern emscripten_fetch_attr_t attr;
 #else
 
 #include <pthread.h>
-typedef pthread_t thrd_t;
 #include <curl/curl.h>
 
 extern char *sampleurl;
@@ -180,7 +179,7 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 	container->post = post;
 	container->handler = handler;
 	container->response = response;
-	thrd_t thread;
+	pthread_t thread;
 	pthread_create(&thread, NULL, async, container);
 #endif
 }
