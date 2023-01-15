@@ -2,16 +2,21 @@
 #include "login.h"
 #include "interchange/member.h"
 
-void interchange_member_newaccount(const char *username, const char *password, const char *verify,
-		void (*handler)(interchange_response *), void (*callback)(struct interchange_member *))
-{
-	login(username, password, verify, "NewAccount", handler, (void (*)(void *))callback);
-}
-
-void interchange_member_login(const char *username, const char *password, void (*handler)(interchange_response *),
+void interchange_member_newaccount(const char *username, const char *password,
+		const char *verify, const char *failpage,
+		void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *))
 {
-	login(username, password, NULL, "Login", handler, (void (*)(void *))callback);
+	login(username, password, verify, "NewAccount", failpage, handler,
+			(void (*)(void *))callback);
+}
+
+void interchange_member_login(const char *username, const char *password,
+		const char *failpage, void (*handler)(interchange_response *),
+		void (*callback)(struct interchange_member *))
+{
+	login(username, password, NULL, "Login", failpage, handler,
+			(void (*)(void *))callback);
 }
 
 void interchange_member_account(const char *fname, const char *lname, const char *address1,
