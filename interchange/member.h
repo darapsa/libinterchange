@@ -47,7 +47,7 @@ struct interchange_member {
 	char *phone_night;
 	char *address_book;
 	char *accounts;
-	struct interchange_member_preferences *preferences;
+	struct interchange_member_preferences preferences;
 	char *carts;
 	char *owner;
 	char *file_acl;

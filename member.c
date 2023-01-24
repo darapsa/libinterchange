@@ -129,8 +129,6 @@ void interchange_member_logout(struct interchange_member *member)
 		free(member->address_book);
 	if (member->accounts)
 		free(member->accounts);
-	if (member->preferences)
-		free(member->preferences);
 	if (member->carts)
 		free(member->carts);
 	if (member->owner)

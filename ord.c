@@ -76,8 +76,8 @@ void interchange_ord_checkout(const struct interchange_ord_order *order, const s
 		{ "zip", member->zip },
 		{ "email", member->email },
 		{ "phone_day", member->phone_day },
-		{ "mv_same_billing", member->preferences->mv_same_billing? "1" : "0" },
-		{ "email_copy", member->preferences->email_copy? "1" : "0" }
+		{ "mv_same_billing", member->preferences.mv_same_billing? "1" : "0" },
+		{ "email_copy", member->preferences.email_copy? "1" : "0" }
 	}}, "%s", "ord/checkout");
 }
 
