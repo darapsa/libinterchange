@@ -8,6 +8,7 @@ char *image_dir;
 emscripten_fetch_attr_t attr;
 #else
 char *sampleurl;
+char *cookiefile = NULL;
 char *cainfo = NULL;
 #endif
 
@@ -15,7 +16,8 @@ char *cainfo = NULL;
 extern void handle_results(interchange_response *);
 #endif
 
-void interchange_init(const char *url, const char *dir, const char *certificate)
+void interchange_init(const char *url, const char *dir, const char *cookie,
+		const char *certificate)
 {
 	image_dir = malloc(strlen(dir) + 1);
 	strcpy(image_dir, dir);
@@ -30,6 +32,10 @@ void interchange_init(const char *url, const char *dir, const char *certificate)
 	if (append)
 		strcat(sampleurl, "/");
 	curl_global_init(CURL_GLOBAL_SSL);
+	if (cookie) {
+		cookiefile = malloc(strlen(cookie) + 1);
+		strcpy(cookiefile, cookie);
+	}
 	if (certificate) {
 		cainfo = malloc(strlen(certificate) + 1);
 		strcpy(cainfo, certificate);
@@ -106,7 +112,10 @@ void interchange_cleanup()
 {
 	free(image_dir);
 #ifndef __EMSCRIPTEN__
-	free(cainfo);
+	if (cainfo)
+		free(cainfo);
+	if (cookiefile)
+		free(cookiefile);
 	free(sampleurl);
 	curl_global_cleanup();
 #endif

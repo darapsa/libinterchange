@@ -40,9 +40,11 @@ extern "C" {
  * \brief A function that needs to be run first.
  * \param sampleurl The value of the SAMPLEURL setting in products/variable.txt.
  * \param image_dir The value of the IMAGE_DIR setting in products/variable.txt.
+ * \param certificate Path to the cookie file.
  * \param certificate Path to the CA certificate file.
  */
-void interchange_init(const char *sampleurl, const char *image_dir, const char *certificate);
+void interchange_init(const char *sampleurl, const char *image_dir,
+		const char *cookie, const char *certificate);
 
 /*!
  * \brief For fetching data about products that belong a specific group.

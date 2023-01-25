@@ -18,6 +18,7 @@ extern emscripten_fetch_attr_t attr;
 
 extern char *sampleurl;
 extern char *cainfo;
+extern char *cookiefile;
 
 struct container {
 	struct curl_httppost *post;
@@ -148,7 +149,8 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 #else
 	CURL *curl = curl_easy_init();
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
+	curl_easy_setopt(curl, CURLOPT_COOKIEJAR, cookiefile);
+	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, cookiefile);
 	if (cainfo)
 		curl_easy_setopt(curl, CURLOPT_CAINFO, cainfo);
 #ifdef DEBUG
