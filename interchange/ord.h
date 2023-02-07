@@ -1,6 +1,8 @@
 #ifndef INTERCHANGE_ORD_H
 #define INTERCHANGE_ORD_H
 
+#include "interchange/typedefs.h"
+
 struct interchange_ord_item {
 	struct interchange_product *product;
 	unsigned int quantity;
