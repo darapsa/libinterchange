@@ -17,6 +17,11 @@ struct interchange_ord_order {
 	struct interchange_ord_item *items[];
 };
 
+struct interchange_ord_transaction {
+	char *order_number;
+	char *payment_method;
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -41,7 +46,10 @@ void interchange_ord_checkout(const struct interchange_ord_order *order,
 		const struct interchange_member *member,
 		void (*handler)(interchange_response *));
 
-void interchange_ord_free(struct interchange_ord_order *order);
+void interchange_ord_free_order(struct interchange_ord_order *order);
+
+void interchange_ord_free_transaction(struct interchange_ord_transaction
+		*transaction);
 
 #ifdef __cplusplus
 }

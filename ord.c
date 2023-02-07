@@ -83,10 +83,21 @@ void interchange_ord_checkout(const struct interchange_ord_order *order,
 	}}, "%s", "ord/checkout");
 }
 
-void interchange_ord_free(struct interchange_ord_order *order)
+void interchange_ord_free_order(struct interchange_ord_order *order)
 {
-	if (order->profile)
-		free(order->profile);
 	for (size_t i = 0; i < order->nitems; i++)
 		interchange_free_product(order->items[i]->product);
+	if (order->profile)
+		free(order->profile);
+	free(order);
+}
+
+void interchange_ord_free_transaction(struct interchange_ord_transaction
+		*transaction)
+{
+	if (transaction->order_number)
+		free(transaction->order_number);
+	if (transaction->payment_method)
+		free(transaction->payment_method);
+	free(transaction);
 }
