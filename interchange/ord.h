@@ -27,7 +27,18 @@ extern "C" {
  */
 void interchange_ord_order(const char *sku, const struct interchange_catalog *catalog,
 		struct interchange_ord_order **order);
-void interchange_ord_checkout(const struct interchange_ord_order *order, const struct interchange_member *member);
+
+/*!
+ * \brief For checking out items in the cart.
+ * \param order The order to be checked out.
+ * \param member The member checking out.
+ * \param handler A pointer to the function when a custom handler is needed to
+ * arrange the data into the product.
+*/
+void interchange_ord_checkout(const struct interchange_ord_order *order,
+		const struct interchange_member *member,
+		void (*handler)(interchange_response *));
+
 void interchange_ord_free(struct interchange_ord_order *order);
 
 #ifdef __cplusplus

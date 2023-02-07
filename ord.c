@@ -61,9 +61,11 @@ void interchange_ord_order(const char *sku, const struct interchange_catalog *ca
 	request(NULL, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
 
-void interchange_ord_checkout(const struct interchange_ord_order *order, const struct interchange_member *member)
+void interchange_ord_checkout(const struct interchange_ord_order *order,
+		const struct interchange_member *member,
+		void (*handler)(interchange_response *))
 {
-	request(NULL, NULL, &(struct body){ 14, {
+	request(handler, NULL, &(struct body){ 14, {
 		{ "mv_todo", "submit" },
 		{ "mv_action", "refresh" },
 		{ "mv_order_profile", order->profile },
