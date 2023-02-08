@@ -20,6 +20,7 @@ struct interchange_ord_order {
 struct interchange_ord_transaction {
 	char *order_number;
 	char *payment_method;
+	double total_cost;
 };
 
 #ifdef __cplusplus
