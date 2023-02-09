@@ -136,7 +136,8 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 			sprintf(post, "%s%s=%s", post, pair.key, pair.value);
 		}
 		strcpy(attr.requestMethod, "POST");
-		const char *headers[] = { "Content-Type", "application/x-www-form-urlencoded", NULL };
+		static const char *headers[] = { "Content-Type",
+			"application/x-www-form-urlencoded", NULL };
 		attr.requestHeaders = headers;
 		attr.requestData = post;
 		attr.requestDataSize = length + 1;
