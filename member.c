@@ -19,6 +19,11 @@ void interchange_member_login(const char *username, const char *password,
 			(void (*)(void *))callback);
 }
 
+void interchange_member_account(void (*handler)(interchange_response *))
+{
+	request(handler, NULL, NULL, "%s", "member/account");
+}
+
 void interchange_member_setaccount(const char *fname, const char *lname,
 		const char *address1, const char *address2, const char *city,
 		const char *state, const char *zip, const char *email,

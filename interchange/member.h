@@ -70,6 +70,14 @@ void interchange_member_newaccount(const char *username, const char *password,
 void interchange_member_login(const char *username, const char *password,
 		const char *failpage, void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *));
+
+/*!
+ * \brief For getting member account information.
+ * \param handler A pointer to the function when a custom handler is needed to
+ * arrange the data into the member instance.
+*/
+void interchange_member_account(void (*handler)(interchange_response *));
+
 void interchange_member_setaccount(const char *fname, const char *lname,
 		const char *address1, const char *address2, const char *city,
 		const char *state, const char *zip, const char *email,
