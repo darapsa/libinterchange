@@ -85,8 +85,6 @@ void interchange_ord_checkout(const struct interchange_ord_order *order,
 
 void interchange_ord_free_order(struct interchange_ord_order *order)
 {
-	for (size_t i = 0; i < order->nitems; i++)
-		interchange_free_product(order->items[i]->product);
 	if (order->profile)
 		free(order->profile);
 	free(order);
