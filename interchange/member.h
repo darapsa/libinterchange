@@ -70,10 +70,10 @@ void interchange_member_newaccount(const char *username, const char *password,
 void interchange_member_login(const char *username, const char *password,
 		const char *failpage, void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *));
-void interchange_member_account(const char *fname, const char *lname,
-		const char *address1, const char *address2,
-		const char *city, const char *state, const char *zip,
-		const char *email, const char *phone_day);
+void interchange_member_setaccount(const char *fname, const char *lname,
+		const char *address1, const char *address2, const char *city,
+		const char *state, const char *zip, const char *email,
+		const char *phone_day);
 void interchange_member_changepassword(const char *password_old,
 		const char *password, const char *verify);
 void interchange_member_logout(struct interchange_member *member);
