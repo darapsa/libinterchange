@@ -84,6 +84,8 @@ void interchange_free_product(struct interchange_product *product)
 		free(product->comment);
 	if (product->description)
 		free(product->description);
+	if (product->title)
+		free(product->title);
 	free(product->sku);
 	free(product);
 }

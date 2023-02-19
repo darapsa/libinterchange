@@ -5,6 +5,7 @@
 
 struct interchange_product {
 	char *sku;
+	char *title;
 	char *description;
 	char *comment;
 	char *thumb;
