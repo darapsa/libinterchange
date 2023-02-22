@@ -24,26 +24,24 @@ void interchange_member_account(void (*handler)(interchange_response *))
 	request(handler, NULL, NULL, "%s", "member/account");
 }
 
-void interchange_member_setaccount(const char *fname, const char *lname,
-		const char *address1, const char *address2, const char *city,
-		const char *state, const char *zip, const char *email,
-		const char *phone_day)
+void interchange_member_setaccount(const struct interchange_member *member,
+		void (*handler)(interchange_response *))
 {
-	request(NULL, NULL, &(struct body){ 13, {
-			{ "mv_form_profile", "account_change" },
-			{ "mv_todo", "return" },
-			{ "mv_nextpage", "member/account" },
-			{ "mv_check", "Save_database" },
-			{ "fname", fname },
-			{ "lname", lname },
-			{ "address1", address1 },
-			{ "address2", address2 },
-			{ "city", city },
-			{ "state", state },
-			{ "zip", zip },
-			{ "email", email },
-			{ "phone_day", phone_day }
-			}}, "%s", "process");
+	request(handler, NULL, &(struct body){ 13, {
+		{ "mv_form_profile", "account_change" },
+		{ "mv_todo", "return" },
+		{ "mv_nextpage", "member/account" },
+		{ "mv_check", "Save_database" },
+		{ "fname", member->fname },
+		{ "lname", member->lname },
+		{ "address1", member->address1 },
+		{ "address2", member->address2 },
+		{ "city", member->city },
+		{ "state", member->state },
+		{ "zip", member->zip },
+		{ "email", member->email },
+		{ "phone_day", member->phone_day }
+	}}, "%s", "process");
 }
 
 void interchange_member_changepassword(const char *password_old, const char *password, const char *verify)

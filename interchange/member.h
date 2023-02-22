@@ -78,10 +78,16 @@ void interchange_member_login(const char *username, const char *password,
 */
 void interchange_member_account(void (*handler)(interchange_response *));
 
-void interchange_member_setaccount(const char *fname, const char *lname,
-		const char *address1, const char *address2, const char *city,
-		const char *state, const char *zip, const char *email,
-		const char *phone_day);
+/*!
+ * \brief For setting member account information.
+ * \param member A pointer to a member instance whose members will be used in
+ * POST data.
+ * \param handler A pointer to the function when a custom handler is needed to
+ * arrange the data into the member instance.
+*/
+void interchange_member_setaccount(const struct interchange_member *member,
+		void (*handler)(interchange_response *));
+
 void interchange_member_changepassword(const char *password_old,
 		const char *password, const char *verify);
 void interchange_member_logout(struct interchange_member *member);
