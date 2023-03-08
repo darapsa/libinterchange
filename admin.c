@@ -7,10 +7,11 @@
 #include "interchange/admin.h"
 
 void interchange_admin_login(const char *username, const char *password,
-		const char *failpage, void (*handler)(interchange_response *),
+		const char *nextpage, const char *failpage,
+		void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_admin *))
 {
-	login(username, password, NULL, "MMLogin", failpage, handler,
+	login(username, password, NULL, "MMLogin", nextpage, failpage, handler,
 			(void (*)(void *))callback);
 }
 

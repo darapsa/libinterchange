@@ -7,15 +7,16 @@ void interchange_member_newaccount(const char *username, const char *password,
 		void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *))
 {
-	login(username, password, verify, "NewAccount", failpage, handler,
+	login(username, password, verify, "NewAccount", NULL, failpage, handler,
 			(void (*)(void *))callback);
 }
 
 void interchange_member_login(const char *username, const char *password,
-		const char *failpage, void (*handler)(interchange_response *),
+		const char *nextpage, const char *failpage,
+		void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *))
 {
-	login(username, password, NULL, "Login", failpage, handler,
+	login(username, password, NULL, "Login", nextpage, failpage, handler,
 			(void (*)(void *))callback);
 }
 
