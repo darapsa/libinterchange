@@ -17,8 +17,10 @@ static int itemcmp(const void *item1, const void *item2)
 			(*(struct interchange_ord_item * const *)item2)->product->sku);
 }
 
-void interchange_ord_order(const char *sku, const struct interchange_catalog *catalog,
-		struct interchange_ord_order **order)
+void interchange_ord_order(const char *sku,
+		const struct interchange_catalog *catalog,
+		struct interchange_ord_order **order,
+		void (*handler)(interchange_response *))
 {
 	struct interchange_product **products = ((struct interchange_catalog *)catalog)->products;
 	qsort(products, catalog->length, sizeof(struct interchange_product *), prodcmp);
@@ -58,7 +60,7 @@ void interchange_ord_order(const char *sku, const struct interchange_catalog *ca
 	}
 	(*order)->subtotal += item->product->price;
 	(*order)->total_cost += item->product->price;
-	request(NULL, NULL, NULL, "%s%s", "order?mv_arg=", sku);
+	request(handler, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
 
 void interchange_ord_checkout(const struct interchange_ord_order *order,
