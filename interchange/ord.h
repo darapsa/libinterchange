@@ -47,7 +47,7 @@ void interchange_ord_checkout(const char *order_profile,
 		const struct interchange_member *member,
 		void (*handler)(interchange_response *));
 
-void interchange_ord_free_order(struct interchange_ord_order *order);
+void interchange_ord_clear_order(struct interchange_ord_order *order);
 
 void interchange_ord_free_transaction(struct interchange_ord_transaction
 		*transaction);
