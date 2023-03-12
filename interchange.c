@@ -67,13 +67,15 @@ void interchange_page(const char *path, void (*handler)(interchange_response *))
 	request(handler, NULL, NULL, "%s", path);
 }
 
-void interchange_free_product(struct interchange_product *product)
+void interchange_clear_product(struct interchange_product *product)
 {
 	if (product->crosssell)
 		for (size_t i = 0; i < product->crosssell->length; i++)
 			free(product->crosssell->skus[i]);
 	if (product->author)
 		free(product->author);
+	if (product->category)
+		free(product->category);
 	if (product->prod_group)
 		free(product->prod_group);
 	if (product->image)
@@ -82,17 +84,17 @@ void interchange_free_product(struct interchange_product *product)
 		free(product->thumb);
 	if (product->comment)
 		free(product->comment);
-	if (product->description)
-		free(product->description);
 	if (product->title)
 		free(product->title);
+	if (product->description)
+		free(product->description);
 	free(product->sku);
 }
 
 void interchange_free_catalog(struct interchange_catalog *catalog)
 {
 	for (size_t i = 0; i < catalog->length; i++)
-		interchange_free_product(&catalog->products[i]);
+		interchange_clear_product(&catalog->products[i]);
 	free(catalog);
 }
 
