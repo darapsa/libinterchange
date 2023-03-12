@@ -65,7 +65,7 @@ void interchange_product(const char *sku, void (*handler)(interchange_response *
 
 void interchange_page(const char *path, void (*handler)(interchange_response *));
 
-void interchange_clear_product(struct interchange_product *product);
+void interchange_free_product(struct interchange_product *product);
 
 void interchange_free_catalog(struct interchange_catalog *catalog);
 
