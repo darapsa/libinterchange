@@ -30,14 +30,10 @@ extern "C" {
 /*!
  * \brief For putting an item to a cart.
  * \param sku The SKU of the item to order.
- * \param catalog The catalog from which the item is.
- * \param order The address of an order instance.
  * \param handler A pointer to the function when a custom handler is needed to
  * arrange the data into the order.
  */
 void interchange_ord_order(const char *sku,
-		const struct interchange_catalog *catalog,
-		struct interchange_ord_order **order,
 		void (*handler)(interchange_response *));
 
 /*!

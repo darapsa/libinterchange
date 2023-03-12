@@ -5,61 +5,9 @@
 #include "interchange/member.h"
 #include "interchange/ord.h"
 
-static int prodcmp(const void *product1, const void *product2)
-{
-	return strcmp((*(struct interchange_product * const *)product1)->sku,
-			(*(struct interchange_product * const *)product2)->sku);
-}
-
-static int itemcmp(const void *item1, const void *item2)
-{
-	return strcmp((*(struct interchange_ord_item * const *)item1)->product->sku,
-			(*(struct interchange_ord_item * const *)item2)->product->sku);
-}
-
 void interchange_ord_order(const char *sku,
-		const struct interchange_catalog *catalog,
-		struct interchange_ord_order **order,
 		void (*handler)(interchange_response *))
 {
-	struct interchange_product **products = ((struct interchange_catalog *)catalog)->products;
-	qsort(products, catalog->length, sizeof(struct interchange_product *), prodcmp);
-	struct interchange_product *key_product = malloc(sizeof(struct interchange_product));
-	memset(key_product, '\0', sizeof(struct interchange_product));
-	key_product->sku = malloc(strlen(sku) + 1);
-	strcpy(key_product->sku, sku);
-	struct interchange_product *product = *(struct interchange_product **)bsearch(&key_product, products,
-			catalog->length, sizeof(struct interchange_product *), prodcmp);
-	interchange_free_product(key_product);
-	struct interchange_ord_item *item = NULL;
-	if (*order) {
-		struct interchange_ord_item **items = (*order)->items;
-		qsort(items, (*order)->nitems, sizeof(struct interchange_ord_item *), itemcmp);
-		struct interchange_ord_item *key_item = malloc(sizeof(struct interchange_ord_item));
-		key_item->product = product;
-		struct interchange_ord_item **itemptr = bsearch(&key_item, items, (*order)->nitems,
-				sizeof(struct interchange_ord_item *), itemcmp);
-		if (itemptr)
-			item = *itemptr;
-		free(key_item);
-	} else {
-		*order = malloc(sizeof(struct interchange_ord_order));
-		memset(*order, '\0', sizeof(struct interchange_ord_order));
-	}
-	if (item)
-		item->quantity++;
-	else {
-		size_t i = (*order)->nitems;
-		*order = realloc(*order, sizeof(struct interchange_ord_order) + (i + 1)
-				* sizeof(struct interchange_ord_item));
-		(*order)->items[i] = malloc(sizeof(struct interchange_ord_item));
-		(*order)->nitems++;
-		item = (*order)->items[i];
-		item->product = product;
-		item->quantity = 1;
-	}
-	(*order)->subtotal += item->product->price;
-	(*order)->total_cost += item->product->price;
 	request(handler, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
 
