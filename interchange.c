@@ -87,13 +87,12 @@ void interchange_free_product(struct interchange_product *product)
 	if (product->title)
 		free(product->title);
 	free(product->sku);
-	free(product);
 }
 
 void interchange_free_catalog(struct interchange_catalog *catalog)
 {
 	for (size_t i = 0; i < catalog->length; i++)
-		interchange_free_product(catalog->products[i]);
+		interchange_free_product(&catalog->products[i]);
 	free(catalog);
 }
 

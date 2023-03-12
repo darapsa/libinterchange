@@ -4,7 +4,7 @@
 #include "interchange/typedefs.h"
 
 struct interchange_ord_item {
-	struct interchange_product *product;
+	struct interchange_product product;
 	unsigned int quantity;
 };
 
