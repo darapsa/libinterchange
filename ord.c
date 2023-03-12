@@ -11,14 +11,14 @@ void interchange_ord_order(const char *sku,
 	request(handler, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
 
-void interchange_ord_checkout(const struct interchange_ord_order *order,
+void interchange_ord_checkout(const char *order_profile,
 		const struct interchange_member *member,
 		void (*handler)(interchange_response *))
 {
 	request(handler, NULL, &(struct body){ 14, {
 		{ "mv_todo", "submit" },
 		{ "mv_action", "refresh" },
-		{ "mv_order_profile", order->profile },
+		{ "mv_order_profile", order_profile },
 		{ "fname", member->fname },
 		{ "lname", member->lname },
 		{ "address1", member->address1 },

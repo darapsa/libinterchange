@@ -38,12 +38,12 @@ void interchange_ord_order(const char *sku,
 
 /*!
  * \brief For checking out items in the cart.
- * \param order The order to be checked out.
+ * \param order_profile The order profile/method.
  * \param member The member checking out.
  * \param handler A pointer to the function when a custom handler is needed to
  * arrange the data into the product.
 */
-void interchange_ord_checkout(const struct interchange_ord_order *order,
+void interchange_ord_checkout(const char *order_profile,
 		const struct interchange_member *member,
 		void (*handler)(interchange_response *));
 
