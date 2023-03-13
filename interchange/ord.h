@@ -44,7 +44,7 @@ void interchange_ord_order(const char *sku,
  * arrange the data into the product.
 */
 void interchange_ord_checkout(const char *order_profile,
-		const struct interchange_member *member,
+		struct interchange_member member,
 		void (*handler)(interchange_response *));
 
 void interchange_ord_free_order(struct interchange_ord_order *order);
