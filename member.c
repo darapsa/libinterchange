@@ -16,8 +16,8 @@ void interchange_member_login(const char *username, const char *password,
 		void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *))
 {
-	login(username, password, NULL, "Login", nextpage, failpage, handler,
-			(void (*)(void *))callback);
+	login(username, password, NULL, "Login", nextpage ? nextpage : "login",
+			failpage, handler, (void (*)(void *))callback);
 }
 
 void interchange_member_account(void (*handler)(interchange_response *))
