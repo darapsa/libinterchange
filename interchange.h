@@ -23,7 +23,7 @@ struct interchange_product {
 
 struct interchange_catalog {
 	size_t length;
-	struct interchange_product products[];
+	struct interchange_product *products;
 };
 
 /*!
