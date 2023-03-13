@@ -43,6 +43,11 @@ void interchange_init(const char *url, const char *dir, const char *cookie,
 #endif
 }
 
+void interchange_page(const char *path, void (*handler)(interchange_response *))
+{
+	request(handler, NULL, NULL, "%s", path);
+}
+
 void interchange_catalog(const char *prod_group, void (*handler)(interchange_response *), void (*callback)(struct interchange_catalog *))
 {
 	char nonspaced[strlen(prod_group) + 1];
@@ -60,11 +65,6 @@ void interchange_catalog(const char *prod_group, void (*handler)(interchange_res
 void interchange_product(const char *sku, void (*handler)(interchange_response *), void (*callback)(struct interchange_product *))
 {
 	request(handler, (void (*)(void *))callback, NULL, "%s", sku);
-}
-
-void interchange_page(const char *path, void (*handler)(interchange_response *))
-{
-	request(handler, NULL, NULL, "%s", path);
 }
 
 void interchange_clear_product(struct interchange_product *product)

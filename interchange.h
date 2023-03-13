@@ -48,6 +48,14 @@ void interchange_init(const char *sampleurl, const char *image_dir,
 		const char *cookie, const char *certificate);
 
 /*!
+ * \brief For fetching data from a specific path.
+ * \param path The path.
+ * \param handler Function for handling the response data.
+ */
+void interchange_page(const char *path,
+		void (*handler)(interchange_response *));
+
+/*!
  * \brief For fetching data about products that belong a specific group.
  * \param prod_group The name of the product group.
  * \param handler A pointer to the function when a custom handler is needed to arrange the data into the catalog.
@@ -62,8 +70,6 @@ void interchange_catalog(const char *prod_group, void (*handler)(interchange_res
  * \param callback A pointer to the function that needs to be called after the product is ready.
 */
 void interchange_product(const char *sku, void (*handler)(interchange_response *), void (*callback)(struct interchange_product *));
-
-void interchange_page(const char *path, void (*handler)(interchange_response *));
 
 void interchange_clear_product(struct interchange_product *product);
 
