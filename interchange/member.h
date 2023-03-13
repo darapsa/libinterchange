@@ -91,7 +91,8 @@ void interchange_member_setaccount(const struct interchange_member *member,
 
 void interchange_member_changepassword(const char *password_old,
 		const char *password, const char *verify);
-void interchange_member_logout(struct interchange_member *member);
+void interchange_member_logout();
+void interchange_member_clear(struct interchange_member *member);
 
 #ifdef __cplusplus
 }

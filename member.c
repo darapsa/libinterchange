@@ -57,9 +57,13 @@ void interchange_member_changepassword(const char *password_old, const char *pas
 			}}, "%s", "member/change_password");
 }
 
-void interchange_member_logout(struct interchange_member *member)
+void interchange_member_logout()
 {
 	request(NULL, NULL, NULL, "%s", "logout");
+}
+
+void interchange_member_clear(struct interchange_member *member)
+{
 	if (member->username)
 		free(member->username);
 	if (member->usernick)
@@ -148,5 +152,4 @@ void interchange_member_logout(struct interchange_member *member)
 		free(member->credit_limit);
 	if (member->price_level)
 		free(member->price_level);
-	free(member);
 }
