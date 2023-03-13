@@ -49,7 +49,7 @@ void interchange_ord_checkout(const char *order_profile,
 
 void interchange_ord_free_order(struct interchange_ord_order *order);
 
-void interchange_ord_free_transaction(struct interchange_ord_transaction
+void interchange_ord_clear_transaction(struct interchange_ord_transaction
 		*transaction);
 
 #ifdef __cplusplus

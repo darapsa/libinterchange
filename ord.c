@@ -40,12 +40,11 @@ void interchange_ord_free_order(struct interchange_ord_order *order)
 	free(order);
 }
 
-void interchange_ord_free_transaction(struct interchange_ord_transaction
+void interchange_ord_clear_transaction(struct interchange_ord_transaction
 		*transaction)
 {
 	if (transaction->order_number)
 		free(transaction->order_number);
 	if (transaction->payment_method)
 		free(transaction->payment_method);
-	free(transaction);
 }
