@@ -52,8 +52,7 @@ void interchange_init(const char *sampleurl, const char *image_dir,
  * \param path The path.
  * \param parser Function for parsing the formatted response.
  */
-void interchange_flypage(const char *path,
-		void (*parser)(interchange_response *));
+void interchange_page(const char *path, void (*parser)(interchange_response *));
 
 /*!
  * \brief For fetching data about products that belong a specific group.

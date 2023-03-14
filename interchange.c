@@ -43,8 +43,7 @@ void interchange_init(const char *url, const char *dir, const char *cookie,
 #endif
 }
 
-void interchange_flypage(const char *path,
-		void (*parser)(interchange_response *))
+void interchange_page(const char *path, void (*parser)(interchange_response *))
 {
 	request(parser, NULL, NULL, "%s", path);
 }
