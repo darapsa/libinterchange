@@ -43,9 +43,10 @@ void interchange_init(const char *url, const char *dir, const char *cookie,
 #endif
 }
 
-void interchange_page(const char *path, void (*handler)(interchange_response *))
+void interchange_flypage(const char *path,
+		void (*parser)(interchange_response *))
 {
-	request(handler, NULL, NULL, "%s", path);
+	request(parser, NULL, NULL, "%s", path);
 }
 
 void interchange_catalog(const char *prod_group, void (*handler)(interchange_response *), void (*callback)(struct interchange_catalog *))

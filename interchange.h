@@ -48,12 +48,12 @@ void interchange_init(const char *sampleurl, const char *image_dir,
 		const char *cookie, const char *certificate);
 
 /*!
- * \brief For fetching data from a specific path.
+ * \brief Generic function for fetching data using a relative path.
  * \param path The path.
- * \param handler Function for handling the response data.
+ * \param parser Function for parsing the formatted response.
  */
-void interchange_page(const char *path,
-		void (*handler)(interchange_response *));
+void interchange_flypage(const char *path,
+		void (*parser)(interchange_response *));
 
 /*!
  * \brief For fetching data about products that belong a specific group.
