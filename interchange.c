@@ -110,6 +110,7 @@ void interchange_free_response(interchange_response *response)
 #ifdef __EMSCRIPTEN__
 	emscripten_fetch_close(response);
 #else
+	free(response->url);
 	free(response->data);
 	curl_easy_cleanup(response->curl);
 	free(response);

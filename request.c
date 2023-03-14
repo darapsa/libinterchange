@@ -160,6 +160,8 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, append);
 	interchange_response *response = malloc(sizeof(interchange_response));
+	response->url = malloc(length + 1);
+	strcpy(response->url, url);
 	response->data = malloc(1);
 	response->numBytes = 0;
 	response->userData = callback;

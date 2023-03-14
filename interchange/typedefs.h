@@ -9,6 +9,7 @@ typedef emscripten_fetch_t interchange_response;
 #include <curl/curl.h>
 typedef struct {
 	void *userData;
+	char *url;
 	char *data;
 	size_t numBytes;
 	CURL *curl;
