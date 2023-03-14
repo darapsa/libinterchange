@@ -45,7 +45,12 @@ void interchange_init(const char *url, const char *dir, const char *cookie,
 
 void interchange_page(const char *path, void (*parser)(interchange_response *))
 {
-	request(parser, NULL, NULL, "%s", path);
+	char nonspaced[strlen(path) + 1];
+	strcpy(nonspaced, path);
+	char *space = NULL;
+	while ((space = strchr(nonspaced, ' ')))
+		*space = '-';
+	request(parser, NULL, NULL, "%s", nonspaced);
 }
 
 void interchange_catalog(const char *prod_group, void (*handler)(interchange_response *), void (*callback)(struct interchange_catalog *))
