@@ -64,12 +64,13 @@ extern "C" {
 #endif
 
 void interchange_member_newaccount(const char *username, const char *password,
-		const char *verify, const char *nextpage, const char *failpage,
+		const char *verify, const char *nextpage,
+		const char *successpage, const char *failpage,
 		void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *));
 void interchange_member_login(const char *username, const char *password,
-		const char *nextpage, const char *failpage,
-		void (*handler)(interchange_response *),
+		const char *nextpage, const char *successpage,
+		const char *failpage, void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *));
 
 /*!

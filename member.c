@@ -3,22 +3,24 @@
 #include "interchange/member.h"
 
 void interchange_member_newaccount(const char *username, const char *password,
-		const char *verify, const char *nextpage, const char *failpage,
+		const char *verify, const char *nextpage,
+		const char *successpage, const char *failpage,
 		void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *))
 {
-	login(username, password, verify, "NewAccount",
-			nextpage ? nextpage : "new_account", failpage, handler,
+	login(username, password, verify, "NewAccount", nextpage ? nextpage
+			: "new_account", successpage, failpage, handler,
 			(void (*)(void *))callback);
 }
 
 void interchange_member_login(const char *username, const char *password,
-		const char *nextpage, const char *failpage,
-		void (*handler)(interchange_response *),
+		const char *nextpage, const char *successpage,
+		const char *failpage, void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_member *))
 {
 	login(username, password, NULL, "Login", nextpage ? nextpage : "login",
-			failpage, handler, (void (*)(void *))callback);
+			successpage, failpage, handler,
+			(void (*)(void *))callback);
 }
 
 void interchange_member_account(void (*handler)(interchange_response *))

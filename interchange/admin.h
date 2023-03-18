@@ -22,8 +22,8 @@ extern "C" {
 #endif
 
 void interchange_admin_login(const char *username, const char *password,
-		const char *nextpage, const char *failpage,
-		void (*handler)(interchange_response *),
+		const char *nextpage, const char *successpage,
+		const char *failpage, void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_admin *));
 void interchange_admin_new_admin(const char *username, const char *password, const char *name, bool super,
 		enum interchange_admin_group group, void (*handler)(interchange_response *));
