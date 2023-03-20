@@ -19,6 +19,7 @@ struct interchange_product {
 		size_t length;
 		char *skus[];
 	} *crosssell;
+	char *image_large;
 };
 
 struct interchange_catalog {

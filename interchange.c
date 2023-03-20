@@ -74,6 +74,8 @@ void interchange_product(const char *sku, void (*handler)(interchange_response *
 
 void interchange_clear_product(struct interchange_product *product)
 {
+	if (product->image_large)
+		free(product->image_large);
 	if (product->crosssell)
 		for (size_t i = 0; i < product->crosssell->length; i++)
 			free(product->crosssell->skus[i]);
