@@ -40,11 +40,12 @@ void interchange_ord_order(const char *sku,
 /*!
  * \brief For removing an item from a cart.
  * \param name The name given, in the cart, to the item.
+ * \param orderpage The order page, by default it's ord/basket.
  * \param nextpage The page to expect response from, whatever the result is.
  * \param parser Function for parsing the formatted response.
  */
-void interchange_ord_remove(const char *name, const char *nextpage,
-		void (*parser)(interchange_response *));
+void interchange_ord_remove(const char *name, const char *orderpage,
+		const char *nextpage, void (*parser)(interchange_response *));
 
 /*!
  * \brief For checking out items in the cart.
