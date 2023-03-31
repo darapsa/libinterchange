@@ -11,6 +11,15 @@ void interchange_ord_order(const char *sku,
 	request(handler, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
 
+void interchange_ord_remove(const char *name, const char *nextpage,
+		void (*parser)(interchange_response *))
+{
+	request(parser, NULL, &(struct body){ 1 + (nextpage ? 1 : 0), {
+		{ name, "0" },
+		{ "mv_nextpage", nextpage }
+	}}, "%s", "process");
+}
+
 void interchange_ord_checkout(const char *order_profile,
 		struct interchange_member member,
 		void (*handler)(interchange_response *))
