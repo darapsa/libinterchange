@@ -6,6 +6,7 @@
 struct interchange_ord_item {
 	struct interchange_product product;
 	unsigned int quantity;
+	char *name;
 };
 
 struct interchange_ord_order {
