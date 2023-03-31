@@ -14,8 +14,9 @@ void interchange_ord_order(const char *sku,
 void interchange_ord_remove(const char *name, const char *nextpage,
 		void (*parser)(interchange_response *))
 {
-	request(parser, NULL, &(struct body){ 1 + (nextpage ? 1 : 0), {
+	request(parser, NULL, &(struct body){ 2 + (nextpage ? 1 : 0), {
 		{ name, "0" },
+		{ "mv_doit", "refresh" },
 		{ "mv_nextpage", nextpage }
 	}}, "%s", "process");
 }
