@@ -14,9 +14,10 @@ void interchange_ord_order(const char *sku,
 void interchange_ord_remove(const char *name, const char *orderpage,
 		const char *nextpage, void (*parser)(interchange_response *))
 {
-	request(parser, NULL, &(struct body){ 3 + (nextpage ? 1 : 0), {
-		{ name, "0" },
+	request(parser, NULL, &(struct body){ 4 + (nextpage ? 1 : 0), {
+		{ "mv_quantity_update", "1" },
 		{ "mv_doit", "refresh" },
+		{ name, "0" },
 		{ "mv_orderpage", orderpage ? orderpage : "ord/basket" },
 		{ "mv_nextpage", nextpage }
 	}}, "%s", "process");
