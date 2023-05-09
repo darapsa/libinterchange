@@ -11,7 +11,8 @@ void interchange_admin_login(const char *username, const char *password,
 		const char *failpage, void (*handler)(interchange_response *),
 		void (*callback)(struct interchange_admin *))
 {
-	login(username, password, NULL, "MMLogin", nextpage, successpage,
+	login(username, password, NULL, "MMLogin",
+			nextpage ? nextpage : "admin/index", successpage,
 			failpage, handler, (void (*)(void *))callback);
 }
 
@@ -86,12 +87,15 @@ void interchange_admin_new_transaction(const struct interchange_ord_order *order
 	}}, "%s", "process");
 }
 
-void interchange_admin_logout(struct interchange_admin *admin, void (*handler)(interchange_response *))
+void interchange_admin_logout()
 {
-	request(handler, NULL, NULL, "%s", "admin/login");
+	request(NULL, NULL, NULL, "%s", "admin/login");
+}
+
+void interchange_admin_clear(struct interchange_admin *admin)
+{
 	if (admin->name)
 		free(admin->name);
 	if (admin->username)
 		free(admin->username);
-	free(admin);
 }

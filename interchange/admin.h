@@ -32,7 +32,8 @@ void interchange_admin_new_item(const char *description, const char *comment, co
 void interchange_admin_new_transaction(const struct interchange_ord_order *order,
 		const struct interchange_member *member, bool new_customer_id,
 		void (*handler)(interchange_response *));
-void interchange_admin_logout(struct interchange_admin *admin, void (*handler)(interchange_response *));
+void interchange_admin_logout();
+void interchange_admin_clear(struct interchange_admin *admin);
 
 #ifdef __cplusplus
 }
