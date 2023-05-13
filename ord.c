@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "request.h"
@@ -11,13 +12,21 @@ void interchange_ord_order(const char *sku,
 	request(handler, NULL, NULL, "%s%s", "order?mv_arg=", sku);
 }
 
-void interchange_ord_remove(const char *name, const char *orderpage,
-		const char *nextpage, void (*parser)(interchange_response *))
+void interchange_ord_update(const char *name, const unsigned int quantity,
+		const char *orderpage, const char *nextpage,
+		void (*parser)(interchange_response *))
 {
+	size_t length = 0;
+	unsigned int qty = quantity;
+	do {
+		length++;
+	} while ((qty /= 10));
+	char qty_str[length + 1];
+	sprintf(qty_str, "%d", quantity);
 	request(parser, NULL, &(struct body){ 4 + (nextpage ? 1 : 0), {
 		{ "mv_quantity_update", "1" },
 		{ "mv_doit", "refresh" },
-		{ name, "0" },
+		{ name, qty_str },
 		{ "mv_orderpage", orderpage ? orderpage : "ord/basket" },
 		{ "mv_nextpage", nextpage }
 	}}, "%s", "process");
