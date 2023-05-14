@@ -6,10 +6,23 @@
 #include "interchange/member.h"
 #include "interchange/ord.h"
 
-void interchange_ord_order(const char *sku,
-		void (*handler)(interchange_response *))
+void interchange_ord_order(const char *sku, const char *item,
+		const unsigned int quantity,
+		void (*parser)(interchange_response *))
 {
-	request(handler, NULL, NULL, "%s%s", "order?mv_arg=", sku);
+	size_t length = 0;
+	unsigned int qty = quantity;
+	do {
+		length++;
+	} while ((qty /= 10));
+	char qty_str[length + 1];
+	sprintf(qty_str, "%d", quantity);
+	request(parser, NULL, &(struct body){ 4, {
+		{ "mv_action", "refresh" },
+		{ "mv_sku", sku },
+		{ "mv_order_item", item },
+		{ "mv_order_quantity", qty_str }
+	}}, "%s", "ord/basket");
 }
 
 void interchange_ord_update(const char *name, const unsigned int quantity,

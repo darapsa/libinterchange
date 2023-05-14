@@ -30,12 +30,14 @@ extern "C" {
 
 /*!
  * \brief For putting an item to a cart.
- * \param sku The SKU of the item to order.
- * \param handler A pointer to the function when a custom handler is needed to
- * arrange the data into the order.
+ * \param sku The product or variant SKU of the item to order.
+ * \param item The product SKU of the item to order.
+ * \param quantity The quantity of the item to order.
+ * \param parser Function for parsing the formatted response.
  */
-void interchange_ord_order(const char *sku,
-		void (*handler)(interchange_response *));
+void interchange_ord_order(const char *sku, const char *item,
+		const unsigned int quantity,
+		void (*parser)(interchange_response *));
 
 /*!
  * \brief For updating the quantity of an item in a cart.
