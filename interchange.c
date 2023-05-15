@@ -81,6 +81,8 @@ void interchange_clear_product(struct interchange_product *product)
 			free(product->crosssell->skus[i]);
 	if (product->author)
 		free(product->author);
+	if (product->option_type)
+		free(product->option_type);
 	if (product->category)
 		free(product->category);
 	if (product->prod_group)

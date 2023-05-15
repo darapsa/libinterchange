@@ -14,6 +14,7 @@ struct interchange_product {
 	char *prod_group;
 	char *category;
 	double weight;
+	char *option_type;
 	char *author;
 	struct interchange_product_crosssell {
 		size_t length;
