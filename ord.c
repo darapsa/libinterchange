@@ -15,7 +15,7 @@ void interchange_ord_order(const char *sku, const char *item,
 	do {
 		length++;
 	} while ((qty /= 10));
-	char qty_str[length + 1];
+	char *qty_str = malloc(length + 1);
 	sprintf(qty_str, "%d", quantity);
 	request(parser, NULL, &(struct body){ 4, {
 		{ "mv_action", "refresh" },
@@ -34,7 +34,7 @@ void interchange_ord_update(const char *name, const unsigned int quantity,
 	do {
 		length++;
 	} while ((qty /= 10));
-	char qty_str[length + 1];
+	char *qty_str = malloc(length + 1);
 	sprintf(qty_str, "%d", quantity);
 	request(parser, NULL, &(struct body){ 4 + (nextpage ? 1 : 0), {
 		{ "mv_quantity_update", "1" },

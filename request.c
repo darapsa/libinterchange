@@ -134,6 +134,8 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 			if (i)
 				strcat(post, "&");
 			sprintf(post, "%s%s=%s", post, pair.key, pair.value);
+			if (!strncmp(pair.key, "quantity", 8))
+				free(pair.value);
 		}
 		strcpy(attr.requestMethod, "POST");
 		static const char *headers[] = { "Content-Type",
@@ -173,7 +175,11 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 			struct pair pair = body->pairs[i];
 			if (!pair.value)
 				continue;
-			curl_formadd(&post, &last, CURLFORM_COPYNAME, pair.key, CURLFORM_PTRCONTENTS, pair.value, CURLFORM_END);
+			curl_formadd(&post, &last, CURLFORM_COPYNAME, pair.key,
+					CURLFORM_COPYCONTENTS, pair.value,
+					CURLFORM_END);
+			if (!strncmp(pair.key, "quantity", 8))
+				free(pair.value);
 		}
 		last = NULL;
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
