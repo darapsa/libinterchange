@@ -59,7 +59,8 @@ static void *async(void *arg)
 }
 #endif
 
-void request(void (*handler)(interchange_response *), void (*callback)(void *), struct body *body, char *fmt, ...)
+void request(void (*handler)(interchange_response *), void (*callback)(void *),
+		const char *body[][2], char *fmt, ...)
 {
 	va_list ap;
 	char *p, *sval;
@@ -125,17 +126,18 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 		size_t length = 0;
 		char *post = malloc(1);
 		memset(post, '\0', 1);
-		for (size_t i = 0; i < body->num_pairs; i++) {
-			struct pair pair = body->pairs[i];
-			if (!pair.value)
-				continue;
-			length += strlen(pair.key) + strlen(pair.value) + (i ? 1 : 0) + 1;
+		size_t i = 0;
+		const char **pair = *body;
+		while (pair[0] && pair[1]) {
+			length += strlen(pair[0]) + strlen(pair[1])
+				+ (i ? 1 : 0) + 1;
 			post = realloc(post, length + 1);
-			if (i)
+			if (i++)
 				strcat(post, "&");
-			sprintf(post, "%s%s=%s", post, pair.key, pair.value);
-			if (!strncmp(pair.key, "quantity", 8))
-				free(pair.value);
+			sprintf(post, "%s%s=%s", post, pair[0], pair[1]);
+			if (!strncmp(pair[0], "quantity", 8))
+				free((void *)pair[1]);
+			pair = *++body;
 		}
 		strcpy(attr.requestMethod, "POST");
 		static const char *headers[] = { "Content-Type",
@@ -171,15 +173,14 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *), 
 	struct curl_httppost *post = NULL;
 	struct curl_httppost *last = NULL;
 	if (body) {
-		for (size_t i = 0; i < body->num_pairs; i++) {
-			struct pair pair = body->pairs[i];
-			if (!pair.value)
-				continue;
-			curl_formadd(&post, &last, CURLFORM_COPYNAME, pair.key,
-					CURLFORM_COPYCONTENTS, pair.value,
+		const char **pair = *body;
+		while (pair[0] && pair[1]) {
+			curl_formadd(&post, &last, CURLFORM_COPYNAME, pair[0],
+					CURLFORM_COPYCONTENTS, pair[1],
 					CURLFORM_END);
-			if (!strncmp(pair.key, "quantity", 8))
-				free(pair.value);
+			if (!strncmp(pair[0], "quantity", 8))
+				free((void *)pair[1]);
+			pair = *++body;
 		}
 		last = NULL;
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);

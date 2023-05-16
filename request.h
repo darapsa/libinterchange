@@ -3,14 +3,7 @@
 
 #include "interchange/typedefs.h"
 
-struct body {
-	size_t num_pairs;
-	struct pair {
-		const char *key;
-		const char *value;
-	} pairs[16];
-};
-
-void request(void (*)(interchange_response *), void (*)(void *), struct body *, char *, ...);
+void request(void (*)(interchange_response *), void (*)(void *),
+		const char *[][2], char *, ...);
 
 #endif

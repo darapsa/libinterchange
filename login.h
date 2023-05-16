@@ -9,16 +9,16 @@ static inline void login(const char *username, const char *password,
 		void (*handler)(interchange_response *),
 		void (*callback)(void *))
 {
-	request(handler, callback, &(struct body){ 5 + (successpage ? 1 : 0)
-			+ (failpage ? 1 : 0), {
-			{ "mv_username", username },
-			{ "mv_password", password },
-			{ "mv_verify", verify },
-			{ "mv_click", click },
-			{ "mv_nextpage", nextpage },
-			{ "mv_successpage", successpage },
-			{ "mv_failpage", failpage },
-			}}, "%s", "process");
+	request(handler, callback, (const char *[][2]){
+			"mv_username", username,
+			"mv_password", password,
+			"mv_verify", verify,
+			"mv_click", click,
+			"mv_nextpage", nextpage,
+			"mv_successpage", successpage,
+			"mv_failpage", failpage,
+			NULL
+			}, "%s", "process");
 }
 
 #endif

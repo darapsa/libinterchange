@@ -31,33 +31,36 @@ void interchange_member_account(void (*handler)(interchange_response *))
 void interchange_member_setaccount(const struct interchange_member *member,
 		void (*handler)(interchange_response *))
 {
-	request(handler, NULL, &(struct body){ 13, {
-		{ "mv_form_profile", "account_change" },
-		{ "mv_todo", "return" },
-		{ "mv_nextpage", "member/account" },
-		{ "mv_check", "Save_database" },
-		{ "fname", member->fname },
-		{ "lname", member->lname },
-		{ "address1", member->address1 },
-		{ "address2", member->address2 },
-		{ "city", member->city },
-		{ "state", member->state },
-		{ "zip", member->zip },
-		{ "email", member->email },
-		{ "phone_day", member->phone_day }
-	}}, "%s", "process");
+	request(handler, NULL, (const char *[][2]){
+		"mv_form_profile", "account_change",
+		"mv_todo", "return",
+		"mv_nextpage", "member/account",
+		"mv_check", "Save_database",
+		"fname", member->fname,
+		"lname", member->lname,
+		"address1", member->address1,
+		"address2", member->address2,
+		"city", member->city,
+		"state", member->state,
+		"zip", member->zip,
+		"email", member->email,
+		"phone_day", member->phone_day,
+		NULL
+	}, "%s", "process");
 }
 
-void interchange_member_changepassword(const char *password_old, const char *password, const char *verify)
+void interchange_member_changepassword(const char *password_old,
+		const char *password, const char *verify)
 {
-	request(NULL, NULL, &(struct body){ 6, {
-			{ "mv_action", "return" },
-			{ "mv_check", "Change_password" },
-			{ "mv_successpage", "member/service" },
-			{ "mv_password_old", password_old },
-			{ "mv_password", password },
-			{ "mv_verify", verify }
-			}}, "%s", "member/change_password");
+	request(NULL, NULL, (const char *[][2]){
+			"mv_action", "return",
+			"mv_check", "Change_password",
+			"mv_successpage", "member/service",
+			"mv_password_old", password_old,
+			"mv_password", password,
+			"mv_verify", verify,
+			NULL
+			}, "%s", "member/change_password");
 }
 
 void interchange_member_logout()
