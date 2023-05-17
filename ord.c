@@ -7,7 +7,7 @@
 #include "interchange/ord.h"
 
 void interchange_ord_order(const char *sku, const char *item,
-		const unsigned int quantity,
+		const unsigned int quantity, const char *options[][2],
 		void (*parser)(interchange_response *))
 {
 	size_t length = 0;
@@ -17,13 +17,33 @@ void interchange_ord_order(const char *sku, const char *item,
 	} while ((qty /= 10));
 	char *qty_str = malloc(length + 1);
 	sprintf(qty_str, "%d", quantity);
-	request(parser, NULL, (const char *[][2]){
-		"mv_action", "refresh",
-		"mv_sku", sku,
-		"mv_order_item", item,
-		"mv_order_quantity", qty_str,
-		NULL
-	}, "%s", "ord/basket");
+	const char **pair = *options;
+	size_t nopts = 0;
+	while (pair[0] && pair[1]) {
+		nopts++;
+		pair = *++options;
+	}
+	for (size_t i = 0; i < nopts; i++)
+		--options;
+	size_t total_nopts = 4 + nopts;
+	const char *order[total_nopts + 1][2];
+	order[0][0] = "mv_action";
+	order[0][1] = "refresh";
+	order[1][0] = "mv_sku";
+	order[1][1] = sku;
+	order[2][0] = "mv_order_item";
+	order[2][1] = item;
+	order[3][0] = "mv_order_quantity";
+	order[3][1] = qty_str;
+	for (size_t i = 0; i < nopts; i++) {
+		const char **pair = options[i];
+		order[4 + i][0] = malloc(strlen(pair[0]) + 1);
+		strcpy((char *)order[4 + i][0], pair[0]);
+		order[4 + i][1] = malloc(strlen(pair[1]) + 1);
+		strcpy((char *)order[4 + i][1], pair[1]);
+	}
+	order[total_nopts][0] = NULL;
+	request(parser, NULL, order, "%s", "ord/basket");
 }
 
 void interchange_ord_update(const char *name, const unsigned int quantity,

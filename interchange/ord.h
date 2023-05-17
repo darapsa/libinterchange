@@ -33,10 +33,11 @@ extern "C" {
  * \param sku The product or variant SKU of the item to order.
  * \param item The product SKU of the item to order.
  * \param quantity The quantity of the item to order.
+ * \param options Any additional pairs of custom options.
  * \param parser Function for parsing the formatted response.
  */
 void interchange_ord_order(const char *sku, const char *item,
-		const unsigned int quantity,
+		const unsigned int quantity, const char *options[][2],
 		void (*parser)(interchange_response *));
 
 /*!
