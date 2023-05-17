@@ -35,10 +35,11 @@ void interchange_ord_order(const char *sku, const char *item,
 	order[2][1] = item;
 	order[3][0] = "mv_order_quantity";
 	order[3][1] = qty_str;
+	static const char *prefix = "mv_order_";
 	for (size_t i = 0; i < nopts; i++) {
 		const char **pair = options[i];
-		order[4 + i][0] = malloc(strlen(pair[0]) + 1);
-		strcpy((char *)order[4 + i][0], pair[0]);
+		order[4 + i][0] = malloc(strlen(prefix) + strlen(pair[0]) + 1);
+		sprintf((char *)order[4 + i][0], "%s%s", prefix, pair[0]);
 		order[4 + i][1] = malloc(strlen(pair[1]) + 1);
 		strcpy((char *)order[4 + i][1], pair[1]);
 	}
