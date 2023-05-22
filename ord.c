@@ -25,6 +25,8 @@ void interchange_ord_order(const char *sku, const char *item,
 	}
 	for (size_t i = 0; i < nopts; i++)
 		--options;
+	if (nopts)
+		nopts++;
 	size_t total_nopts = 4 + nopts;
 	const char *order[total_nopts + 1][2];
 	order[0][0] = "mv_action";
@@ -36,12 +38,16 @@ void interchange_ord_order(const char *sku, const char *item,
 	order[3][0] = "mv_order_quantity";
 	order[3][1] = qty_str;
 	static const char *prefix = "mv_order_";
-	for (size_t i = 0; i < nopts; i++) {
+	if (nopts) {
+		order[4][0] = "mv_form_profile";
+		order[4][1] = "check_opt";
+	}
+	for (size_t i = 0; i < nopts - 1; i++) {
 		const char **pair = options[i];
-		order[4 + i][0] = malloc(strlen(prefix) + strlen(pair[0]) + 1);
-		sprintf((char *)order[4 + i][0], "%s%s", prefix, pair[0]);
-		order[4 + i][1] = malloc(strlen(pair[1]) + 1);
-		strcpy((char *)order[4 + i][1], pair[1]);
+		order[5 + i][0] = malloc(strlen(prefix) + strlen(pair[0]) + 1);
+		sprintf((char *)order[5 + i][0], "%s%s", prefix, pair[0]);
+		order[5 + i][1] = malloc(strlen(pair[1]) + 1);
+		strcpy((char *)order[5 + i][1], pair[1]);
 	}
 	order[total_nopts][0] = NULL;
 	request(parser, NULL, order, "%s", "ord/basket");
