@@ -25,7 +25,7 @@ void interchange_ord_order(const char *sku, const char *item,
 	}
 	for (size_t i = 0; i < nopts; i++)
 		--options;
-	size_t total_nopts = 4 + (nopts ? 1 : 0) + nopts;
+	size_t total_nopts = 4 + (nopts ? 1 : 0) + nopts * 2;
 	const char *order[total_nopts + 1][2];
 	order[0][0] = "mv_action";
 	order[0][1] = "refresh";
@@ -42,10 +42,14 @@ void interchange_ord_order(const char *sku, const char *item,
 	}
 	for (size_t i = 0; i < nopts; i++) {
 		const char **pair = options[i];
-		order[5 + i][0] = malloc(strlen(prefix) + strlen(pair[0]) + 1);
-		sprintf((char *)order[5 + i][0], "%s%s", prefix, pair[0]);
-		order[5 + i][1] = malloc(strlen(pair[1]) + 1);
-		strcpy((char *)order[5 + i][1], pair[1]);
+		size_t j = i * 2;
+		order[5 + j][0] = malloc(strlen(prefix) + strlen(pair[0]) + 1);
+		sprintf((char *)order[5 + j][0], "%s%s", prefix, pair[0]);
+		order[5 + j][1] = malloc(strlen(pair[1]) + 1);
+		strcpy((char *)order[5 + j][1], pair[1]);
+		order[6 + j][0] = "mv_item_option";
+		order[6 + j][1] = malloc(strlen(pair[0]) + 1);
+		strcpy((char *)order[6 + j][1], pair[0]);
 	}
 	order[total_nopts][0] = NULL;
 	request(parser, NULL, order, "%s", "ord/basket");
