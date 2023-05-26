@@ -178,7 +178,8 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *),
 			curl_formadd(&post, &last, CURLFORM_COPYNAME, pair[0],
 					CURLFORM_COPYCONTENTS, pair[1],
 					CURLFORM_END);
-			if (!strncmp(pair[0], "quantity", 8))
+			if (!strncmp(pair[0], "quantity", 8)
+					|| !strcmp(pair[0], "mv_item_option"))
 				free((void *)pair[1]);
 			else if (!strncmp(pair[0], "mv_order_", 9)
 					&& strcmp(pair[0], "mv_order_quantity")
