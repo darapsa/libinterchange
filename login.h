@@ -12,11 +12,11 @@ static inline void login(const char *username, const char *password,
 	request(handler, callback, (const char *[][2]){
 			"mv_username", username,
 			"mv_password", password,
-			"mv_verify", verify,
 			"mv_click", click,
 			"mv_nextpage", nextpage,
 			"mv_successpage", successpage,
 			"mv_failpage", failpage,
+			"mv_verify", verify,
 			NULL
 			}, "%s", "process");
 }
