@@ -15,7 +15,7 @@ struct interchange_ord_order {
 	double total_cost;
 	char *profile;
 	size_t nitems;
-	struct interchange_ord_item *items;
+	struct interchange_ord_item **items;
 };
 
 struct interchange_ord_transaction {
