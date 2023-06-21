@@ -182,6 +182,7 @@ void request(void (*handler)(interchange_response *), void (*callback)(void *),
 					|| !strcmp(pair[0], "mv_item_option"))
 				free((void *)pair[1]);
 			else if (!strncmp(pair[0], "mv_order_", 9)
+					&& strcmp(pair[0], "mv_order_profile")
 					&& strcmp(pair[0], "mv_order_quantity")
 					&& strcmp(pair[0], "mv_order_item")) {
 				free((void *)pair[0]);
